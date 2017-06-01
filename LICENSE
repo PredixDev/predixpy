@@ -1,0 +1,43 @@
+Copyright (c) 2016 General Electric Company operating through GE Digital LLC
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Other than the license expressly provided herein no license to or grant of any
+other intellectual property owned, controlled or licensed by General Electric
+Company or its affiliates (“GE”) is expressly or impliedly granted.  GE
+reserves all rights with respect to all such intellectual property and nothing
+in this license shall be deemed a waiver of such rights.
+
+It is expressly understood, acknowledged and agreed that you may provide
+General Electric reasonable suggestions, comments and feedback regarding the
+Software, including but not limited to usability, bug reports and test results,
+with respect to Software testing (collectively, "Feedback"). If you provide
+such Feedback to GE, you shall grant GE worldwide, non-exclusive, perpetual,
+irrevocable, royalty free, fully paid up rights to utilize such Feedback in any
+GE product or service in GE’s sole discretion.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.  NO GUARANTEE OF UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE
+OPERATION IS MADE.
+
+THESE LICENSED PROGRAMS MAY BE USED AS PART OF A DEVELOPMENT ENVIRONMENT, AND
+MAY BE COMBINED WITH OTHER CODE BY END-USERS. LICENSOR IS NOT ABLE TO GUARANTEE
+THAT THE LICENSED PROGRAMS WILL OPERATE WITHOUT DEFECTS WHEN USED IN
+COMBINATION WITH END-USER SOFTWARE. LICENSEE IS ADVISED TO SAFEGUARD IMPORTANT
+DATA, TO USE CAUTION, AND NOT TO RELY IN ANY WAY ON THE CORRECT FUNCTIONING OR
+PERFORMANCE OF ANY COMBINATION OF END-USER SOFTWARE AND THE LICENSED PROGRAMS
+AND/OR ACCOMPANYING MATERIALS. LICENSEE IS ADVISED NOT TO USE ANY COMBINATION
+OF LICENSED PROGRAMS AND END-USER PROVIDED SOFTWARE IN A PRODUCTION ENVIRONMENT
+WITHOUT PRIOR SUITABILITY AND DEFECT TESTING.

@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+
+# Shell Environment
+.bash_history
+.cache/
+.cf/
+
+# Project-specific
+environment.sh
+
+# Testing
+.tox/
+.coverage
+coverage/
+.coverage.*
+nosetests.xml
+coverage.xml
+*,cover

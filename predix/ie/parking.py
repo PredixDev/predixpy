@@ -20,6 +20,11 @@ class ParkingPlanning(object):
                 }
             }
 
+    # Constants for device types
+    DEVICE_TYPES = [
+            'DATASIM'
+            ]
+
     # Constants for codes representing asset types
     ASSET_TYPES = [
             'CAMERA',
@@ -77,7 +82,7 @@ class ParkingPlanning(object):
         return headers
 
     def _get_assets(self, bbox, size=None, page=None, asset_type=None,
-            event_type=None, media_type=None):
+            device_type=None, event_type=None, media_type=None):
         """
         Returns the raw results of an asset search for a given bounding
         box.
@@ -89,8 +94,47 @@ class ParkingPlanning(object):
                 'bbox': bbox,
                 }
 
-        if asset_type or media_type or event_type:
-            params['q'] = ''
+        # Query parameters
+
+        params['q'] = []
+        if device_type:
+            if isinstance(device_type, str):
+                device_type = [device_type]
+
+            for device in device_type:
+                if device not in self.DEVICE_TYPES:
+                    logging.warn("Invalid device type: %s" % device)
+
+                params['q'].append("device-type:%s" % device)
+
+        if asset_type:
+            if isinstance(asset_type, str):
+                asset_type = [asset_type]
+
+            for asset in asset_type:
+                if asset not in self.ASSET_TYPES:
+                    logging.warn("Invalid asset type: %s" % asset)
+                params['q'].append("assetType:%s" % asset)
+
+        if media_type:
+            if isinstance(media_type, str):
+                media_type = [media_type]
+
+            for media in media_type:
+                if media not in self.MEDIA_TYPES:
+                    logging.warn("Invalid media type: %s" % media)
+                params['q'].append("mediaType:%s" % media)
+
+        if event_type:
+            if isinstance(event_type, str):
+                event_type = [event_type]
+
+            for event in event_type:
+                if event not in self.EVENT_TYPES:
+                    logging.warn("Invalid event type: %s" % event)
+                params['q'].append("eventTypes:%s" % event)
+
+        # Pagination parameters
 
         if size:
             params['size'] = size
@@ -107,6 +151,7 @@ class ParkingPlanning(object):
 
         Assets can be filtered by type of asset, event, or media available.
 
+            - device_type=['DATASIM']
             - asset_type=['CAMERA']
             - event_type=['PKIN']
             - media_type=['IMAGE']

@@ -14,6 +14,10 @@ class Manifest(object):
         self.manifest_path = os.path.expanduser(manifest_path)
         self.app_name = app_name
 
+        # App may have a client
+        self.client_id = None
+        self.client_secret = None
+
         # Read or Generate a manifest file
         if os.path.exists(self.manifest_path):
             manifest = self.read_manifest()
@@ -89,17 +93,144 @@ class Manifest(object):
         needed scopes and authorities for the services
         in this manifest.
         """
-        if 'PREDIX_APP_CLIENT_ID' not in self.manifest['env']:
-            raise ValueError('UAA client id must be added to manifest.')
+        key = 'predix.security.uaa.client_id'
+        if key not in self.manifest['env']:
+            raise ValueError("%s undefined in manifest." % key)
 
-        return self.manifest['env']['PREDIX_APP_CLIENT_ID']
+        self.client_id = self.manifest['env'][key]
+        return self.client_id
 
     def get_client_secret(self):
         """
         Return the client secret that should correspond with
         the client id.
         """
-        if 'PREDIX_APP_CLIENT_SECRET' not in self.manifest['env']:
-            raise ValueError('UAA client secret must be added to manifest.')
+        key = 'predix.security.uaa.client_secret'
+        if key not in self.manifest['env']:
+            raise ValueError("%s must be added to manifest." % key)
 
-        return self.manifest['env']['PREDIX_APP_CLIENT_SECRET']
+        self.client_secret = self.manifest['env'][key]
+        return self.client_secret
+
+    def create_timeseries(self):
+        """
+        Creates an instance of the Time Series Service.
+        """
+        import predix.admin.timeseries
+        ts = predix.admin.timeseries.TimeSeries()
+        ts.create()
+
+        client_id = self.get_client_id()
+        if client_id:
+            ts.grant_client(client_id)
+
+        ts.add_to_manifest(self.manifest_path)
+        return ts
+
+    def get_timeseries(self, *args, **kwargs):
+        """
+        Returns an instance of the Time Series Service.
+        """
+        import predix.data.timeseries
+        ts = predix.data.timeseries.TimeSeries(*args, **kwargs)
+        return ts
+
+    def create_asset(self):
+        """
+        Creates an instance of the Asset Service.
+        """
+        import predix.admin.asset
+        asset = predix.admin.asset.Asset()
+        asset.create()
+
+        client_id = self.get_client_id()
+        if client_id:
+            asset.grant_client(client_id)
+
+        asset.add_to_manifest(self.manifest_path)
+        return asset
+
+    def get_asset(self):
+        """
+        Returns an instance of the Asset Service.
+        """
+        import predix.data.asset
+        asset = predix.data.asset.Asset()
+        return asset
+
+    def create_uaa(self, admin_secret):
+        """
+        Creates an instance of UAA Service.
+        """
+        import predix.admin.uaa
+        uaa = predix.admin.uaa.UserAccountAuthentication()
+        if not uaa.exists():
+            uaa.create(admin_secret)
+            uaa.add_to_manifest(self.manifest_path)
+        return uaa
+
+    def create_client(self, client_id, client_secret):
+        """
+        Create a client and add it to the manifest.
+        """
+        import predix.admin.uaa
+        uaa = predix.admin.uaa.UserAccountAuthentication()
+        uaa.create_client(client_id, client_secret)
+        uaa.add_client_to_manifest(client_id, client_secret,
+                self.manifest_path)
+
+    def get_uaa(self):
+        """
+        Returns an insstance of the UAA Service.
+        """
+        import predix.security.uaa
+        uaa = predix.security.uaa.UserAccountAuthentication()
+        return uaa
+
+    def create_acs(self):
+        """
+        Creates an instance of the Asset Service.
+        """
+        import predix.admin.acs
+        acs = predix.admin.acs.AccessControl()
+        acs.create()
+
+        client_id = self.get_client_id()
+        if client_id:
+            acs.grant_client(client_id)
+
+        acs.grant_client(client_id)
+        acs.add_to_manifest(self.manifest_path)
+        return acs
+
+    def get_acs(self):
+        """
+        Returns an instance of the Asset Control Service.
+        """
+        import predix.security.acs
+        acs = predix.security.acs.AccessControl()
+        return acs
+
+    def create_weather(self):
+        """
+        Creates an instance of the Asset Service.
+        """
+        import predix.admin.weather
+        weather = predix.admin.weather.WeatherForecast()
+        weather.create()
+
+        client_id = self.get_client_id()
+        if client_id:
+            weather.grant_client(client_id)
+
+        weather.grant_client(client_id)
+        weather.add_to_manifest(self.manifest_path)
+        return weather
+
+    def get_weather(self):
+        """
+        Returns an instance of the Weather Service.
+        """
+        import predix.data.weather
+        weather = predix.data.weather.WeatherForecast()
+        return weather

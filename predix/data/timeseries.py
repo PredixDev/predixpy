@@ -23,23 +23,24 @@ class TimeSeries(object):
     def __init__(self, read=True, write=True, *args, **kwargs):
         super(TimeSeries, self).__init__(*args, **kwargs)
 
-        self.query_zone_id = os.environ.get('PREDIX_TIMESERIES_QUERY_ZONE_ID')
-        self.query_uri = os.environ.get('PREDIX_TIMESERIES_QUERY_URI')
+        ns = 'predix.admin.timeseries'
+        self.query_zone_id = os.environ.get(ns + '.query.zone_id')
+        self.query_uri = os.environ.get(ns + '.query.uri')
         if read:
             if not self.query_zone_id:
-                raise ValueError('PREDIX_TIMESERIES_QUERY_ZONE_ID env unset')
+                raise ValueError("%s.query.zone_id env unset" % ns)
 
             if not self.query_uri:
-                raise ValueError('PREDIX_TIMESERIES_QUERY_URI environment unset')
+                raise ValueError("%s.query.uri environment unset" % ns)
 
-        self.ingest_zone_id = os.environ.get('PREDIX_TIMESERIES_INGEST_ZONE_ID')
-        self.ingest_uri = os.environ.get('PREDIX_TIMESERIES_INGEST_URI')
+        self.ingest_zone_id = os.environ.get(ns + '.ingest.zone_id')
+        self.ingest_uri = os.environ.get(ns + '.ingest.uri')
         if write:
             if not self.ingest_zone_id:
-                raise ValueError('PREDIX_TIMESERIES_INGEST_ZONE_ID env unset')
+                raise ValueError("%s.ingest.zone_id env unset" % ns)
 
             if not self.ingest_uri:
-                raise ValueError('PREDIX_TIMESERIES_INGEST_URI environment unset')
+                raise ValueError("%s.ingest.uri environment unset" % ns)
 
         self.service = predix.service.Service(self.query_zone_id)
 

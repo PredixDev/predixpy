@@ -9,13 +9,14 @@ class WeatherForecast(object):
     def __init__(self, *args, **kwargs):
         super(WeatherForecast, self).__init__(*args, **kwargs)
 
-        self.uri = os.environ.get('PREDIX_WEATHER_URI')
+        ns = 'predix.admin.weather'
+        self.uri = os.environ.get(ns + '.uri')
         if not self.uri:
-            raise ValueError("PREDIX_WEATHER_URI environment unset")
+            raise ValueError("%s.uri environment unset" % ns)
 
-        self.zone_id = os.environ.get('PREDIX_WEATHER_ZONE_ID')
+        self.zone_id = os.environ.get(ns + '.zone_id')
         if not self.zone_id:
-            raise ValueError("PREDIX_WEATHER_ZONE_ID environment unset")
+            raise ValueError("%s.zone_id environment unset" % ns)
 
         self.service = predix.service.Service(self.zone_id)
 

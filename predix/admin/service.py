@@ -55,8 +55,7 @@ class CloudFoundryService(object):
         Delete a Cloud Foundry service and any associations.
         """
         logging.debug('_delete_service()')
-        # delete this ser
-        pass
+        return self.service.delete_service(self.service_name)
 
     def _get_or_create_service_key(self):
         """

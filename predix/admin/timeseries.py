@@ -32,17 +32,17 @@ class TimeSeries(object):
         self.service.create()
 
         uri = self.service.settings.data['ingest']['uri']
-        os.environ['PREDIX_TIMESERIES_INGEST_URI'] = uri
+        os.environ[self.__module__ + '.ingest.uri'] = uri
 
         zone = self.get_ingest_zone_id()
-        os.environ['PREDIX_TIMESERIES_INGEST_ZONE_ID'] = zone
+        os.environ[self.__module__ + '.ingest.zone_id'] = zone
 
         uri = self.service.settings.data['query']['uri']
         uri = urlparse.urlparse(uri)
-        os.environ['PREDIX_TIMESERIES_QUERY_URI'] = uri.scheme + '://' + uri.netloc
+        os.environ[self.__module__ + '.query.uri'] = uri.scheme + '://' + uri.netloc
 
         zone = self.get_query_zone_id()
-        os.environ['PREDIX_TIMESERIES_QUERY_ZONE_ID'] = zone
+        os.environ[self.__module__ + '.query.zone_id'] = zone
 
     def grant_client(self, client_id, read=True, write=True):
         """
@@ -92,17 +92,17 @@ class TimeSeries(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var('PREDIX_TIMESERIES_INGEST_URI',
+        manifest.add_env_var(self.__module__ + '.ingest.uri',
                 self.service.settings.data['ingest']['uri'])
-        manifest.add_env_var('PREDIX_TIMESERIES_INGEST_ZONE_ID',
+        manifest.add_env_var(self.__module__ + '.ingest.zone_id',
                 self.get_ingest_zone_id())
 
         # Query URI has extra path we don't want
         uri = self.service.settings.data['query']['uri']
         uri = urlparse.urlparse(uri)
-        manifest.add_env_var('PREDIX_TIMESERIES_QUERY_URI',
+        manifest.add_env_var(self.__module__ + '.query.uri',
                 uri.scheme + '://' + uri.netloc)
-        manifest.add_env_var('PREDIX_TIMESERIES_QUERY_ZONE_ID',
+        manifest.add_env_var(self.__module__ + '.query.zone_id',
                 self.get_query_zone_id())
 
         manifest.write_manifest()

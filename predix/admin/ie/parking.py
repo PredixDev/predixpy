@@ -1,4 +1,6 @@
 
+import os
+
 import predix.app
 import predix.security.uaa
 import predix.admin.service
@@ -22,12 +24,12 @@ class ParkingPlanning(object):
 
     def create(self):
         """
-        Create an instance of the Parking Planning Service with the 
+        Create an instance of the Parking Planning Service with the
         typical starting settings.
         """
         self.service.create()
-        os.environ['PREDIX_IE_TRAFFIC_URI'] = self.service.settings.data['url']
-        os.environ['PREDIX_IE_TRAFFIC_ZONE_ID'] = self.get_predix_zone_id()
+        os.environ[self.__module__ + '.uri'] = self.service.settings.data['url']
+        os.environ[self.__module__ + '.zone_id'] = self.get_predix_zone_id()
 
     def grant_client(self, client_id):
         """
@@ -67,9 +69,9 @@ class ParkingPlanning(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var('PREDIX_IE_TRAFFIC_URI',
+        manifest.add_env_var(self.__module__ + '.uri',
                 self.service.settings.data['url'])
-        manifest.add_env_var('PREDIX_IE_TRAFFIC_ZONE_ID',
+        manifest.add_env_var(self.__module__ + '.zone_id',
                 self.get_predix_zone_id())
 
         manifest.write_manifest()

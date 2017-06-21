@@ -54,13 +54,14 @@ class ParkingPlanning(object):
             ]
 
     def __init__(self):
-        self.zone_id = os.environ.get('PREDIX_IE_TRAFFIC_ZONE_ID')
+        ns = 'predix.admin.ie.parking'
+        self.zone_id = os.environ.get(ns + '.zone_id')
         if not self.zone_id:
-            raise ValueError('PREDIX_IE_TRAFFIC_ZONE_ID environment unset')
+            raise ValueError("%s.zone_id environment unset" % ns)
 
-        self.uri = os.environ.get('PREDIX_IE_TRAFFIC_URI')
+        self.uri = os.environ.get(ns + '.uri')
         if not self.uri:
-            raise ValueError('PREDIX_IE_TRAFFIC_URI environment unset')
+            raise ValueError("%s.uri environment unset" % ns)
 
         self.service = predix.service.Service(self.zone_id)
 
@@ -190,7 +191,7 @@ class ParkingPlanning(object):
         """
         Returns raw response for an given asset by its unique id.
         """
-        uri = self.uri + '/v1/assets/' + asset_uid
+        uri = self.uri + '/v2/assets/' + asset_uid
 
         headers = self._get_headers()
 

@@ -1,6 +1,7 @@
 
 import os
 import yaml
+import logging
 
 
 class Manifest(object):
@@ -10,13 +11,16 @@ class Manifest(object):
     run our applications the manifest is a place to store
     important configuration details.
     """
-    def __init__(self, manifest_path, app_name='my-predix-app'):
+    def __init__(self, manifest_path, app_name='my-predix-app', debug=False):
         self.manifest_path = os.path.expanduser(manifest_path)
         self.app_name = app_name
 
         # App may have a client
         self.client_id = None
         self.client_secret = None
+
+        if debug:
+            logging.basicConfig(level=logging.DEBUG)
 
         # Read or Generate a manifest file
         if os.path.exists(self.manifest_path):
@@ -51,6 +55,45 @@ class Manifest(object):
         self.manifest['env'] = {}
 
         self.write_manifest()
+
+    def create_manifest_from_space(self):
+        """
+        Populate a manifest file generated from details from the
+        cloud foundry space environment.
+        """
+        import predix.admin.cf.spaces
+        space = predix.admin.cf.spaces.Space()
+
+        summary = space.get_space_summary()
+        for instance in summary['services']:
+            service_type = instance['service_plan']['service']['label']
+            name = instance['name']
+            if service_type == 'predix-uaa':
+                import predix.admin.uaa
+                uaa = predix.admin.uaa.UserAccountAuthentication(name=name)
+                uaa.add_to_manifest(self.manifest_path)
+            elif service_type == 'predix-acs':
+                import predix.admin.acs
+                acs = predix.admin.acs.AccessControl(name=name)
+                acs.add_to_manifest(self.manifest_path)
+            elif service_type == 'predix-asset':
+                import predix.admin.asset
+                asset = predix.admin.asset.Asset(name=name)
+                asset.add_to_manifest(self.manifest_path)
+            elif service_type == 'predix-timeseries':
+                import predix.admin.timeseries
+                timeseries = predix.admin.timeseries.TimeSeries(name=name)
+                timeseries.add_to_manifest(self.manifest_path)
+            elif service_type == 'predix-blobstore':
+                import predix.admin.blobstore
+                blobstore = predix.admin.blobstore.BlobStore(name=name)
+                blobstore.add_to_manifest(self.manifest_path)
+            elif service_type == 'us-weather-forecast':
+                import predix.admin.weather
+                weather = predix.admin.weather.WeatherForecast(name=name)
+                weather.add_to_manifest(self.manifest_path)
+            else:
+                logging.warn("Unsupported service type: %s" % service_type)
 
     def write_manifest(self):
         """
@@ -93,7 +136,7 @@ class Manifest(object):
         needed scopes and authorities for the services
         in this manifest.
         """
-        key = 'predix.security.uaa.client_id'
+        key = 'PREDIX_SECURITY_UAA_CLIENT_ID'
         if key not in self.manifest['env']:
             raise ValueError("%s undefined in manifest." % key)
 
@@ -105,7 +148,7 @@ class Manifest(object):
         Return the client secret that should correspond with
         the client id.
         """
-        key = 'predix.security.uaa.client_secret'
+        key = 'PREDIX_SECURITY_UAA_CLIENT_SECRET'
         if key not in self.manifest['env']:
             raise ValueError("%s must be added to manifest." % key)
 
@@ -234,3 +277,19 @@ class Manifest(object):
         import predix.data.weather
         weather = predix.data.weather.WeatherForecast()
         return weather
+
+    def create_blobstore(self):
+        """
+        Creates an instance of the BlobStore Service.
+        """
+        import predix.admin.blobstore
+        blobstore = predix.admin.blobstore.BlobStore()
+        blobstore.create()
+
+        blobstore.add_to_manifest(self.manifest_path)
+        return blobstore
+
+    def get_blobstore(self):
+        import predix.data.blobstore
+        blobstore = predix.data.blobstore.BlobStore()
+        return blobstore

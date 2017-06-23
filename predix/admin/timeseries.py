@@ -3,8 +3,10 @@ import os
 import urlparse
 
 import predix.app
+import predix.config
 import predix.security.uaa
 import predix.admin.service
+import predix.data.timeseries
 
 
 class TimeSeries(object):
@@ -15,6 +17,8 @@ class TimeSeries(object):
         super(TimeSeries, self).__init__(*args, **kwargs)
         self.service_name = 'predix-timeseries'
         self.plan_name = plan_name or 'Free'
+        self.use_class = predix.data.timeseries.TimeSeries
+
         self.service = predix.admin.service.PredixService(self.service_name,
                 self.plan_name, name=name, uaa=uaa)
 
@@ -31,18 +35,17 @@ class TimeSeries(object):
         """
         self.service.create()
 
-        uri = self.service.settings.data['ingest']['uri']
-        os.environ[self.__module__ + '.ingest.uri'] = uri
+        uri = predix.config.get_env_key(self.use_class, 'ingest_uri')
+        os.environ[uri] = self.get_ingest_uri()
 
-        zone = self.get_ingest_zone_id()
-        os.environ[self.__module__ + '.ingest.zone_id'] = zone
+        zone_id = predix.config.get_env_key(self.use_class, 'ingest_zone_id')
+        os.environ[zone_id] = self.get_ingest_zone_id()
 
-        uri = self.service.settings.data['query']['uri']
-        uri = urlparse.urlparse(uri)
-        os.environ[self.__module__ + '.query.uri'] = uri.scheme + '://' + uri.netloc
+        uri = predix.config.get_env_key(self.use_class, 'query_uri')
+        os.environ[uri] = self.get_query_uri()
 
-        zone = self.get_query_zone_id()
-        os.environ[self.__module__ + '.query.zone_id'] = zone
+        zone_id = predix.config.get_env_key(self.use_class, 'query_zone_id')
+        os.environ[zone_id] = self.get_query_zone_id()
 
     def grant_client(self, client_id, read=True, write=True):
         """
@@ -81,6 +84,21 @@ class TimeSeries(object):
         """
         return self.service.settings.data['query']['zone-http-header-value']
 
+    def get_ingest_uri(self):
+        """
+        Return the uri used for ingesting data into time series 
+        """
+        return self.service.settings.data['ingest']['uri']
+
+    def get_query_uri(self):
+        """
+        Return the uri used for queries on time series data.
+        """
+        # Query URI has extra path we don't want so strip it off here
+        query_uri = self.service.settings.data['query']['uri']
+        query_uri = urlparse.urlparse(query_uri)
+        return query_uri.scheme + '://' + query_uri.netloc
+
     def add_to_manifest(self, manifest_path):
         """
         Add details to the manifest that applications using
@@ -92,17 +110,16 @@ class TimeSeries(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var(self.__module__ + '.ingest.uri',
-                self.service.settings.data['ingest']['uri'])
-        manifest.add_env_var(self.__module__ + '.ingest.zone_id',
-                self.get_ingest_zone_id())
+        uri = predix.config.get_env_key(self.use_class, 'ingest_uri')
+        manifest.add_env_var(uri, self.get_ingest_uri())
 
-        # Query URI has extra path we don't want
-        uri = self.service.settings.data['query']['uri']
-        uri = urlparse.urlparse(uri)
-        manifest.add_env_var(self.__module__ + '.query.uri',
-                uri.scheme + '://' + uri.netloc)
-        manifest.add_env_var(self.__module__ + '.query.zone_id',
-                self.get_query_zone_id())
+        zone_id = predix.config.get_env_key(self.use_class, 'ingest_zone_id')
+        manifest.add_env_var(zone_id, self.get_ingest_zone_id())
+
+        uri = predix.config.get_env_key(self.use_class, 'query_uri')
+        manifest.add_env_var(uri, self.get_query_uri())
+
+        zone_id = predix.config.get_env_key(self.use_class, 'query_zone_id')
+        manifest.add_env_var(zone_id, self.get_query_zone_id())
 
         manifest.write_manifest()

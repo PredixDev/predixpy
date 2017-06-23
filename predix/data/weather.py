@@ -2,6 +2,7 @@
 import os
 import urllib
 
+import predix.config
 import predix.service
 
 
@@ -9,14 +10,15 @@ class WeatherForecast(object):
     def __init__(self, *args, **kwargs):
         super(WeatherForecast, self).__init__(*args, **kwargs)
 
-        ns = 'predix.admin.weather'
-        self.uri = os.environ.get(ns + '.uri')
+        key = predix.config.get_env_key(self, 'uri')
+        self.uri = os.environ.get(key)
         if not self.uri:
-            raise ValueError("%s.uri environment unset" % ns)
+            raise ValueError("%s environment unset" % key)
 
-        self.zone_id = os.environ.get(ns + '.zone_id')
+        key = predix.config.get_env_key(self, 'zone_id')
+        self.zone_id = os.environ.get(key)
         if not self.zone_id:
-            raise ValueError("%s.zone_id environment unset" % ns)
+            raise ValueError("%s environment unset" % key)
 
         self.service = predix.service.Service(self.zone_id)
 

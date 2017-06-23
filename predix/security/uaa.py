@@ -9,6 +9,7 @@ import datetime
 import dateutil.parser
 
 import predix.app
+import predix.config
 
 class UserAccountAuthentication(object):
     """
@@ -20,10 +21,10 @@ class UserAccountAuthentication(object):
     """
     def __init__(self):
 
-        self.key = 'predix.admin.uaa.uri'
-        self.uri = os.environ.get(self.key)
+        key = predix.config.get_env_key(self, 'uri')
+        self.uri = os.environ.get(key)
         if not self.uri:
-            raise ValueError("%s environment unset" % self.key)
+            raise ValueError("%s environment unset" % key)
 
         self.authenticated = False
         self.client = None
@@ -320,6 +321,10 @@ class UserAccountAuthentication(object):
         the application.
         """
         manifest = predix.app.Manifest(manifest_path)
-        manifest.add_env_var(self.__module__ + '.client_id', client_id)
-        manifest.add_env_var(self.__module__ + '.client_secret', client_secret)
+
+        client_id_key = predix.config.get_env_key(self, 'client_id')
+        manifest.add_env_var(client_id_key, client_id)
+        client_secret_key = predix.config.get_env_key(self, 'client_secret')
+        manifest.add_env_var(client_secret_key, client_secret)
+
         manifest.write_manifest()

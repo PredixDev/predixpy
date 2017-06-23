@@ -2,6 +2,8 @@
 import os
 
 import predix.app
+import predix.config
+import predix.data.asset
 import predix.security.uaa
 import predix.admin.service
 
@@ -14,6 +16,8 @@ class Asset(object):
         super(Asset, self).__init__(*args, **kwargs)
         self.service_name = 'predix-asset'
         self.plan_name = plan_name or 'Free'
+        self.use_class = predix.data.asset.Asset
+
         self.service = predix.admin.service.PredixService(self.service_name,
                 self.plan_name, name=name, uaa=uaa)
 
@@ -29,8 +33,13 @@ class Asset(object):
         starting settings.
         """
         self.service.create()
-        os.environ[self.__module__ + '.uri'] = self.service.settings.data['uri']
-        os.environ[self.__module__ + '.zone_id'] = self.get_zone_id()
+
+        # Set env vars for immediate use
+        uri = predix.config.get_env_key(self.use_class, 'uri')
+        os.environ[uri] = self.service.settings.data['uri']
+
+        zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
+        os.environ[zone_id] = self.get_zone_id()
 
     def grant_client(self, client_id):
         """
@@ -65,8 +74,9 @@ class Asset(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var(self.__module__ + '.uri',
-                self.service.settings.data['uri'])
-        manifest.add_env_var(self.__module__ + '.zone_id', self.get_zone_id())
+        uri = predix.config.get_env_key(self.use_class, 'uri')
+        manifest.add_env_var(uri, self.service.settings.data['uri'])
+        zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
+        manifest.add_env_var(zone_id, self.get_zone_id())
 
         manifest.write_manifest()

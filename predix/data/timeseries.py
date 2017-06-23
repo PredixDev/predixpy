@@ -7,6 +7,7 @@ import logging
 import datetime
 import websocket
 
+import predix.config
 import predix.service
 
 
@@ -23,26 +24,34 @@ class TimeSeries(object):
     def __init__(self, read=True, write=True, *args, **kwargs):
         super(TimeSeries, self).__init__(*args, **kwargs)
 
-        ns = 'predix.admin.timeseries'
-        self.query_zone_id = os.environ.get(ns + '.query.zone_id')
-        self.query_uri = os.environ.get(ns + '.query.uri')
+        self.zone_id = None
         if read:
+            key = predix.config.get_env_key(self, 'query_zone_id')
+            self.query_zone_id = os.environ.get(key)
             if not self.query_zone_id:
-                raise ValueError("%s.query.zone_id env unset" % ns)
+                raise ValueError("%s env unset" % key)
 
+            key = predix.config.get_env_key(self, 'query_uri')
+            self.query_uri = os.environ.get(key)
             if not self.query_uri:
-                raise ValueError("%s.query.uri environment unset" % ns)
+                raise ValueError("%s environment unset" % key)
 
-        self.ingest_zone_id = os.environ.get(ns + '.ingest.zone_id')
-        self.ingest_uri = os.environ.get(ns + '.ingest.uri')
+            self.zone_id = self.query_zone_id
+
         if write:
+            key = predix.config.get_env_key(self, 'ingest_zone_id')
+            self.ingest_zone_id = os.environ.get(key)
             if not self.ingest_zone_id:
-                raise ValueError("%s.ingest.zone_id env unset" % ns)
+                raise ValueError("%s env unset" % key)
 
+            key = predix.config.get_env_key(self, 'ingest_uri')
+            self.ingest_uri = os.environ.get(key)
             if not self.ingest_uri:
-                raise ValueError("%s.ingest.uri environment unset" % ns)
+                raise ValueError("%s environment unset" % key)
 
-        self.service = predix.service.Service(self.query_zone_id)
+            self.zone_id = self.ingest_zone_id
+
+        self.service = predix.service.Service(self.zone_id)
 
         # Store a websocket connection once opened
         self.ws = None

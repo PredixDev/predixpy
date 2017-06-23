@@ -2,7 +2,9 @@
 import os
 
 import predix.app
+import predix.config
 import predix.admin.service
+import predix.data.weather
 
 
 class WeatherForecast(object):
@@ -10,6 +12,8 @@ class WeatherForecast(object):
         super(WeatherForecast, self).__init__(*args, **kwargs)
         self.service_name = 'us-weather-forecast'
         self.plan_name = plan_name or 'Beta'
+        self.use_class = predix.data.weather.WeatherForecast
+
         self.service = predix.admin.service.PredixService(self.service_name,
                 self.plan_name, name=name, uaa=uaa)
 
@@ -26,10 +30,13 @@ class WeatherForecast(object):
         """
         self.service.create()
 
+        # Set env vars for immediate use
+        zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
         zone = self.service.settings.data['zone']['http-header-value']
-        os.environ[self.__module__ + '.zone_id'] = zone
-        uri = self.service.settings.data['uri']
-        os.environ[self.__module__ + '.uri'] = uri
+        os.environ[zone_id] = zone
+
+        uri = predix.config.get_env_key(self.use_class, 'uri')
+        os.environ[uri] = self.service.settings.data['uri']
 
     def add_to_manifest(self, manifest_path):
         manifest = predix.app.Manifest(manifest_path)
@@ -38,10 +45,12 @@ class WeatherForecast(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var(self.__module__ + '.zone_id',
+        zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
+        manifest.add_env_var(zone_id,
                 self.service.settings.data['zone']['http-header-value'])
-        manifest.add_env_var(self.__module__ + '.uri',
-                self.service.settings.data['uri'])
+
+        uri = predix.config.get_env_key(self.use_class, 'uri')
+        manifest.add_env_var(uri, self.service.settings.data['uri'])
 
         manifest.write_manifest()
 

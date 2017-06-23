@@ -23,6 +23,10 @@ class CloudFoundryService(object):
         self.config_path = self._get_config_path()
         self.settings = predix.admin.config.ServiceConfig(self.config_path)
 
+        # Handle case of missing service keys and config
+        if self.exists() and not self.settings.data:
+            self.settings.save(self._get_service_config())
+
     def _generate_name(self, space, service_name, plan_name):
         """
         Can generate a name based on the space, service name and plan.
@@ -107,8 +111,8 @@ class PredixService(CloudFoundryService):
     Predix Services extend Cloud Foundry Services by providing
     UAA protections in some standard ways.
     """
-    def __init__(self, service_name, plan_name, uaa=None, *args, **kwargs):
-        super(PredixService, self).__init__(service_name, plan_name, *args, **kwargs)
+    def __init__(self, service_name, plan_name, name=None, uaa=None, *args, **kwargs):
+        super(PredixService, self).__init__(service_name, plan_name, name=name, *args, **kwargs)
 
         # We will create a UAA instance if not given one and authenticate
         self.uaa = self._get_or_create_uaa(uaa)

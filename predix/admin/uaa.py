@@ -2,6 +2,7 @@
 import os
 
 import predix.app
+import predix.config
 import predix.admin.service
 
 import predix.security.uaa
@@ -21,6 +22,8 @@ class UserAccountAuthentication(object):
         super(UserAccountAuthentication, self).__init__(*args, **kwargs)
         self.service_name = 'predix-uaa'
         self.plan_name = plan_name or 'Free'
+        self.use_class = predix.security.uaa.UserAccountAuthentication
+
         self.service = predix.admin.service.CloudFoundryService(self.service_name,
                 self.plan_name)
         self.is_admin = False
@@ -43,8 +46,8 @@ class UserAccountAuthentication(object):
         parameters = {"adminClientSecret": secret}
         self.service.create(parameters=parameters)
 
-        uri = self.service.settings.data['uri']
-        os.environ[self.__module__ + '.uri'] = uri
+        uri = predix.config.get_env_key(self.use_class, 'uri')
+        os.environ[uri] = self.service.settings.data['uri']
 
         # Once we create it login
         self.authenticate()
@@ -60,8 +63,8 @@ class UserAccountAuthentication(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var(self.__module__ + '.uri',
-                self.service.settings.data['uri'])
+        uri = predix.config.get_env_key(self.use_class, 'uri')
+        manifest.add_env_var(uri, self.service.settings.data['uri'])
 
         manifest.write_manifest()
 
@@ -69,7 +72,9 @@ class UserAccountAuthentication(object):
         """
         Authenticate into the UAA instance as the admin user.
         """
-        os.environ[self.__module__ + '.uri'] = self.service.settings.data['uri']
+        uri = predix.config.get_env_key(self.use_class, 'uri')
+        os.environ[uri] = self.service.settings.data['uri']
+
         self.uaac = predix.security.uaa.UserAccountAuthentication()
         self.uaac.authenticate('admin', self._get_admin_secret(),
                 use_cache=False)

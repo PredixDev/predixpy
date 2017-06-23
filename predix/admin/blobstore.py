@@ -1,6 +1,7 @@
 
 import os
 
+import predix.app
 import predix.config
 import predix.admin.service
 import predix.data.blobstore

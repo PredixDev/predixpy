@@ -43,6 +43,9 @@ class UserAccountAuthentication(object):
         parameters = {"adminClientSecret": secret}
         self.service.create(parameters=parameters)
 
+        uri = self.service.settings.data['uri']
+        os.environ[self.__module__ + '.uri'] = uri
+
         # Once we create it login
         self.authenticate()
 
@@ -57,7 +60,7 @@ class UserAccountAuthentication(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var('PREDIX_UAA_URI',
+        manifest.add_env_var(self.__module__ + '.uri',
                 self.service.settings.data['uri'])
 
         manifest.write_manifest()
@@ -66,7 +69,7 @@ class UserAccountAuthentication(object):
         """
         Authenticate into the UAA instance as the admin user.
         """
-        os.environ['PREDIX_UAA_URI'] = self.service.settings.data['uri']
+        os.environ[self.__module__ + '.uri'] = self.service.settings.data['uri']
         self.uaac = predix.security.uaa.UserAccountAuthentication()
         self.uaac.authenticate('admin', self._get_admin_secret(),
                 use_cache=False)

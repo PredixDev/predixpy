@@ -18,13 +18,14 @@ class AccessControl(object):
     """
     def __init__(self):
 
-        self.zone_id = os.environ.get('PREDIX_ACS_ZONE_ID')
+        ns = 'predix.admin.acs'
+        self.zone_id = os.environ.get(ns + '.zone_id')
         if not self.zone_id:
-            raise ValueError('PREDIX_ACS_ZONE_ID environment unset')
+            raise ValueError("%s.zone_id environment unset" % ns)
 
-        self.uri = os.environ.get('PREDIX_ACS_URI')
+        self.uri = os.environ.get(ns + '.uri')
         if not self.uri:
-            raise ValueError('PREDIX_ACS_URI environment unset')
+            raise ValueError("%s.uri environment unset" % ns)
 
         self.service = predix.service.Service(self.zone_id)
 

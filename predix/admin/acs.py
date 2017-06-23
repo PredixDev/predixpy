@@ -29,8 +29,8 @@ class AccessControl(object):
         starting settings.
         """
         self.service.create()
-        os.environ['PREDIX_ACS_URI'] = self.service.settings.data['uri']
-        os.environ['PREDIX_ACS_ZONE_ID'] = self.service.serttings.data['zone']['http-header-value']
+        os.environ[self.__module__ + '.uri'] = self.service.settings.data['uri']
+        os.environ[self.__module__ + '.zone_id'] = self.service.settings.data['zone']['http-header-value']
 
     def grant_client(self, client_id):
         """
@@ -63,9 +63,9 @@ class AccessControl(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var('PREDIX_ACS_URI',
+        manifest.add_env_var(self.__module__ + '.uri',
                 self.service.settings.data['uri'])
-        manifest.add_env_var('PREDIX_ACS_ZONE_ID',
+        manifest.add_env_var(self.__module__ + '.zone_id',
                 self.service.settings.data['zone']['http-header-value'])
 
         manifest.write_manifest()

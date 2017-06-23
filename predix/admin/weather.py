@@ -27,9 +27,9 @@ class WeatherForecast(object):
         self.service.create()
 
         zone = self.service.settings.data['zone']['http-header-value']
-        os.environ['PREDIX_WEATHER_ZONE_ID'] = zone
+        os.environ[self.__module__ + '.zone_id'] = zone
         uri = self.service.settings.data['uri']
-        os.environ['PREDIX_WEATHER_URI'] = uri
+        os.environ[self.__module__ + '.uri'] = uri
 
     def add_to_manifest(self, manifest_path):
         manifest = predix.app.Manifest(manifest_path)
@@ -38,9 +38,9 @@ class WeatherForecast(object):
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var('PREDIX_WEATHER_ZONE_ID',
+        manifest.add_env_var(self.__module__ + '.zone_id',
                 self.service.settings.data['zone']['http-header-value'])
-        manifest.add_env_var('PREDIX_WEATHER_URI',
+        manifest.add_env_var(self.__module__ + '.uri',
                 self.service.settings.data['uri'])
 
         manifest.write_manifest()

@@ -20,9 +20,10 @@ class UserAccountAuthentication(object):
     """
     def __init__(self):
 
-        self.uri = os.environ.get('PREDIX_UAA_URI')
+        self.key = 'predix.admin.uaa.uri'
+        self.uri = os.environ.get(self.key)
         if not self.uri:
-            raise ValueError("PREDIX_UAA_URI environment unset")
+            raise ValueError("%s environment unset" % self.key)
 
         self.authenticated = False
         self.client = None
@@ -319,6 +320,6 @@ class UserAccountAuthentication(object):
         the application.
         """
         manifest = predix.app.Manifest(manifest_path)
-        manifest.add_env_var('PREDIX_APP_CLIENT_ID', client_id)
-        manifest.add_env_var('PREDIX_APP_CLIENT_SECRET', client_secret)
+        manifest.add_env_var(self.__module__ + '.client_id', client_id)
+        manifest.add_env_var(self.__module__ + '.client_secret', client_secret)
         manifest.write_manifest()

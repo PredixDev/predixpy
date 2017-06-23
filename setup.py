@@ -5,6 +5,7 @@ install_requires = [
         "python-dateutil",
         "PyYAML",
         "requests",
+        "boto3",
         "websocket"
     ]
 
@@ -18,7 +19,7 @@ setup_requires = [
 
 setup(
         name="predix",
-        version="0.0.5",
+        version="0.0.6",
         author="Jayson DeLancey",
         author_email="jayson.delancey@ge.com",
         description="Python Client SDK for Predix Services",

@@ -51,11 +51,12 @@ class Service(object):
         }
         return headers
 
-    def _get(self, uri, params=None):
+    def _get(self, uri, params=None, headers=None):
         """
         Simple GET request for a given path.
         """
-        headers = self._get_headers()
+        if not headers:
+            headers = self._get_headers()
 
         logging.debug("URI=" + str(uri))
         logging.debug("HEADERS=" + str(headers))

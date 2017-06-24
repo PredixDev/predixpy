@@ -6,7 +6,8 @@ install_requires = [
         "PyYAML",
         "requests",
         "boto3",
-        "websocket"
+        "websocket",
+        "websocket-client"
     ]
 
 setup_requires = [

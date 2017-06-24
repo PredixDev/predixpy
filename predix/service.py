@@ -26,8 +26,8 @@ class Service(object):
         """
         If we are in an app context we can authenticate immediately.
         """
-        client_id = os.environ.get('PREDIX_APP_CLIENT_ID')
-        client_secret = os.environ.get('PREDIX_APP_CLIENT_SECRET')
+        client_id = os.environ.get('PREDIX_SECURITY_UAA_CLIENT_ID')
+        client_secret = os.environ.get('PREDIX_SECURITY_UAA_CLIENT_SECRET')
 
         if client_id and client_secret:
             logging.info("Automatically authenticated as %s" % (client_id))

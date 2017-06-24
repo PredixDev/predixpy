@@ -1,6 +1,8 @@
 
 # PredixPy
 
+**This SDK is still pre-release / alpha under development.**
+
 The Predix Python SDK aims to help accelerate application development with
 client libraries for commonly used Predix Platform Services.  This framework
 provides helper methods and classes.
@@ -25,33 +27,23 @@ When you have done a `cf login` to a Cloud Foundry endpoint you can begin
 creating services in Python.
 
 ```
-# Create a UAA service instance as most services require it
-# and create a client for your application
-import predix.admin.uaa
-uaa = predix.admin.uaa.UserAccountAuthentication()
-uaa.create('admin-secret')
+# The manifest can be used for managing your work
+import predix.app
+app = predix.app.Manifest('manifest.yml')
 
-# Cloud Foundry applications require client authorization and a
-# manifest helps for when you `cf push`.
-uaa.create_client('my-client', 'my-client-secret')
-uaa.add_to_manifest('./manifest.yml')
-uaa.add_client_to_manifest('my-client', 'my-client-secret', './manifest.yml')
+# Create a UAA service instance as most services require it, and a client
+# that your application can use for accessingn services.
+app.create_uaa('admin-secret')
+app.create_client('client-id', 'client-secret')
 
-# Create a Time Series service instance
-import predix.admin.timeseries
-ts = predix.admin.timeseries.TimeSeries()
-ts.create()
-
-# Let client use this service
-ts.grant_client('my-client')
-ts.add_to_manifest('./manifest.yml')
-
+# Create a Time Series service instance once UAA is created.
+app.create_timeseries()
 ```
 
 ## Applications
 
-Once your space has been configured, you can use PredixPy to work with
-the services in your applications.
+Once your space has been configured like the above example, you can use
+PredixPy to work with the services in your applications.
 
 ```
 # If not in a Cloud Foundry deployed environment and testing locally,
@@ -59,15 +51,10 @@ the services in your applications.
 # into your process.
 
 import predix.app
-manifest = predix.app.Manifest('./manifest.yml')
-
-# Start using the services
-
-import predix.data.timeseries
-
-ts = predix.data.timeseries.TimeSeries()
-ts.send('test', 12)
-print(ts.get_values('test'))
+app = predix.app.Manifest('manifest.yml')
+ts = app.get_timeseries()
+ts.send('TEMP', 70.1)
+print(ts.get_values('TEMP'))
 ```
 
 # Developing PredixPy

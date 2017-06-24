@@ -116,6 +116,8 @@ class PredixService(CloudFoundryService):
 
         # We will create a UAA instance if not given one and authenticate
         self.uaa = self._get_or_create_uaa(uaa)
+        if not self.uaa.exists():
+            raise ValueError("Instance of predix-uaa is required, create one first.")
 
     def _get_or_create_uaa(self, uaa):
         """

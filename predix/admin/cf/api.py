@@ -83,7 +83,29 @@ class API(object):
             logging.debug("CONTENT=" + str(response.content))
             response.raise_for_status()
 
-    def delete(self, path, params=None):
+    def put(self, path, data):
+        """
+        Generic PUT with headers
+        """
+        uri = self.config.get_target() + path
+        headers = self._get_headers()
+
+        logging.debug("URI=" + str(uri))
+        logging.debug("HEADERS=" + str(headers))
+
+        response = self.session.put(uri, headers=headers,
+                data=json.dumps(data))
+
+        if response.status_code in (200, 201):
+            return response
+        elif response.status_code == 401:
+            raise predix.admin.cf.config.CloudFoundryLoginError('token invalid')
+        else:
+            logging.debug("STATUS=" + str(response.status_code))
+            logging.debug("CONTENT=" + str(response.content))
+            response.raise_for_status()    
+
+    def delete(self, path, data, params=None):
         """
         Generic DELETE with headers
         """
@@ -95,7 +117,9 @@ class API(object):
         logging.debug("URI=" + str(uri))
         logging.debug("HEADERS=" + str(headers))
 
-        response = self.session.delete(uri, headers=headers, params=params)
+        response = self.session.delete(
+            uri, headers=headers, params=params, data=json.dumps(data))
+
         if response.status_code == 204:
             return response
         else:

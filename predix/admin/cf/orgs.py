@@ -52,3 +52,17 @@ class Org(object):
         for the application.
         """
         return app_name in self.get_apps()
+
+    def add_user(self, user_name):
+        """
+        Calls CF's associate user with org
+        """
+        add_user_path = '/v2/organizations/' + self.api.config.get_organization_guid() + '/users'
+        return self.api.put(path=add_user_path, data={'username': user_name})
+
+    def remove_user(self, user_name):
+        """
+        Calls CF's remove user with org
+        """ 
+        add_user_path = '/v2/organizations/' + self.api.config.get_organization_guid() + '/users'
+        return self.api.delete(path=add_user_path, data={'username': user_name})

@@ -1,7 +1,6 @@
 
 import os
 
-import predix.app
 import predix.config
 import predix.admin.service
 import predix.data.blobstore
@@ -50,13 +49,15 @@ class BlobStore(object):
         os.environ[secret_access_key] = self.service.settings.data['secret_access_key']
 
 
-    def add_to_manifest(self, manifest_path):
+    def add_to_manifest(self, manifest):
         """
-        Add details to the mamnifest that applications using
-        this service may need to consume.
-        """
-        manifest = predix.app.Manifest(manifest_path)
+        Add useful details to the manifest about this service
+        so that it can be used in an application.
 
+        :param manifest: An predix.admin.app.Manifest object
+            instance that manages reading/writing manifest config
+            for a cloud foundry app.
+        """
         # Add this service to the list of services
         manifest.add_service(self.service.name)
 

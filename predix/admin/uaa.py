@@ -1,7 +1,6 @@
 
 import os
 
-import predix.app
 import predix.config
 import predix.admin.service
 
@@ -52,13 +51,15 @@ class UserAccountAuthentication(object):
         # Once we create it login
         self.authenticate()
 
-    def add_to_manifest(self, manifest_path):
+    def add_to_manifest(self, manifest):
         """
-        Add details to the manifest that applications using
-        this service may need to consume.
-        """
-        manifest = predix.app.Manifest(manifest_path)
+        Add useful details to the manifest about this service
+        so that it can be used in an application.
 
+        :param manifest: An predix.admin.app.Manifest object
+            instance that manages reading/writing manifest config
+            for a cloud foundry app.
+        """
         # Add this service to list of services
         manifest.add_service(self.service.name)
 
@@ -87,13 +88,13 @@ class UserAccountAuthentication(object):
         assert self.is_admin, "Must authenticate() as admin to create client"
         return self.uaac.create_client(client_id, client_secret)
 
-    def add_client_to_manifest(self, client_id, client_secret, manifest_path):
+    def add_client_to_manifest(self, client_id, client_secret, manifest):
         """
         Add the client credentials to the specified manifest.
         """
         assert self.is_admin, "Must authenticate() as admin to create client"
         return self.uaac.add_client_to_manifest(client_id, client_secret,
-                manifest_path)
+                manifest)
 
     def _get_admin_secret(self):
         return self.service.settings.data['adminClientSecret']

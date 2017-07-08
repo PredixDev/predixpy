@@ -21,15 +21,25 @@ If you want to install from source, see developer section below.
 
 # Basic Usage
 
-## Administration
+There are two modes of operations that PredixPy helps to solve.
+
+1. You are administering a cloud foundry space and want to automate the
+   creation and configuration of services.
+2. You are using service instances from cloud foundry and running your app
+   locally or on cloud foundry.
+
+There are two separate application frameworks for managing this process that
+revolve around writing or reading configuration details to the manifest.yml
+
+## Administration Mode
 
 When you have done a `cf login` to a Cloud Foundry endpoint you can begin
 creating services in Python.
 
 ```
 # The manifest can be used for managing your work
-import predix.app
-app = predix.app.Manifest('manifest.yml')
+import predix.admin.app
+app = predix.admin.app.Manifest()
 
 # Create a UAA service instance as most services require it, and a client
 # that your application can use for accessingn services.
@@ -40,7 +50,7 @@ app.create_client('client-id', 'client-secret')
 app.create_timeseries()
 ```
 
-## Applications
+## Application Mode
 
 Once your space has been configured like the above example, you can use
 PredixPy to work with the services in your applications.
@@ -51,7 +61,7 @@ PredixPy to work with the services in your applications.
 # into your process.
 
 import predix.app
-app = predix.app.Manifest('manifest.yml')
+app = predix.app.Manifest()
 ts = app.get_timeseries()
 ts.send('TEMP', 70.1)
 print(ts.get_values('TEMP'))

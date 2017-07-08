@@ -315,16 +315,15 @@ class UserAccountAuthentication(object):
         else:
             response.raise_for_status()
 
-    def add_client_to_manifest(self, client_id, client_secret, manifest_path):
+    def add_client_to_manifest(self, client_id, client_secret, manifest):
         """
         Add the given client / secret to the manifest for use in
         the application.
         """
-        manifest = predix.app.Manifest(manifest_path)
-
-        client_id_key = predix.config.get_env_key(self, 'client_id')
+        client_id_key = 'PREDIX_APP_CLIENT_ID'
         manifest.add_env_var(client_id_key, client_id)
-        client_secret_key = predix.config.get_env_key(self, 'client_secret')
+
+        client_secret_key = 'PREDIX_APP_CLIENT_SECRET'
         manifest.add_env_var(client_secret_key, client_secret)
 
         manifest.write_manifest()

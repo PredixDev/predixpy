@@ -2,7 +2,6 @@
 import os
 import urlparse
 
-import predix.app
 import predix.config
 import predix.security.uaa
 import predix.admin.service
@@ -99,13 +98,15 @@ class TimeSeries(object):
         query_uri = urlparse.urlparse(query_uri)
         return query_uri.scheme + '://' + query_uri.netloc
 
-    def add_to_manifest(self, manifest_path):
+    def add_to_manifest(self, manifest):
         """
-        Add details to the manifest that applications using
-        this service may need to consume.
-        """
-        manifest = predix.app.Manifest(manifest_path)
+        Add useful details to the manifest about this service
+        so that it can be used in an application.
 
+        :param manifest: An predix.admin.app.Manifest object
+            instance that manages reading/writing manifest config
+            for a cloud foundry app.
+        """
         # Add this service to list of services
         manifest.add_service(self.service.name)
 

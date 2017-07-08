@@ -1,5 +1,4 @@
 
-import predix.app
 import predix.security.uaa
 import predix.admin.service
 

@@ -105,7 +105,7 @@ class API(object):
             logging.debug("CONTENT=" + str(response.content))
             response.raise_for_status()    
 
-    def delete(self, path, data, params=None):
+    def delete(self, path, data=None, params=None):
         """
         Generic DELETE with headers
         """

@@ -1,4 +1,4 @@
-username
-billy.bob.joe@gmail.com
-mix.master.mike@aol.com
-ye.old.gentleman@yahoo.com
+username,role
+billy.bob.joe@gmail.com,user
+mix.master.mike@aol.com,auditor
+ye.old.gentleman@yahoo.com,manager

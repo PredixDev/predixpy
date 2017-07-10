@@ -10,12 +10,12 @@ logging.info('Add users from file')
 with open('users.csv') as csvUsers:
     reader = csv.DictReader(csvUsers)
     for row in reader:
-        logging.debug('Adding user' + row['username'])
-        my_org.add_user(user_name=row['username'])
+        logging.debug('Adding user %s as a %s' % (row['username'], row['role']))
+        my_org.add_user(user_name=row['username'], role=row['role'])
 
-logging.info('Remove users from file')
-with open('users.csv') as csvUsers:
-    reader = csv.DictReader(csvUsers)
-    for row in reader:
-        logging.debug('Removing user' + row['username'])
-        my_org.remove_user(user_name=row['username'])
+# logging.info('Remove users from file')
+# with open('users.csv') as csvUsers:
+#     reader = csv.DictReader(csvUsers)
+#     for row in reader:
+#         logging.debug('Removing user' + row['username'])
+#         my_org.remove_user(user_name=row['username'])

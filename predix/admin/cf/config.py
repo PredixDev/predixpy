@@ -66,7 +66,10 @@ class Config(object):
         """
         Returns the GUID for the organization currently targeted.
         """
-        return self._get_organization_info()['GUID']
+        try:
+            return self._get_organization_info()['Guid']
+        except KeyError:
+            return self._get_organization_info()['GUID']
 
     def get_space_info(self):
         """
@@ -84,4 +87,8 @@ class Config(object):
         """
         Returns the GUID for the space currently targeted.
         """
-        return self.get_space_info()['GUID']
+        try:
+            return self.get_space_info()['Guid']
+        except KeyError:
+            return self.get_space_info()['GUID']
+        

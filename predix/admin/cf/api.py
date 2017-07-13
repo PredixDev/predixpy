@@ -74,7 +74,7 @@ class API(object):
 
         response = self.session.post(uri, headers=headers,
                 data=json.dumps(data))
-        if response.status_code == 200:
+        if response.status_code in (200, 201):
             return response.json()
         elif response.status_code == 401:
             raise predix.admin.cf.config.CloudFoundryLoginError('token invalid')

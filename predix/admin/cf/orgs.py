@@ -1,11 +1,18 @@
 
 import predix.admin.cf.api
-
+import logging
 
 class Org(object):
     """
     Operations and data for Cloud Foundry Organizations.
     """
+    ROLE_MAP = {
+        'user': '/v2/organizations/%s/users',
+        'auditor': '/v2/organizations/%s/auditors',
+        'manager': '/v2/organizations/%s/managers',
+        'billing_manager': '/v2/organizations/%s/billing_managers'
+    }
+    
     def __init__(self, *args, **kwargs):
         super(Org, self).__init__(*args, **kwargs)
 
@@ -52,3 +59,26 @@ class Org(object):
         for the application.
         """
         return app_name in self.get_apps()
+
+    def add_user(self, user_name, role='user'):
+        """
+        Calls CF's associate user with org. Valid roles include `user`, `auditor`,
+        `manager`,`billing_manager`
+        """
+        role_uri = self._get_role_uri(role=role)
+        return self.api.put(path=role_uri, data={'username': user_name})
+
+    def _get_role_uri(self, role):
+        try:
+            role_uri = self.ROLE_MAP[role]
+            return role_uri % self.api.config.get_organization_guid()
+        except KeyError:
+            logging.error('"%s" role is not a valid role' % role)
+            raise
+
+    def remove_user(self, user_name, role):
+        """
+        Calls CF's remove user with org
+        """
+        role_uri = self._get_role_uri(role=role)
+        return self.api.delete(path=role_uri, data={'username': user_name})

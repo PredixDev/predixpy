@@ -54,6 +54,7 @@ class UserAccountAuthentication(object):
         if response.status_code == 200:
             return response.json()
         else:
+            logging.warn("Failed to authenticate as %s" % (client))
             response.raise_for_status()
 
     def is_expired_token(self, client):

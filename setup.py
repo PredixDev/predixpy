@@ -15,6 +15,7 @@ setup_requires = [
         "flake8",
         "nose",
         "pylint",
+        "mock",
         "tox"
     ]
 

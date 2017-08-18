@@ -80,13 +80,20 @@ class TimeSeries(object):
         """
         self.service.uaa.authenticate(client_id, client_secret)
 
-    def get_aggregations(self):
+    def _get_aggregations(self):
         """
         Returns all of the aggregations in time series.  There is no support
         in the service for filtering or paginations.
         """
         url = self.query_uri + '/v1/aggregations'
         return self.service._get(url)
+
+    def get_aggregations(self):
+        """
+        Returns all of the aggregations that can be used with the
+        Time Series Service.
+        """
+        return self._get_aggregations()['results']
 
     def _get_tags(self):
         """
@@ -155,6 +162,7 @@ class TimeSeries(object):
             - qualities: data quality value (ie. [ts.GOOD, ts.UNCERTAIN])
             - attributes: data attributes (ie. {'unit': 'mph'})
             - measurement: tuple of operation and value (ie. ('gt', 30))
+            - aggregations: summary statistics on data results (ie. 'avg')
             - post: POST query instead of GET (caching implication)
 
         A few additional observations:
@@ -238,6 +246,17 @@ class TimeSeries(object):
             # If we found any filters add them to the query
             if filters:
                 query['filters'] = filters
+
+            # Handle any additional aggregations of dataset
+            if aggregations is not None:
+                if not isinstance(aggregations, list):
+                    aggregations = [aggregations]
+
+                query['aggregations'] = []
+                for aggregation in aggregations:
+                    query['aggregations'].append({
+                        'sampling': {'datapoints': 1},
+                        'type': aggregation })
 
             params['tags'].append(query)
 

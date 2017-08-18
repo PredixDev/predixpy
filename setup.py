@@ -11,12 +11,6 @@ install_requires = [
     ]
 
 setup_requires = [
-        "coverage",
-        "flake8",
-        "nose",
-        "pylint",
-        "mock",
-        "tox"
     ]
 
 setup(

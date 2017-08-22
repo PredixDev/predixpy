@@ -17,7 +17,9 @@ class Org(object):
         super(Org, self).__init__(*args, **kwargs)
 
         self.api = predix.admin.cf.api.API()
+
         self.name = self.api.config.get_organization_name()
+        self.guid = self.api.config.get_organization_guid()
 
     def _get_orgs(self):
         """

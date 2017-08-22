@@ -26,8 +26,9 @@ class UserAccountAuthentication(object):
         if not self.uri:
             raise ValueError("%s environment unset" % key)
 
+        self.session = requests.Session()
         self.authenticated = False
-        self.client = None
+        self.client = {}
 
     def _authenticate_client(self, client, secret):
         """
@@ -52,14 +53,20 @@ class UserAccountAuthentication(object):
 
         response = requests.post(uri, headers=headers, params=params)
         if response.status_code == 200:
+            logging.debug("RESPONSE=" + str(response.json()))
             return response.json()
         else:
+            logging.warn("Failed to authenticate as %s" % (client))
             response.raise_for_status()
 
     def is_expired_token(self, client):
         """
         For a given client will test whether or not the token
         has expired.
+
+        This is for testing a client object and does not look up
+        from client_id.  You can use _get_client_from_cache() to
+        lookup a client from client_id.
         """
         if 'expires' not in client:
             return True
@@ -166,6 +173,37 @@ class UserAccountAuthentication(object):
 
         self.client = client
         self.authenticated = True
+
+    def _get_headers(self):
+        """
+        Returns headers needed for UAA operations.
+        """
+        headers = {
+            "pragma": "no-cache",
+            "Cache-Control": "no-cache",
+            "Content-Type": "application/json",
+            "Accepts": "application/json",
+            "Authorization": "Bearer " + self.get_token()
+        }
+        return headers
+
+    def _get(self, uri, params=None, headers=None):
+        """
+        Simple GET request for a given uri path.
+        """
+        if not headers:
+            headers = self._get_headers()
+
+        logging.debug("URI=" + str(uri))
+        logging.debug("HEADERS=" + str(headers))
+
+        response = self.session.get(uri, headers=headers, params=params)
+        logging.debug("STATUS=" + str(response.status_code))
+        if response.status_code == 200:
+            return response.json()
+        else:
+            logging.error("ERROR=" + response.content)
+            response.raise_for_status()
 
     def get_token(self):
         """
@@ -327,3 +365,40 @@ class UserAccountAuthentication(object):
         manifest.add_env_var(client_secret_key, client_secret)
 
         manifest.write_manifest()
+
+    def get_users(self, filter=None, sortBy=None, sortOrder=None,
+            startIndex=None, count=None):
+        """
+        Returns users in UAA.
+
+        See https://docs.cloudfoundry.org/api/uaa/#list63
+        """
+        assert self.is_admin(), "Must authenticate as admin to get_users()."
+
+        params = {}
+        if filter:
+            params['filter'] = filter
+        if sortBy:
+            params['sortBy'] = sortBy
+        if sortOrder:
+            params['sortOrder'] = sortOrder
+        if startIndex:
+            params['startIndex'] = startIndex
+        if count:
+            params['count'] = count
+
+        return self._get(self.uri + '/Users', params=params)
+
+    def get_userinfo(self):
+        """
+        Retrieve user info for currently authenticated user.
+        """
+        uri = self.uri + '/userinfo'
+        headers = {
+            "Authorization": "Bearer " + self.get_token()
+        }
+        response = requests.get(uri, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            response.raise_for_status()

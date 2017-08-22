@@ -11,16 +11,11 @@ install_requires = [
     ]
 
 setup_requires = [
-        "coverage",
-        "flake8",
-        "nose",
-        "pylint",
-        "tox"
     ]
 
 setup(
         name="predix",
-        version="0.0.7",
+        version="0.0.8",
         author="Jayson DeLancey",
         author_email="jayson.delancey@ge.com",
         description="Python Client SDK for Predix Services",

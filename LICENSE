@@ -1,43 +1,31 @@
-Copyright (c) 2016 General Electric Company operating through GE Digital LLC
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
+3-Clause BSD License
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Copyright (c) 2017,General Electric Company.
 
-Other than the license expressly provided herein no license to or grant of any
-other intellectual property owned, controlled or licensed by General Electric
-Company or its affiliates (“GE”) is expressly or impliedly granted.  GE
-reserves all rights with respect to all such intellectual property and nothing
-in this license shall be deemed a waiver of such rights.
+All rights reserved.
 
-It is expressly understood, acknowledged and agreed that you may provide
-General Electric reasonable suggestions, comments and feedback regarding the
-Software, including but not limited to usability, bug reports and test results,
-with respect to Software testing (collectively, "Feedback"). If you provide
-such Feedback to GE, you shall grant GE worldwide, non-exclusive, perpetual,
-irrevocable, royalty free, fully paid up rights to utilize such Feedback in any
-GE product or service in GE’s sole discretion.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.  NO GUARANTEE OF UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE
-OPERATION IS MADE.
+1. Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
 
-THESE LICENSED PROGRAMS MAY BE USED AS PART OF A DEVELOPMENT ENVIRONMENT, AND
-MAY BE COMBINED WITH OTHER CODE BY END-USERS. LICENSOR IS NOT ABLE TO GUARANTEE
-THAT THE LICENSED PROGRAMS WILL OPERATE WITHOUT DEFECTS WHEN USED IN
-COMBINATION WITH END-USER SOFTWARE. LICENSEE IS ADVISED TO SAFEGUARD IMPORTANT
-DATA, TO USE CAUTION, AND NOT TO RELY IN ANY WAY ON THE CORRECT FUNCTIONING OR
-PERFORMANCE OF ANY COMBINATION OF END-USER SOFTWARE AND THE LICENSED PROGRAMS
-AND/OR ACCOMPANYING MATERIALS. LICENSEE IS ADVISED NOT TO USE ANY COMBINATION
-OF LICENSED PROGRAMS AND END-USER PROVIDED SOFTWARE IN A PRODUCTION ENVIRONMENT
-WITHOUT PRIOR SUITABILITY AND DEFECT TESTING.
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+3. Neither the name of General Electric Company or GE Digital nor the names of
+their contributors, or any trademarks of General Electric Company or GE Digital
+may be used to endorse or promote products derived from this software without
+specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

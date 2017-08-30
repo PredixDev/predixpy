@@ -1,0 +1,1264 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Services &mdash; PredixPy 0.0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="PredixPy 0.0.9 documentation" href="../index.html"/>
+        <link rel="next" title="Cookbook" href="../cookbook/index.html"/>
+        <link rel="prev" title="Getting Started" href="../getting-started/index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PredixPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Services</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#user-accounts-and-authentication">User Accounts and Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#authentication">Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#expiration">Expiration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#authorization">Authorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-predix.security.uaa">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-predix.admin.uaa">Administration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#access-control">Access Control</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Authorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#policies">Policies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Administration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#asset">Asset</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Administration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#time-series">Time Series</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Administration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blob-store">Blob Store</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id12">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Administration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Administration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#weather">Weather</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id16">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">Administration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/index.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/PredixDev/predixpy">Source Code</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PredixPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Services</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/services/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="services">
+<span id="service-index"></span><h1>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="user-accounts-and-authentication">
+<h2>User Accounts and Authentication<a class="headerlink" href="#user-accounts-and-authentication" title="Permalink to this headline">¶</a></h2>
+<p>The User Accounts and Authentication Service, known as UAA, is an OAuth2
+implementation common in Cloud Foundry deployments.  You can learn more about
+it from the <a class="reference external" href="https://www.predix.io/services/service.html?id=1172">UAA</a> catalog page.</p>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">You will need UAA to work with most Predix services including Asset, Time
+Series, and ACS.</p>
+</div>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>Here is a simple demo to create a uaa instance, create a client, authenticate
+as the client, and print out the scopes:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">predix.admin.app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">predix</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Manifest</span><span class="p">()</span>
+<span class="n">app</span><span class="o">.</span><span class="n">create_uaa</span><span class="p">(</span><span class="s1">&#39;admin-secret&#39;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="s1">&#39;my-client&#39;</span><span class="p">,</span> <span class="s1">&#39;my-client-secret&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">predix.app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">predix</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Manifest</span><span class="p">()</span>
+<span class="n">uaa</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">get_uaa</span><span class="p">()</span>
+<span class="n">uaa</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="s1">&#39;my-client&#39;</span><span class="p">,</span> <span class="s1">&#39;my-client-secret&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">uaa</span><span class="o">.</span><span class="n">get_scopes</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="authentication">
+<h3>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h3>
+<p><em>Is the username and password provided correct?</em></p>
+<p>If so, those credentials can be authenticated and a token generated for proving
+that the identify is verified.  This token is used in any subsequent service
+calls in the header of those requests.  The Predix Python SDK takes care of
+this transparently for you.</p>
+<p>The username and password can be provided by an actual end “user”, an
+application that is a “client”, or the “admin” user managing your cloud foundry
+space.</p>
+</div>
+<div class="section" id="expiration">
+<h3>Expiration<a class="headerlink" href="#expiration" title="Permalink to this headline">¶</a></h3>
+<p>The token is only valid for a period of time so the Predix Python SDK tries to
+manage this and only requests a new token if you explicitly logout a session to
+invalidate a token or if you reach the expiration period.</p>
+</div>
+<div class="section" id="authorization">
+<h3>Authorization<a class="headerlink" href="#authorization" title="Permalink to this headline">¶</a></h3>
+<p><em>That authenticated token, is it allowed to talk to this other service?</em></p>
+<p>Cloud Foundry and UAA have a sophisticated system of managing scopes and
+authorities for what a user or client are able to do.  Since most services only
+support coarse grained permissions such as read/write the Predix Python SDK
+manages the details with a <code class="docutils literal"><span class="pre">grant_client()</span></code> method for each service.  If any
+options are meaningful they are generally exposed.</p>
+</div>
+<div class="section" id="module-predix.security.uaa">
+<span id="api"></span><h3>API<a class="headerlink" href="#module-predix.security.uaa" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="predix.security.uaa.UserAccountAuthentication">
+<em class="property">class </em><code class="descclassname">predix.security.uaa.</code><code class="descname">UserAccountAuthentication</code><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication" title="Permalink to this definition">¶</a></dt>
+<dd><p>The UAA service manages user account authorization and access control for
+Predix service calls through client credentials captured in a bearer token.</p>
+<p>Useful documentation about interacting with API here:
+<a class="reference external" href="https://docs.cloudfoundry.org/api/uaa">https://docs.cloudfoundry.org/api/uaa</a></p>
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.add_client_to_manifest">
+<code class="descname">add_client_to_manifest</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em>, <em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.add_client_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the given client / secret to the manifest for use in
+the application.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.authenticate">
+<code class="descname">authenticate</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em>, <em>use_cache=True</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate the given client against UAA.  The resulting token
+will be cached for reuse.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.create_client">
+<code class="descname">create_client</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em>, <em>manifest=None</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.create_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will create a new client for your application use.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.get_authorization_headers">
+<code class="descname">get_authorization_headers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.get_authorization_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the authorization headers with the bearer token needed for
+making calls to Predix Services protected by UAA.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.get_client">
+<code class="descname">get_client</code><span class="sig-paren">(</span><em>client_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.get_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns details about a specific client by the client_id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.get_clients">
+<code class="descname">get_clients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.get_clients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the clients stored in the instance of UAA.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.get_scopes">
+<code class="descname">get_scopes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.get_scopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the scopes for the authorized client.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.get_token">
+<code class="descname">get_token</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bare access token for the authorized client.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.get_userinfo">
+<code class="descname">get_userinfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.get_userinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve user info for currently authenticated user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.get_users">
+<code class="descname">get_users</code><span class="sig-paren">(</span><em>filter=None</em>, <em>sortBy=None</em>, <em>sortOrder=None</em>, <em>startIndex=None</em>, <em>count=None</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.get_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns users in UAA.</p>
+<p>See <a class="reference external" href="https://docs.cloudfoundry.org/api/uaa/#list63">https://docs.cloudfoundry.org/api/uaa/#list63</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.is_admin">
+<code class="descname">is_admin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.is_admin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test whether user is authenticated as the admin.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.is_expired_token">
+<code class="descname">is_expired_token</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.is_expired_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a given client will test whether or not the token
+has expired.</p>
+<p>This is for testing a client object and does not look up
+from client_id.  You can use _get_client_from_cache() to
+lookup a client from client_id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.uaa.UserAccountAuthentication.update_client_grants">
+<code class="descname">update_client_grants</code><span class="sig-paren">(</span><em>client_id</em>, <em>scope=[]</em>, <em>authorities=[]</em>, <em>replace=False</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.uaa.UserAccountAuthentication.update_client_grants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will extend the client with any additional scopes or
+authorities.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-predix.admin.uaa">
+<span id="administration"></span><h3>Administration<a class="headerlink" href="#module-predix.admin.uaa" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="predix.admin.uaa.UserAccountAuthentication">
+<em class="property">class </em><code class="descclassname">predix.admin.uaa.</code><code class="descname">UserAccountAuthentication</code><span class="sig-paren">(</span><em>plan_name=None</em>, <em>name=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.uaa.UserAccountAuthentication" title="Permalink to this definition">¶</a></dt>
+<dd><p>User Account and Authentication Serice (UAA) provides user management
+for Cloud Foundry.</p>
+<p>A few helpful notes:
+- You must already be logged into a CF target environment
+- There can only be 10 instances of UAA within an org</p>
+<dl class="method">
+<dt id="predix.admin.uaa.UserAccountAuthentication.add_client_to_manifest">
+<code class="descname">add_client_to_manifest</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em>, <em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.uaa.UserAccountAuthentication.add_client_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the client credentials to the specified manifest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.uaa.UserAccountAuthentication.add_to_manifest">
+<code class="descname">add_to_manifest</code><span class="sig-paren">(</span><em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.uaa.UserAccountAuthentication.add_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add useful details to the manifest about this service
+so that it can be used in an application.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>manifest</strong> – An predix.admin.app.Manifest object
+instance that manages reading/writing manifest config
+for a cloud foundry app.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.uaa.UserAccountAuthentication.authenticate">
+<code class="descname">authenticate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.uaa.UserAccountAuthentication.authenticate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticate into the UAA instance as the admin user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.uaa.UserAccountAuthentication.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>secret</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.uaa.UserAccountAuthentication.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new instance of the UAA service.  Requires a
+secret password for the ‘admin’ user account.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.uaa.UserAccountAuthentication.create_client">
+<code class="descname">create_client</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.uaa.UserAccountAuthentication.create_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new client for use by applications.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.uaa.UserAccountAuthentication.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.uaa.UserAccountAuthentication.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests whether this given service already exists.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="access-control">
+<h2>Access Control<a class="headerlink" href="#access-control" title="Permalink to this headline">¶</a></h2>
+<p>The Access Control Service, known as ACS, is a fine-grained access control
+system common in complex dynamic industrial settings.  You can learn more about
+it from the <a class="reference external" href="https://www.predix.io/services/service.html?id=1180">ACS</a> catalog page.</p>
+<div class="section" id="id1">
+<h3>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Here is a simple demo to create an acs instance and a basic use example of
+evaluating access policy.</p>
+<blockquote>
+<div><p>import predix.admin.app
+app = predix.admin.app.Manifest()
+app.create_uaa(‘admin-secret’)
+app.create_client(‘my-client’, ‘my-client-secret’)
+app.create_acs()</p>
+<p>import predix.app
+app = predix.app.Manifest()
+acs = app.get_acs()
+acs.add_subject(‘/user/j12y’, {‘username’: ‘j12y’, ‘role’: ‘devangelist’})
+acs.add_subject(‘/user/jflannery’, {‘username’: ‘jflannery’, ‘role’: ‘ceo’})
+acs.add_resource(‘/asset/12’, {‘manufacturer’: ‘GE Digital’})</p>
+<p>resource = {‘uriTemplate’: ‘/asset’}
+subject = {‘name’: ‘devangelist’, ‘attributes’: [{“issuer”: “default”, “name”: “role”}]}
+condition = “match.single(subject.attributes(‘default’, ‘role’), ‘devangelist’)”</p>
+<p>acs.add_policy(‘any_devangelist’, ‘GET’, resource, subject, condition)</p>
+<p>print(acs.is_allowed(‘/user/j12y’, ‘GET’, ‘/asset/12’))
+print(acs.is_allowed(‘/user/jflannery’, ‘GET’, ‘/asset/12’))</p>
+</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h3>Authorization<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><em>I have lots of data in my system, for any specific piece of data is a given
+subject allowed to operate on it?</em></p>
+<p>ACS uses attributes assigned to subjects and resources to determine
+authorization for a resource.  It does not handle authentication, only whether
+access should be granted to read, write, delete, etc. a resource by a given
+subject.</p>
+<p>What is a <strong>subject</strong>?  A subject could be a user or a machine.  It has
+properties and attributes we know about it and can be assigned a unique uri to
+identify it.</p>
+<p>What is a <strong>resource</strong>?  A resource could be a service, a piece of data, or an
+asset.  It too has properties like subjects do and has a unique uri.</p>
+<p>If you consider well known commercial systems like Box, Dropbox, or Google
+Drive – subjects are the users that have logged in and the resources are the
+shared documents that the subject may be able to read or write.</p>
+</div>
+<div class="section" id="policies">
+<h3>Policies<a class="headerlink" href="#policies" title="Permalink to this headline">¶</a></h3>
+<p>ACS maintains its own cache of subject and resource attributes in order to
+evaluate policies.  Policies define a specification for what resources and
+subjects are impacted and what condition must be met.</p>
+<p>The condition is a groovy expression.</p>
+<p>Where UAA provides coarse-grained policies for whether a service is available
+to a client at all, ACS helps provide the fine-grained per-data level of
+flexibility that can be handled in a scalable way for sophistated permission
+schemes needed in complex organizational structures.</p>
+</div>
+<div class="section" id="id3">
+<h3>API<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.security.acs"></span><dl class="class">
+<dt id="predix.security.acs.AccessControl">
+<em class="property">class </em><code class="descclassname">predix.security.acs.</code><code class="descname">AccessControl</code><a class="headerlink" href="#predix.security.acs.AccessControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the Access Control service to provide a more powerful authorization
+framework than basic User Account and Authorization (UAA) service.</p>
+<p>Access Control service provides app-specific policies without adding
+overhead to a UAA server that may become the entry point for several apps
+over time.</p>
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.add_policy">
+<code class="descname">add_policy</code><span class="sig-paren">(</span><em>name</em>, <em>action</em>, <em>resource</em>, <em>subject</em>, <em>condition</em>, <em>policy_set_id=None</em>, <em>effect='PERMIT'</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.add_policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will create a new policy set to enforce the given policy details.</p>
+<p>The name is just a helpful descriptor for the policy.</p>
+<p>The action maps to a HTTP verb.</p>
+<p>Policies are evaluated against resources and subjects.  They are
+identified by matching a uriTemplate or attributes.</p>
+<p>Examples:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>resource = {</dt>
+<dd>“uriTemplate”: “/asset/{id}”
+}</dd>
+<dt>subject: {</dt>
+<dd><dl class="first docutils">
+<dt>“attributes”: [{</dt>
+<dd>“issuer”: “default”,
+“name”: “role”
+}]</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>The condition is expected to be a string that defines a groovy
+operation that can be evaluated.</p>
+<p>Examples:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>condition = “match.single(subject.attributes(‘default’, ‘role’),</dt>
+<dd>‘admin’)</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.add_resource">
+<code class="descname">add_resource</code><span class="sig-paren">(</span><em>resource_id</em>, <em>attributes</em>, <em>parents=[]</em>, <em>issuer='default'</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.add_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will add the given resource with a given identifier and attribute
+dictionary.</p>
+<blockquote>
+<div><p>example/</p>
+<blockquote>
+<div>add_resource(‘/asset/12’, {‘id’: 12, ‘manufacturer’: ‘GE’})</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.add_subject">
+<code class="descname">add_subject</code><span class="sig-paren">(</span><em>subject_id</em>, <em>attributes</em>, <em>parents=[]</em>, <em>issuer='default'</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.add_subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will add the given subject with a given identifier and attribute
+dictionary.</p>
+<blockquote>
+<div><p>example/</p>
+<blockquote>
+<div>add_subject(‘/user/j12y’, {‘username’: ‘j12y’})</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.authenticate_as_client">
+<code class="descname">authenticate_as_client</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.authenticate_as_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will authenticate for the given client / secret.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.delete_policy_set">
+<code class="descname">delete_policy_set</code><span class="sig-paren">(</span><em>policy_set_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.delete_policy_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a specific policy set by id.  Method is idempotent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.delete_resource">
+<code class="descname">delete_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.delete_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a specific resource by its identifier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.delete_subject">
+<code class="descname">delete_subject</code><span class="sig-paren">(</span><em>subject_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.delete_subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a specific subject by its identifier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_policy_sets">
+<code class="descname">get_policy_sets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_policy_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all of the policy sets in the ACS service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_resource">
+<code class="descname">get_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a specific resource by resource id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_resources">
+<code class="descname">get_resources</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all of the resources in the ACS service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_subject">
+<code class="descname">get_subject</code><span class="sig-paren">(</span><em>subject_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a specific subject by subject id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_subjects">
+<code class="descname">get_subjects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_subjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all of the subjects in the ACS service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.is_alive">
+<code class="descname">is_alive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will test whether the ACS service is up and alive.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.is_allowed">
+<code class="descname">is_allowed</code><span class="sig-paren">(</span><em>subject_id</em>, <em>action</em>, <em>resource_id</em>, <em>policy_sets=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.is_allowed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a policy-set against a subject and resource.</p>
+<p>example/</p>
+<blockquote>
+<div>is_allowed(‘/user/j12y’, ‘GET’, ‘/asset/12’)</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h3>Administration<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.admin.acs"></span><dl class="class">
+<dt id="predix.admin.acs.AccessControl">
+<em class="property">class </em><code class="descclassname">predix.admin.acs.</code><code class="descname">AccessControl</code><span class="sig-paren">(</span><em>name=None</em>, <em>uaa=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access Control provides attribute based access control.</p>
+<dl class="method">
+<dt id="predix.admin.acs.AccessControl.add_to_manifest">
+<code class="descname">add_to_manifest</code><span class="sig-paren">(</span><em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl.add_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add useful details to the manifest about this service
+so that it can be used in an application.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>manifest</strong> – An predix.admin.app.Manifest object
+instance that manages reading/writing manifest config
+for a cloud foundry app.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.acs.AccessControl.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of the Access Control Service with the typical
+starting settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.acs.AccessControl.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether or not this service already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.acs.AccessControl.grant_client">
+<code class="descname">grant_client</code><span class="sig-paren">(</span><em>client_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl.grant_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grant the given client id all the scopes and authorities
+needed to work with the access control service.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="asset">
+<h2>Asset<a class="headerlink" href="#asset" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="https://www.predix.io/services/service.html?id=1171">Asset</a> catalog page for more details.</p>
+<div class="section" id="id6">
+<h3>API<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.data.asset"></span><dl class="class">
+<dt id="predix.data.asset.Asset">
+<em class="property">class </em><code class="descclassname">predix.data.asset.</code><code class="descname">Asset</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Client library for working with the Asset service.</p>
+<dl class="method">
+<dt id="predix.data.asset.Asset.authenticate_as_client">
+<code class="descname">authenticate_as_client</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.authenticate_as_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will authenticate for the given client / secret.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.delete_collection">
+<code class="descname">delete_collection</code><span class="sig-paren">(</span><em>collection</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.delete_collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes an existing collection.</p>
+<p>The collection being updated <em>is</em> expected to include the id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_audit">
+<code class="descname">get_audit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_audit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return audit report for asset.  Disabled by default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_audit_changes">
+<code class="descname">get_audit_changes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_audit_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return change log for audit.  Disabled by default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_audit_snapshots">
+<code class="descname">get_audit_snapshots</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_audit_snapshots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an audit snapshot.  Disabled by default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_collection">
+<code class="descname">get_collection</code><span class="sig-paren">(</span><em>collection</em>, <em>filter=None</em>, <em>fields=None</em>, <em>page_size=None</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a specific collection from the asset service with
+the given collection endpoint.</p>
+<p>Supports passing through parameters such as…
+- filters such as “name=Vesuvius”
+- fields such as “uri,description”
+- page_size such as “100” (the default)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_collections">
+<code class="descname">get_collections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_collections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a flat list of the names of collections in the asset
+service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_configs">
+<code class="descname">get_configs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_configs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the configuration for the asset service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_messages">
+<code class="descname">get_messages</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return any system messages related to asset systems.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_scripts">
+<code class="descname">get_scripts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_scripts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return any configured scripts for asset service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.get_triggers">
+<code class="descname">get_triggers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.get_triggers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return configured triggers in the asset system.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.patch_collection">
+<code class="descname">patch_collection</code><span class="sig-paren">(</span><em>collection</em>, <em>changes</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.patch_collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will make specific updates to a record based on JSON Patch
+documentation.</p>
+<blockquote>
+<div><a class="reference external" href="https://tools.ietf.org/html/rfc6902">https://tools.ietf.org/html/rfc6902</a></div></blockquote>
+<p>the format of changes is something like:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>[{</dt>
+<dd>‘op’: ‘add’,
+‘path’: ‘/newfield’,
+‘value’: ‘just added’</dd>
+</dl>
+<p>}]</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.post_collection">
+<code class="descname">post_collection</code><span class="sig-paren">(</span><em>collection</em>, <em>body</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.post_collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new collection.  This is mostly just transport layer
+and passes collection and body along.  It presumes the body
+already has generated.</p>
+<p>The collection is <em>not</em> expected to have the id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.put_collection">
+<code class="descname">put_collection</code><span class="sig-paren">(</span><em>collection</em>, <em>body</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.put_collection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates an existing collection.</p>
+<p>The collection being updated <em>is</em> expected to include the id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.asset.Asset.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>collection</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.Asset.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save an asset collection to the service.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="predix.data.asset.AssetCollection">
+<em class="property">class </em><code class="descclassname">predix.data.asset.</code><code class="descname">AssetCollection</code><span class="sig-paren">(</span><em>parent=None</em>, <em>guid=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.AssetCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>User Defined Domain Objects are the customizable collections to represent
+data in the Asset Service.</p>
+<p>This is experimental to provide a base class for a sort of ORM between
+domain objects to marshall and unmarshall between Python and the REST
+endpoints.</p>
+<dl class="method">
+<dt id="predix.data.asset.AssetCollection.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.asset.AssetCollection.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>If an asset collection wants any client-side validation the
+object can override this method and it is called anytime
+we’re saving.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id7">
+<h3>Administration<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.admin.asset"></span><dl class="class">
+<dt id="predix.admin.asset.Asset">
+<em class="property">class </em><code class="descclassname">predix.admin.asset.</code><code class="descname">Asset</code><span class="sig-paren">(</span><em>plan_name=None</em>, <em>name=None</em>, <em>uaa=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.asset.Asset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asset Service provides asset management functionality.</p>
+<dl class="method">
+<dt id="predix.admin.asset.Asset.add_to_manifest">
+<code class="descname">add_to_manifest</code><span class="sig-paren">(</span><em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.asset.Asset.add_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add useful details to the manifest about this service
+so that it can be used in an application.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>manifest</strong> – An predix.admin.app.Manifest object
+instance that manages reading/writing manifest config
+for a cloud foundry app.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.asset.Asset.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.asset.Asset.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of the Asset Service with the typical
+starting settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.asset.Asset.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.asset.Asset.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether or not this service already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.asset.Asset.get_zone_id">
+<code class="descname">get_zone_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.asset.Asset.get_zone_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Predix-Zone-Id used for this service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.asset.Asset.grant_client">
+<code class="descname">grant_client</code><span class="sig-paren">(</span><em>client_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.asset.Asset.grant_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grant the given client id all the scopes and authorities
+needed to work with the asset service.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="time-series">
+<h2>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="https://www.predix.io/services/service.html?id=1177">Time Series</a> catalog page for more details.</p>
+<div class="section" id="id9">
+<h3>API<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.data.timeseries"></span><dl class="class">
+<dt id="predix.data.timeseries.TimeSeries">
+<em class="property">class </em><code class="descclassname">predix.data.timeseries.</code><code class="descname">TimeSeries</code><span class="sig-paren">(</span><em>read=True</em>, <em>write=True</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Client library for working with the Time Series service.</p>
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.authenticate_as_client">
+<code class="descname">authenticate_as_client</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.authenticate_as_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will authenticate for the given client / secret.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.get_aggregations">
+<code class="descname">get_aggregations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.get_aggregations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all of the aggregations that can be used with the
+Time Series Service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.get_datapoints">
+<code class="descname">get_datapoints</code><span class="sig-paren">(</span><em>tags</em>, <em>start=None</em>, <em>end=None</em>, <em>order=None</em>, <em>limit=None</em>, <em>qualities=None</em>, <em>attributes=None</em>, <em>measurement=None</em>, <em>aggregations=None</em>, <em>post=False</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.get_datapoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all of the datapoints that match the given query.</p>
+<blockquote>
+<div><ul class="simple">
+<li>tags: list or string identifying the name/tag (ie. “temp”)</li>
+<li>start: data after this, absolute or relative (ie. ‘1w-ago’ or
+1494015972386)</li>
+<li>end: data before this value</li>
+<li>order: ascending (asc) or descending (desc)</li>
+<li>limit: only return a few values (ie. 25)</li>
+<li>qualities: data quality value (ie. [ts.GOOD, ts.UNCERTAIN])</li>
+<li>attributes: data attributes (ie. {‘unit’: ‘mph’})</li>
+<li>measurement: tuple of operation and value (ie. (‘gt’, 30))</li>
+<li>aggregations: summary statistics on data results (ie. ‘avg’)</li>
+<li>post: POST query instead of GET (caching implication)</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>A few additional observations:</dt>
+<dd><ul class="first last simple">
+<li>allow service to do most data validation</li>
+<li>order is applied before limit so resultset will differ</li>
+</ul>
+</dd>
+</dl>
+<p>The returned results match what the service response is so you’ll
+need to unpack it as appropriate.  Oftentimes what you want for
+a simple single tag query will be:</p>
+<blockquote>
+<div>response[‘tags’][0][‘results’][0][‘values’]</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.get_latest">
+<code class="descname">get_latest</code><span class="sig-paren">(</span><em>tags</em>, <em>post=False</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.get_latest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to get_datapoints() but will only return the very
+last datapoint ingested for the given tag or tags (if a list).</p>
+<p>If given the optional post parameter will make the call as a POST
+rather than a GET request.  The GET can have an advantage of url
+based response caching and the POST has the advantage of a larger
+and more complex query.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.get_tags">
+<code class="descname">get_tags</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.get_tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the tag names in the timeseries service
+instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.get_values">
+<code class="descname">get_values</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.get_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method that for simple single tag queries will
+return just the values to be iterated on.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.is_bad">
+<code class="descname">is_bad</code><span class="sig-paren">(</span><em>quality</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.is_bad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple test if data quality value is BAD.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.is_good">
+<code class="descname">is_good</code><span class="sig-paren">(</span><em>quality</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.is_good" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple test if data quality is GOOD.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.queue">
+<code class="descname">queue</code><span class="sig-paren">(</span><em>name</em>, <em>value</em>, <em>quality=None</em>, <em>timestamp=None</em>, <em>attributes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>To reduce network traffic, you can buffer datapoints and
+then flush() anything in the queue.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.timeseries.TimeSeries.send">
+<code class="descname">send</code><span class="sig-paren">(</span><em>name=None</em>, <em>value=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.timeseries.TimeSeries.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can accept a name/tag and value to be queued and then send anything in
+the queue to the time series service.  Optional parameters include
+setting quality, timestamp, or attributes.</p>
+<p>Example of sending a batch of values:</p>
+<blockquote>
+<div>queue(‘temp’, 70.1)
+queue(‘humidity’, 20.4)
+send()</div></blockquote>
+<p>Example of sending one and flushing queue immediately</p>
+<blockquote>
+<div>send(‘temp’, 70.3)
+send(‘temp’, 70.4, quality=ts.GOOD, attributes={‘unit’: ‘F’})</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id10">
+<h3>Administration<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.admin.timeseries"></span><dl class="class">
+<dt id="predix.admin.timeseries.TimeSeries">
+<em class="property">class </em><code class="descclassname">predix.admin.timeseries.</code><code class="descname">TimeSeries</code><span class="sig-paren">(</span><em>plan_name=None</em>, <em>name=None</em>, <em>uaa=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time Series provides persistence of data values over time.</p>
+<dl class="method">
+<dt id="predix.admin.timeseries.TimeSeries.add_to_manifest">
+<code class="descname">add_to_manifest</code><span class="sig-paren">(</span><em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries.add_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add useful details to the manifest about this service
+so that it can be used in an application.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>manifest</strong> – An predix.admin.app.Manifest object
+instance that manages reading/writing manifest config
+for a cloud foundry app.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.timeseries.TimeSeries.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of the Time Series Service with the typical
+starting settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.timeseries.TimeSeries.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether or not this service already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.timeseries.TimeSeries.get_ingest_uri">
+<code class="descname">get_ingest_uri</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries.get_ingest_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the uri used for ingesting data into time series</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.timeseries.TimeSeries.get_ingest_zone_id">
+<code class="descname">get_ingest_zone_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries.get_ingest_zone_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Predix-Zone-Id used for ingesting data with this
+service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.timeseries.TimeSeries.get_query_uri">
+<code class="descname">get_query_uri</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries.get_query_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the uri used for queries on time series data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.timeseries.TimeSeries.get_query_zone_id">
+<code class="descname">get_query_zone_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries.get_query_zone_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Predix-Zone-Id used for queries on data with this
+service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.timeseries.TimeSeries.grant_client">
+<code class="descname">grant_client</code><span class="sig-paren">(</span><em>client_id</em>, <em>read=True</em>, <em>write=True</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.timeseries.TimeSeries.grant_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grant the given client id all the scopes and authorities
+needed to work with the timeseries service.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="blob-store">
+<h2>Blob Store<a class="headerlink" href="#blob-store" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="https://www.predix.io/services/service.html?id=1179">Blob Store</a> catalog page for more details.</p>
+<div class="section" id="id12">
+<h3>API<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.data.blobstore"></span><dl class="class">
+<dt id="predix.data.blobstore.BlobStore">
+<em class="property">class </em><code class="descclassname">predix.data.blobstore.</code><code class="descname">BlobStore</code><a class="headerlink" href="#predix.data.blobstore.BlobStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>IMPORTANT: This service will only work from the Predix Cloud – Firewall
+will block any traffic not originating from within the Predix environment.
+<strong>******</strong></p>
+<p>The BlobStore is the place to store Binary Large Objects, ie. files that
+could be images, csv files, cad files, pdf files, etc.</p>
+<p>Underlying BlobStore is the AWS S3 service so you will need to be familiar
+with the boto3 library from AWS to learn how to work with buckets.  A few
+methods are provided for common patterns you can use for reference.</p>
+<dl class="method">
+<dt id="predix.data.blobstore.BlobStore.list_buckets">
+<code class="descname">list_buckets</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.blobstore.BlobStore.list_buckets" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is primarily for illustration and just calls the boto3
+client implementation of list_buckets directly but is a common task for
+first time Predix BlobStore users.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.blobstore.BlobStore.list_objects">
+<code class="descname">list_objects</code><span class="sig-paren">(</span><em>bucket_name=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.blobstore.BlobStore.list_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is primarily for illustration and just calls the 
+boto3 client implementation of list_objects but is a common task
+for first time Predix BlobStore users.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.data.blobstore.BlobStore.upload_file">
+<code class="descname">upload_file</code><span class="sig-paren">(</span><em>src_filepath</em>, <em>dest_filename=None</em>, <em>bucket_name=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.data.blobstore.BlobStore.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is primarily for illustration and just calls the 
+boto3 client implementation of upload_file but is a common task
+for first time Predix BlobStore users.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id13">
+<h3>Administration<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.admin.blobstore"></span><dl class="class">
+<dt id="predix.admin.blobstore.BlobStore">
+<em class="property">class </em><code class="descclassname">predix.admin.blobstore.</code><code class="descname">BlobStore</code><span class="sig-paren">(</span><em>plan_name=None</em>, <em>name=None</em>, <em>uaa=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.blobstore.BlobStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blob Store for binary large object storage.</p>
+<dl class="method">
+<dt id="predix.admin.blobstore.BlobStore.add_to_manifest">
+<code class="descname">add_to_manifest</code><span class="sig-paren">(</span><em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.blobstore.BlobStore.add_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add useful details to the manifest about this service
+so that it can be used in an application.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>manifest</strong> – An predix.admin.app.Manifest object
+instance that manages reading/writing manifest config
+for a cloud foundry app.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.blobstore.BlobStore.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.blobstore.BlobStore.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of the Blob Store Service with the typical
+starting settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.blobstore.BlobStore.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.blobstore.BlobStore.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether or not this service already exists.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="https://www.predix.io/services/service.html?id=1184">Logging</a> catalog page for more details.</p>
+<div class="section" id="id15">
+<h3>Administration<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.admin.logstash"></span><dl class="class">
+<dt id="predix.admin.logstash.Logging">
+<em class="property">class </em><code class="descclassname">predix.admin.logstash.</code><code class="descname">Logging</code><span class="sig-paren">(</span><em>plan_name=None</em>, <em>name=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.logstash.Logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>An Elasticsearch ELK distribution to centralize Cloud Foundry log
+aggregation and analysis.</p>
+<p>You need to install the Kibana-Me-Logs application separately to
+make use of the logging service.
+<a class="reference external" href="https://docs.predix.io/en-US/content/service/operations/logging/">https://docs.predix.io/en-US/content/service/operations/logging/</a></p>
+<dl class="method">
+<dt id="predix.admin.logstash.Logging.add_to_manifest">
+<code class="descname">add_to_manifest</code><span class="sig-paren">(</span><em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.logstash.Logging.add_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add to the manifest to make sure it is bound to the
+application.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.logstash.Logging.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.logstash.Logging.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of the logstash pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.logstash.Logging.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.logstash.Logging.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether or not this service already exists.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="weather">
+<h2>Weather<a class="headerlink" href="#weather" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This service has been deprecated.</p>
+</div>
+<div class="section" id="id16">
+<h3>API<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.data.weather"></span></div>
+<div class="section" id="id17">
+<h3>Administration<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="module-predix.admin.weather"></span></div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../cookbook/index.html" class="btn btn-neutral float-right" title="Cookbook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../getting-started/index.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Jayson DeLancey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

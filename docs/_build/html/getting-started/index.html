@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started &mdash; PredixPy 0.0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="PredixPy 0.0.9 documentation" href="../index.html"/>
+        <link rel="next" title="Services" href="../services/index.html"/>
+        <link rel="prev" title="PredixPy" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PredixPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manifest-application-framework">Manifest Application Framework</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-services">Creating Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consuming-services">Consuming Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#opinionated">Opinionated</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#app-development">App Development</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../services/index.html">Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/index.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/PredixDev/predixpy">Source Code</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PredixPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/getting-started/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>The following services are supported for <strong>Python 2.7.x</strong>.  Verification of
+compatibility with <strong>Python 3.6.x</strong> is on the near-term roadmap.</p>
+<ul class="simple">
+<li>User Account and Authentication (UAA)</li>
+<li>Predix Access Control (ACS)</li>
+<li>Predix Asset</li>
+<li>Predix Time Series</li>
+<li>Blob Store</li>
+<li>Logging</li>
+<li>… for more see <a class="reference internal" href="../services/index.html#service-index"><span class="std std-ref">Services</span></a> section</li>
+</ul>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>Let’s start with a simple example script that you could run in your local
+development environment and space.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">predix.app</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">predix</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Manifest</span><span class="p">()</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">get_timeseries</span><span class="p">()</span>
+
+<span class="n">ts</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;TEMP&#39;</span><span class="p">,</span> <span class="mf">70.1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">get_values</span><span class="p">(</span><span class="s1">&#39;TEMP&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Once you understand how the Predix Python SDK works this simple script is all
+you need to send data to Predix Time Series.  The SDK takes care of the details
+for you:</p>
+<ul class="simple">
+<li>establishing a websocket connection</li>
+<li>generating a uaa token</li>
+<li>constructing the json</li>
+<li>making web service calls</li>
+<li>handling failures and retries</li>
+</ul>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This only works if you have the services provisioned in your space and
+environment variables defined.</p>
+</div>
+<p>Fortunately, the Predix Python SDK helps you with that as well.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">predix.admin.app</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">predix</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Manifest</span><span class="p">()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">create_uaa</span><span class="p">(</span><span class="s1">&#39;admin-secret&#39;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="s1">&#39;client-id&#39;</span><span class="p">,</span> <span class="s1">&#39;client-secret&#39;</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">create_timeseries</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This admin script would be run once during setup to:</p>
+<ul class="simple">
+<li>create an instance of UAA</li>
+<li>create a client for your application</li>
+<li>grants the client the authorities and scopes</li>
+<li>creates an instance of timeseries</li>
+<li>caches environment variables so you can work locally or the cloud</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You don’t want to run admin scripts in a Cloud Foundry environment.  Their
+purpose is to set up your environment in the first place.</p>
+</div>
+</div>
+<div class="section" id="manifest-application-framework">
+<h2>Manifest Application Framework<a class="headerlink" href="#manifest-application-framework" title="Permalink to this headline">¶</a></h2>
+<p>The SDK has introduced an application framework that persists configuration
+details in the cloud foundry manifest.yml.  This is not strictly necessary, but
+it helps with setting the environment variables the SDK needs to interact with
+services.</p>
+<p>To understand how the SDK works let’s start with an empty space while logged
+into Cloud Foundry.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cf</span> <span class="n">login</span>
+<span class="n">cf</span> <span class="n">create</span><span class="o">-</span><span class="n">space</span> <span class="n">predixpy</span>
+<span class="n">cf</span> <span class="n">target</span> <span class="o">-</span><span class="n">s</span> <span class="n">predixpy</span>
+</pre></div>
+</div>
+<div class="section" id="creating-services">
+<h3>Creating Services<a class="headerlink" href="#creating-services" title="Permalink to this headline">¶</a></h3>
+<p>When you run the setup script and <code class="docutils literal"><span class="pre">create()</span></code> methods the process flow looks
+like this:</p>
+<img alt="../_images/predixpy-create.png" src="../_images/predixpy-create.png" />
+<p>The SDK makes REST calls against the Cloud Foundry API endpoint to handle setup
+operations for us.  The output is a manifest.yml written to disk and a properly
+configured service.</p>
+<p>The steps include:</p>
+<ol class="arabic simple">
+<li>Create Service: for example <code class="docutils literal"><span class="pre">create_timeseries()</span></code> creates an instance of
+Predix Time Series.</li>
+<li>Create Service Key: this is only needed for some services, but the service
+key allows us to access details around the provisioned service instance</li>
+<li>Get Service Key: without pushing any apps, the service key provides us the
+details such as URI endpoints and Predix-Zone-Ids needed to use the service.</li>
+<li>Grant Client: when needed will configure the scopes and authorities for the
+client being used by the app.</li>
+<li>Write Manifest: take these details and encrypt them in the manifest.yml for
+easy access by your application as environment variables.</li>
+</ol>
+</div>
+<div class="section" id="consuming-services">
+<h3>Consuming Services<a class="headerlink" href="#consuming-services" title="Permalink to this headline">¶</a></h3>
+<p>If you are using the SDK’s Manifest Application Framework to <code class="docutils literal"><span class="pre">create()</span></code>
+services, consuming those services will be straightforward.</p>
+<img alt="../_images/predixpy-get.png" src="../_images/predixpy-get.png" />
+<p>Since all the service key details were stored in the manifest.yml, the
+<code class="docutils literal"><span class="pre">get()</span></code> methods will read and load the env variables into your local
+operating system environment.  If your runtime is in Cloud Foundry, these
+variables can be pulled from VCAP variables instead.</p>
+<p>For example, PREDIX_SECURITY_UAA_URI will contain the endpoint for your UAA
+service instance and PREDIX_DATA_TIMESERIES_INGEST_ZONE_ID will have the
+Predix-Zone-Id for ingesting into Predix Time Series.</p>
+<p>If you don’t want to use the SDK to create the services or persist the details
+in your manifest.yml, you can replace that portion of the SDK so long as you
+define the required environment variables through another means.</p>
+</div>
+<div class="section" id="opinionated">
+<h3>Opinionated<a class="headerlink" href="#opinionated" title="Permalink to this headline">¶</a></h3>
+<p>The SDK has some opinions and default values for things.  If you use the
+Manifest Application Framework to create services you exchange some flexibility
+for ease of use.</p>
+<ul class="simple">
+<li>Naming convention for your services</li>
+<li>Plans for your services</li>
+</ul>
+<p>For new developers on Predix, reducing the cognitive overhead of making these
+decisions may be an acceptable trade-off.  As you become more experienced, you
+can override these with your own service names, different plans, or pass any
+arbitrary parameters.</p>
+<p>For example, instead of:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">create_timeseries</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>you could view the source-code and call the underlying libraries directly:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">predix.admin.timeseries</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">predix</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Manifest</span><span class="p">()</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">predix</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">timeseries</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;my-timeseries&#39;</span><span class="p">,</span> <span class="n">plan_name</span><span class="o">=</span><span class="s1">&#39;Tiered&#39;</span><span class="p">)</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">add_to_manifest</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="app-development">
+<h2>App Development<a class="headerlink" href="#app-development" title="Permalink to this headline">¶</a></h2>
+<p>The SDK allows you to develop many types of applications.  It is just a client
+library for service calls.</p>
+<ul class="simple">
+<li>CLI tools</li>
+<li>Data engineering tasks</li>
+<li>Standalone GUIs</li>
+<li>Web applications with Flask, Django, Turbogears, etc.</li>
+</ul>
+<p>See the <a class="reference external" href="https://github.com/PredixDev/predix-volcano-app">Predix Volcano App</a> for a full demonstration of the SDK used in a
+Python Flask App.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some services are limited to only running in a Cloud Foundry environment
+(PostgreSQL, Blob Store) but others can be reached from anywhere
+connectivity is available (Time Series, Asset) on the edge or your
+workstation.</p>
+</div>
+<p>Now that you have the basics under your belt, you can start using Predix
+Services.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../services/index.html" class="btn btn-neutral float-right" title="Services" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="PredixPy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Jayson DeLancey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

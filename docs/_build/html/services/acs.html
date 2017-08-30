@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Access Control &mdash; PredixPy 0.0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="PredixPy 0.0.9 documentation" href="../index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PredixPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/index.html">Cookbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../devguide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/PredixDev/predixpy">Source Code</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PredixPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Access Control</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/services/acs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="access-control">
+<h1>Access Control<a class="headerlink" href="#access-control" title="Permalink to this headline">¶</a></h1>
+<p>The Access Control Service, known as ACS, is a fine-grained access control
+system common in complex dynamic industrial settings.  You can learn more about
+it from the <a class="reference external" href="https://www.predix.io/services/service.html?id=1180">ACS</a> catalog page.</p>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Here is a simple demo to create an acs instance and a basic use example of
+evaluating access policy.</p>
+<blockquote>
+<div><p>import predix.admin.app
+app = predix.admin.app.Manifest()
+app.create_uaa(‘admin-secret’)
+app.create_client(‘my-client’, ‘my-client-secret’)
+app.create_acs()</p>
+<p>import predix.app
+app = predix.app.Manifest()
+acs = app.get_acs()
+acs.add_subject(‘/user/j12y’, {‘username’: ‘j12y’, ‘role’: ‘devangelist’})
+acs.add_subject(‘/user/jflannery’, {‘username’: ‘jflannery’, ‘role’: ‘ceo’})
+acs.add_resource(‘/asset/12’, {‘manufacturer’: ‘GE Digital’})</p>
+<p>resource = {‘uriTemplate’: ‘/asset’}
+subject = {‘name’: ‘devangelist’, ‘attributes’: [{“issuer”: “default”, “name”: “role”}]}
+condition = “match.single(subject.attributes(‘default’, ‘role’), ‘devangelist’)”</p>
+<p>acs.add_policy(‘any_devangelist’, ‘GET’, resource, subject, condition)</p>
+<p>print(acs.is_allowed(‘/user/j12y’, ‘GET’, ‘/asset/12’))
+print(acs.is_allowed(‘/user/jflannery’, ‘GET’, ‘/asset/12’))</p>
+</div></blockquote>
+</div>
+<div class="section" id="authorization">
+<h2>Authorization<a class="headerlink" href="#authorization" title="Permalink to this headline">¶</a></h2>
+<p><em>I have lots of data in my system, for any specific piece of data is a given
+subject allowed to operate on it?</em></p>
+<p>ACS uses attributes assigned to subjects and resources to determine
+authorization for a resource.  It does not handle authentication, only whether
+access should be granted to read, write, delete, etc. a resource by a given
+subject.</p>
+<p>What is a <strong>subject</strong>?  A subject could be a user or a machine.  It has
+properties and attributes we know about it and can be assigned a unique uri to
+identify it.</p>
+<p>What is a <strong>resource</strong>?  A resource could be a service, a piece of data, or an
+asset.  It too has properties like subjects do and has a unique uri.</p>
+<p>If you consider well known commercial systems like Box, Dropbox, or Google
+Drive – subjects are the users that have logged in and the resources are the
+shared documents that the subject may be able to read or write.</p>
+</div>
+<div class="section" id="policies">
+<h2>Policies<a class="headerlink" href="#policies" title="Permalink to this headline">¶</a></h2>
+<p>ACS maintains its own cache of subject and resource attributes in order to
+evaluate policies.  Policies define a specification for what resources and
+subjects are impacted and what condition must be met.</p>
+<p>The condition is a groovy expression.</p>
+<p>Where UAA provides coarse-grained policies for whether a service is available
+to a client at all, ACS helps provide the fine-grained per-data level of
+flexibility that can be handled in a scalable way for sophistated permission
+schemes needed in complex organizational structures.</p>
+</div>
+<div class="section" id="module-predix.security.acs">
+<span id="api"></span><h2>API<a class="headerlink" href="#module-predix.security.acs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="predix.security.acs.AccessControl">
+<em class="property">class </em><code class="descclassname">predix.security.acs.</code><code class="descname">AccessControl</code><a class="headerlink" href="#predix.security.acs.AccessControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the Access Control service to provide a more powerful authorization
+framework than basic User Account and Authorization (UAA) service.</p>
+<p>Access Control service provides app-specific policies without adding
+overhead to a UAA server that may become the entry point for several apps
+over time.</p>
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.add_policy">
+<code class="descname">add_policy</code><span class="sig-paren">(</span><em>name</em>, <em>action</em>, <em>resource</em>, <em>subject</em>, <em>condition</em>, <em>policy_set_id=None</em>, <em>effect='PERMIT'</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.add_policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will create a new policy set to enforce the given policy details.</p>
+<p>The name is just a helpful descriptor for the policy.</p>
+<p>The action maps to a HTTP verb.</p>
+<p>Policies are evaluated against resources and subjects.  They are
+identified by matching a uriTemplate or attributes.</p>
+<p>Examples:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>resource = {</dt>
+<dd>“uriTemplate”: “/asset/{id}”
+}</dd>
+<dt>subject: {</dt>
+<dd><dl class="first docutils">
+<dt>“attributes”: [{</dt>
+<dd>“issuer”: “default”,
+“name”: “role”
+}]</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>The condition is expected to be a string that defines a groovy
+operation that can be evaluated.</p>
+<p>Examples:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>condition = “match.single(subject.attributes(‘default’, ‘role’),</dt>
+<dd>‘admin’)</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.add_resource">
+<code class="descname">add_resource</code><span class="sig-paren">(</span><em>resource_id</em>, <em>attributes</em>, <em>parents=[]</em>, <em>issuer='default'</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.add_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will add the given resource with a given identifier and attribute
+dictionary.</p>
+<blockquote>
+<div><p>example/</p>
+<blockquote>
+<div>add_resource(‘/asset/12’, {‘id’: 12, ‘manufacturer’: ‘GE’})</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.add_subject">
+<code class="descname">add_subject</code><span class="sig-paren">(</span><em>subject_id</em>, <em>attributes</em>, <em>parents=[]</em>, <em>issuer='default'</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.add_subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will add the given subject with a given identifier and attribute
+dictionary.</p>
+<blockquote>
+<div><p>example/</p>
+<blockquote>
+<div>add_subject(‘/user/j12y’, {‘username’: ‘j12y’})</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.authenticate_as_client">
+<code class="descname">authenticate_as_client</code><span class="sig-paren">(</span><em>client_id</em>, <em>client_secret</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.authenticate_as_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will authenticate for the given client / secret.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.delete_policy_set">
+<code class="descname">delete_policy_set</code><span class="sig-paren">(</span><em>policy_set_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.delete_policy_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a specific policy set by id.  Method is idempotent.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.delete_resource">
+<code class="descname">delete_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.delete_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a specific resource by its identifier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.delete_subject">
+<code class="descname">delete_subject</code><span class="sig-paren">(</span><em>subject_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.delete_subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a specific subject by its identifier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_policy_sets">
+<code class="descname">get_policy_sets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_policy_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all of the policy sets in the ACS service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_resource">
+<code class="descname">get_resource</code><span class="sig-paren">(</span><em>resource_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a specific resource by resource id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_resources">
+<code class="descname">get_resources</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all of the resources in the ACS service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_subject">
+<code class="descname">get_subject</code><span class="sig-paren">(</span><em>subject_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a specific subject by subject id.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.get_subjects">
+<code class="descname">get_subjects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.get_subjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all of the subjects in the ACS service.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.is_alive">
+<code class="descname">is_alive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will test whether the ACS service is up and alive.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.security.acs.AccessControl.is_allowed">
+<code class="descname">is_allowed</code><span class="sig-paren">(</span><em>subject_id</em>, <em>action</em>, <em>resource_id</em>, <em>policy_sets=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.security.acs.AccessControl.is_allowed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a policy-set against a subject and resource.</p>
+<p>example/</p>
+<blockquote>
+<div>is_allowed(‘/user/j12y’, ‘GET’, ‘/asset/12’)</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-predix.admin.acs">
+<span id="administration"></span><h2>Administration<a class="headerlink" href="#module-predix.admin.acs" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="predix.admin.acs.AccessControl">
+<em class="property">class </em><code class="descclassname">predix.admin.acs.</code><code class="descname">AccessControl</code><span class="sig-paren">(</span><em>name=None</em>, <em>uaa=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access Control provides attribute based access control.</p>
+<dl class="method">
+<dt id="predix.admin.acs.AccessControl.add_to_manifest">
+<code class="descname">add_to_manifest</code><span class="sig-paren">(</span><em>manifest</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl.add_to_manifest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add useful details to the manifest about this service
+so that it can be used in an application.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>manifest</strong> – An predix.admin.app.Manifest object
+instance that manages reading/writing manifest config
+for a cloud foundry app.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.acs.AccessControl.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of the Access Control Service with the typical
+starting settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.acs.AccessControl.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether or not this service already exists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="predix.admin.acs.AccessControl.grant_client">
+<code class="descname">grant_client</code><span class="sig-paren">(</span><em>client_id</em><span class="sig-paren">)</span><a class="headerlink" href="#predix.admin.acs.AccessControl.grant_client" title="Permalink to this definition">¶</a></dt>
+<dd><p>Grant the given client id all the scopes and authorities
+needed to work with the access control service.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Jayson DeLancey.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

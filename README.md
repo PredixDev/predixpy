@@ -62,6 +62,6 @@ additional discussion.
 [acs]: https://www.predix.io/services/service.html?id=1180
 [blobstore]: https://www.predix.io/services/service.html?id=1179
 [logging]: https://www.predix.io/services/service.html?id=1184
-[gettingstarted]: https://predixdev.github.io/predixpy/getting-started/index.html
-[devguide]: https://predixdev.github.io/predixpy/devguide/index.html
+[gettingstarted]: https://predixpy.run.aws-usw02-pr.ice.predix.io/getting-started/index.html
+[devguide]: https://predixpy.run.aws-usw02-pr.ice.predix.io/devguide/index.html
 [volcanoapp]: https://github.com/PredixDev/predix-volcano-app

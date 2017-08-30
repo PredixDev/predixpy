@@ -27,7 +27,8 @@ development environment and space.
     ts = app.get_timeseries()
 
     ts.send('TEMP', 70.1)
-    print(ts.get_values('TEMP'))
+    for val in ts.get_values('TEMP'):
+        print(val)
 
 Once you understand how the Predix Python SDK works this simple script is all
 you need to send data to Predix Time Series.  The SDK takes care of the details

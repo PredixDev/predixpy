@@ -6,19 +6,48 @@
 PredixPy
 ========
 
-The Predix Python SDK has been lovingly crafted to help Python developers be
-successful when writing applications using Predix Services.  This guide will
-walk through important details about using the SDK.
+The Predix Python SDK has been lovingly crafted to help Python developers have
+quick success writing applications using Predix Services.
+
+Installation
+------------
+
+Install it from PyPI::
+
+   pip install predix
+
+If that isn't working for you, we highly recommend `The Hitchiker's Guide to
+Properly Installing Python`_ to learn about installing ``python``, ``pip``, and
+``virtualenv`` for your environment.  For industrial environments, you may also
+need to learn how to set your proxies.
+
+.. _The Hitchiker's Guide to Properly Installing Python: http://docs.python-guide.org/en/latest/starting/installation/
+
+Contents
+--------
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
 
-    api/index.rst
-    cookbook/index.rst
-    reference/index.rst
+   getting-started/index.rst
+   services/index.rst
+   cookbook/index.rst
+   devguide/index.rst
+   release-notes.rst
 
-    Source Code <https://github.com/PredixDev/predixpy>
+   Source Code <https://github.com/PredixDev/predixpy>
+
+Getting Help
+------------
+
+If something doesn't work as expected and you want help:
+
+- Create a `GitHub Issue`_ in the PredixDev/predixpy project
+- Ask on the `Predix Developer Forum`_
+- Send email to volcano@ge.com and we'll respond as soon as we can
+
+.. _GitHub Issue: https://github.com/PredixDev/predixpy/issues
+.. _Predix Developer Forum: https://forum.predix.io/index.html
 
 About GE
 --------

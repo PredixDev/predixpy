@@ -4,6 +4,14 @@
 Services
 ========
 
+.. note::
+
+   Some services are limited to only running in a Cloud Foundry environment
+   (PostgreSQL, Blob Store) but others can be reached from anywhere
+   connectivity is available (Time Series, Asset) on the edge or your
+   workstation.
+
+
 .. include:: uaa.rst
 
 .. include:: acs.rst

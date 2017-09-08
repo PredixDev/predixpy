@@ -7,6 +7,12 @@ import predix.service
 
 
 class WeatherForecast(object):
+    """
+    Weather Forecast Service
+
+    ~~ Deprecated ~~
+
+    """
     def __init__(self, *args, **kwargs):
         super(WeatherForecast, self).__init__(*args, **kwargs)
 

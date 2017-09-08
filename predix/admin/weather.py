@@ -7,6 +7,11 @@ import predix.data.weather
 
 
 class WeatherForecast(object):
+    """
+    Weather Forecast Service
+
+    ~~ DEPRECATED ~~
+    """
     def __init__(self, plan_name=None, name=None, uaa=None, *args, **kwargs):
         super(WeatherForecast, self).__init__(*args, **kwargs)
         self.service_name = 'us-weather-forecast'

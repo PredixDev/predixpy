@@ -13,12 +13,17 @@ install_requires = [
 setup_requires = [
     ]
 
+long_description = 'See GitHub README.md for more details.'
+with open('README.md') as file:
+    long_description = file.read()
+
 setup(
         name="predix",
         version="0.0.9",
         author="Jayson DeLancey",
         author_email="jayson.delancey@ge.com",
         description="Python Client SDK for Predix Services",
+        long_description=long_description,
         setup_requires=setup_requires,
         install_requires=install_requires,
         package_data={},
@@ -29,12 +34,12 @@ setup(
                 ]
         },
         tests_require=[],
-        keywords=['predix', 'ge', 'time', 'asset', 'analytics'],
+        keywords=['predix', 'ge', 'asset', 'analytics'],
         url="https://github.com/PredixDev/predixpy",
         classifiers=[
             'Intended Audience :: Developers',
             'Natural Language :: English',
             'Programming Language :: Python :: 2.7',
-            'License :: Other/Proprietary License',
+            'License :: OSI Approved :: BSD License',
             'Development Status :: 3 - Alpha']
     )

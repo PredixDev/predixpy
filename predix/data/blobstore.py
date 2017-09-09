@@ -9,10 +9,10 @@ import predix.config
 
 class BlobStore(object):
     """
-    **********
-    IMPORTANT: This service will only work from the Predix Cloud -- Firewall
-    will block any traffic not originating from within the Predix environment.
-    **********
+    .. important::
+
+       This service will only work from the Predix Cloud -- Firewall will block
+       any traffic not originating from within the Predix environment.
 
     The BlobStore is the place to store Binary Large Objects, ie. files that
     could be images, csv files, cad files, pdf files, etc.

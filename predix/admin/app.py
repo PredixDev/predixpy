@@ -1,4 +1,6 @@
 
+import logging
+
 import predix.app
 import predix.admin.uaa
 import predix.admin.acs
@@ -7,6 +9,7 @@ import predix.admin.weather
 import predix.admin.cf.spaces
 import predix.admin.blobstore
 import predix.admin.timeseries
+import predix.admin.logstash
 
 
 class Manifest(predix.app.Manifest):
@@ -26,6 +29,7 @@ class Manifest(predix.app.Manifest):
             'predix-blobstore': predix.admin.blobstore.BlobStore,
             'predix-timeseries': predix.admin.timeseries.TimeSeries,
             'predix-weather': predix.admin.weather.WeatherForecast,
+            'logstash': predix.admin.logstash.Logging,
         }
 
     def create_manifest_from_space(self):
@@ -165,6 +169,19 @@ class Manifest(predix.app.Manifest):
 
         blobstore.add_to_manifest(self)
         return blobstore
+
+    def create_logstash(self):
+        """
+        Creates an instance of the Logging Service.
+        """
+        logstash = predix.admin.logstash.Logging()
+        logstash.create()
+        logstash.add_to_manifest(self)
+
+        logging.info('Install Kibana-Me-Logs application by following GitHub instructions')
+        logging.info('git clone https://github.com/cloudfoundry-community/kibana-me-logs.git')
+
+        return logstash
 
     def get_service_marketplace(self, available=True, unavailable=False,
             deprecated=False):

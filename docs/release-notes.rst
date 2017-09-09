@@ -5,7 +5,8 @@ Release Notes
 0.0.9
 -----
 
-**Logstash**
+Logstash
+........
 
 Create instances of logstash logging service.  You will still need to push an
 app such as `kibana-me-logs`_.
@@ -17,5 +18,11 @@ For example::
     import predix.admin.app
     app = predix.admin.app.Manifest()
     app.create_logstash()
+
+Other Changes
+.............
+
+- Time Series: websocket hangup and broken pipes handled more gracefully to
+  re-establish connectivity.
 
 

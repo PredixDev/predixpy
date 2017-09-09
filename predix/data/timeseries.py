@@ -14,6 +14,10 @@ import predix.service
 class TimeSeries(object):
     """
     Client library for working with the Time Series service.
+
+    Learn more about Predix Time Series:
+    https://www.predix.io/services/service.html?id=1177
+
     """
     # "Constants" for data quality values
     BAD = 0
@@ -22,6 +26,10 @@ class TimeSeries(object):
     GOOD = 3
 
     def __init__(self, read=True, write=True, *args, **kwargs):
+        """
+        Time Series by default will grant the client both read
+        and write permissions.  Either can be disabled.
+        """
         super(TimeSeries, self).__init__(*args, **kwargs)
 
         self.zone_id = None
@@ -299,20 +307,36 @@ class TimeSeries(object):
         else:
             return self._get_latest(params)
 
-    def _get_websocket(self):
-        if not self.ws:
-            logging.debug("Initializing new websocket connection.")
-            headers = {
-                'Authorization': self.service._get_bearer_token(),
-                'Predix-Zone-Id': self.ingest_zone_id,
-                'Content-Type': 'application/json',
-            }
-            url = self.ingest_uri
+    def _create_connection(self):
+        """
+        Create a new websocket connection with proper headers.
+        """
+        logging.debug("Initializing new websocket connection.")
+        headers = {
+            'Authorization': self.service._get_bearer_token(),
+            'Predix-Zone-Id': self.ingest_zone_id,
+            'Content-Type': 'application/json',
+        }
+        url = self.ingest_uri
 
-            logging.debug("URL=" + str(url))
-            logging.debug("HEADERS=" + str(headers))
-            self.ws = websocket.create_connection(url, header=headers)
+        logging.debug("URL=" + str(url))
+        logging.debug("HEADERS=" + str(headers))
 
+        # Should consider connection pooling and longer timeouts
+        return websocket.create_connection(url, header=headers)
+
+    def _get_websocket(self, reuse=True):
+        """
+        Reuse existing connection or create a new connection.
+        """
+        # Check if still connected
+        if self.ws and reuse:
+            if self.ws.connected:
+                return self.ws
+
+            logging.debug("Stale connection, reconnecting.")
+
+        self.ws = self._create_connection()
         return self.ws
 
     def _send_to_timeseries(self, message):
@@ -322,9 +346,18 @@ class TimeSeries(object):
         """
         logging.debug("MESSAGE=" + str(message))
 
-        ws = self._get_websocket()
-        ws.send(json.dumps(message))
-        result = ws.recv()
+        result = None
+        try:
+            ws = self._get_websocket()
+            ws.send(json.dumps(message))
+            result = ws.recv()
+        except (websocket.WebSocketConnectionClosedException, Exception) as e:
+            logging.debug("Connection failed, will try again.")
+            logging.debug(e)
+
+            ws = self._get_websocket(reuse=False)
+            ws.send(json.dumps(message))
+            result = ws.recv()
 
         logging.debug("RESULT=" + str(result))
         return result

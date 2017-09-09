@@ -57,7 +57,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'PredixPy'
-copyright = u'2017, Jayson DeLancey'
+copyright = u'2017, GE Digital'
 author = u'Jayson DeLancey'
 
 # The version info for the project you're documenting, acts as replacement for

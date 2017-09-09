@@ -92,7 +92,7 @@ class CloudFoundryService(object):
         """
         return self.service.space.has_service_with_name(self.name)
 
-    def create(self, parameters={}):
+    def create(self, parameters={}, create_keys=True):
         """
         Create the service.
         """
@@ -101,9 +101,10 @@ class CloudFoundryService(object):
 
         # Create the service key to get config details and
         # store in local cache file.
-        cfg = parameters
-        cfg.update(self._get_service_config())
-        self.settings.save(cfg)
+        if create_keys:
+            cfg = parameters
+            cfg.update(self._get_service_config())
+            self.settings.save(cfg)
 
 
 class PredixService(CloudFoundryService):
@@ -130,7 +131,7 @@ class PredixService(CloudFoundryService):
         logging.debug("Initializing a new UAA")
         return predix.admin.uaa.UserAccountAuthentication()
 
-    def create(self, parameters={}):
+    def create(self, parameters={}, **kwargs):
         """
         Create an instance of the US Weather Forecast Service with
         typical starting settings.
@@ -138,4 +139,4 @@ class PredixService(CloudFoundryService):
         # Add parameter during create for UAA issuer
         uri = self.uaa.service.settings.data['uri'] + '/oauth/token'
         parameters["trustedIssuerIds"] = [uri]
-        super(PredixService, self).create(parameters=parameters)
+        super(PredixService, self).create(parameters=parameters, **kwargs)

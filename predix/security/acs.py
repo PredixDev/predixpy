@@ -312,7 +312,7 @@ class AccessControl(object):
         Policies are evaluated against resources and subjects.  They are
         identified by matching a uriTemplate or attributes.
 
-        Examples:
+        Examples::
 
             resource = {
                 "uriTemplate": "/asset/{id}"
@@ -328,7 +328,7 @@ class AccessControl(object):
         The condition is expected to be a string that defines a groovy
         operation that can be evaluated.
 
-        Examples:
+        Examples::
 
             condition = "match.single(subject.attributes('default', 'role'),
                 'admin')

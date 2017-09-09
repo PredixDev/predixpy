@@ -49,7 +49,7 @@ modify the SDK itself.  If you send a PR it will be reviewed as soon as
 possible but contribution guidelines for external parties may require
 additional discussion.
 
-[![Analytics](https://ga-beacon.appspot.com/UA-82773213-1/predix-sdks/readme?pixel)](https://github.com/PredixDev)
+[![Analytics](https://ga-beacon.appspot.com/UA-82773213-1/predixpy/readme?pixel)](https://github.com/PredixDev)
 
 ---
 [catalog]: https://www.predix.io/catalog/services

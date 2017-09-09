@@ -4,7 +4,7 @@ User Accounts and Authentication
 
 The User Accounts and Authentication Service, known as UAA, is an OAuth2
 implementation common in Cloud Foundry deployments.  You can learn more about
-it from the `UAA`_ catalog page.
+it from the `UAA`_ catalog page and official documentation.
 
 .. _UAA: https://www.predix.io/services/service.html?id=1172
 
@@ -17,18 +17,28 @@ Example
 .......
 
 Here is a simple demo to create a uaa instance, create a client, authenticate
-as the client, and print out the scopes::
+as the client, and print out the scopes.
+
+::
+
+    # How-To Create the Service
 
     import predix.admin.app
     app = predix.admin.app.Manifest()
     app.create_uaa('admin-secret')
     app.create_client('my-client', 'my-client-secret')
 
+::
+
+    # How-To Use the Service
+
     import predix.app
     app = predix.app.Manifest()
     uaa = app.get_uaa()
     uaa.authenticate('my-client', 'my-client-secret')
     print(uaa.get_scopes())
+
+Find more examples with :ref:`uaa-cookbook`.
 
 Authentication
 ..............
@@ -62,14 +72,14 @@ support coarse grained permissions such as read/write the Predix Python SDK
 manages the details with a ``grant_client()`` method for each service.  If any
 options are meaningful they are generally exposed.
 
-API
-...
+UAA API
+.......
 
 .. automodule:: predix.security.uaa
     :members:
 
-Administration
-..............
+UAA Administration
+..................
 
 .. automodule:: predix.admin.uaa
     :members:

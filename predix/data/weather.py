@@ -10,7 +10,9 @@ class WeatherForecast(object):
     """
     Weather Forecast Service
 
-    ~~ Deprecated ~~
+    .. important::
+
+       Deprecated
 
     """
     def __init__(self, *args, **kwargs):
@@ -35,6 +37,8 @@ class WeatherForecast(object):
             days=1, frequency=1, reading_type=None):
         """
         Return the weather forecast for a given location.
+
+        ::
 
             results = ws.get_weather_forecast_days(lat, long)
             for w in results['hits']:
@@ -70,6 +74,8 @@ class WeatherForecast(object):
         """
         Return the weather forecast for a given location for specific
         datetime specified in UTC format.
+
+        ::
 
             results = ws.get_weather_forecast(lat, long, start, end)
             for w in results['hits']:

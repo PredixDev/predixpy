@@ -10,7 +10,10 @@ class WeatherForecast(object):
     """
     Weather Forecast Service
 
-    ~~ DEPRECATED ~~
+    .. important::
+
+       Deprecated
+
     """
     def __init__(self, plan_name=None, name=None, uaa=None, *args, **kwargs):
         super(WeatherForecast, self).__init__(*args, **kwargs)

@@ -11,17 +11,11 @@ Services
    connectivity is available (Time Series, Asset) on the edge or your
    workstation.
 
+.. include:: uaa.inc
+.. include:: acs.inc
+.. include:: asset.inc
+.. include:: timeseries.inc
+.. include:: blobstore.inc
+.. include:: logging.inc
+.. include:: weather.inc
 
-.. include:: uaa.rst
-
-.. include:: acs.rst
-
-.. include:: asset.rst
-
-.. include:: timeseries.rst
-
-.. include:: blobstore.rst
-
-.. include:: logging.rst
-
-.. include:: weather.rst

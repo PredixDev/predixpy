@@ -6,14 +6,14 @@ Weather
 
     This service has been deprecated.
 
-API
-...
+Weather API
+...........
 
 .. automodule:: predix.data.weather
     :members:
 
-Administration
-..............
+Weather Administration
+......................
 
 .. automodule:: predix.admin.weather
     :members:

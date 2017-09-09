@@ -12,7 +12,9 @@ import predix.security.uaa
 
 class Asset(object):
     """
-    Client library for working with the Asset service.
+    Client library for working with the Predix Asset Service.  For more details
+    on use of the service please see official docs:
+    https://www.predix.io/services/service.html?id=1171
     """
     def __init__(self, *args, **kwargs):
         super(Asset, self).__init__(*args, **kwargs)
@@ -40,7 +42,9 @@ class Asset(object):
         Returns the names of all user-defined domain object collections with
         counts for number of domain objects contained in that collection.
 
-        [ { "collection": "volcano", "count": 1 }, ... ]
+        ..
+
+            [ { "collection": "volcano", "count": 1 }, ... ]
 
         """
         uri = self.uri
@@ -50,6 +54,11 @@ class Asset(object):
         """
         Returns a flat list of the names of collections in the asset
         service.
+
+        ..
+
+            ['wind-turbines', 'jet-engines']
+
         """
         collections = []
         for result in self._get_collections():
@@ -64,8 +73,8 @@ class Asset(object):
         the given collection endpoint.
 
         Supports passing through parameters such as...
-        - filters such as "name=Vesuvius"
-        - fields such as "uri,description"
+        - filters such as "name=Vesuvius" following GEL spec
+        - fields such as "uri,description" comma delimited
         - page_size such as "100" (the default)
 
         """
@@ -79,6 +88,16 @@ class Asset(object):
 
         uri = self.uri + '/v1' + collection
         return self.service._get(uri, params=params)
+
+    def create_guid(self, collection=None):
+        """
+        Returns a new guid for use in posting a new asset to a collection.
+        """
+        guid = str(uuid.uuid4())
+        if collection:
+            return str.join('/', [collection, guid])
+        else:
+            return guid
 
     def post_collection(self, collection, body):
         """
@@ -119,7 +138,7 @@ class Asset(object):
 
             https://tools.ietf.org/html/rfc6902
 
-        the format of changes is something like:
+        the format of changes is something like::
 
             [{
                 'op': 'add',

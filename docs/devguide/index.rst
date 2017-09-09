@@ -1,45 +1,65 @@
 
-Developer Guide
-===============
+Contributor Guide
+=================
 
 This guide is to help contributors to the PredixPy project itself.
 
-Dev Environment
----------------
+How-To Setup Your Dev Environment
+---------------------------------
 
-After cloning the repository, you can install it in editable mode so that any
-changes you make to the source are observable in your local dev environment
-immediately::
+After cloning this repository it is highly recommended to be using
+``virtualenv`` or similar tooling to isolate your dependencies.  This will also
+make doing development and switching between Python 2.7 and Python 3.x easier.
 
-   pip install -e
+In your environment you can run:
 
-It is highly recommended to be using ``virtualenv`` to properly isolate your
-dependencies.  There is also a docker image that may be helpful with Cloud
-Foundry CLI installed::
+::
 
-   docker run -it --rm --volume=$(pwd):/home/app j12y/cf-ade-py
+    pip install -e
 
-Quality Assurance
------------------
+This will install the library to site packages with a symlink back to the
+GitHub repository.  This will allow any changes you make to have an immediate
+effect on your environment.
 
-To check coding style::
+How-To Run Tests
+----------------
+
+To run unit tests and verify everything is still passing you can run u
+
+::
+
+    python setup.py unittest
+
+You can also increase verbosity for more details
+
+::
+
+    python setup.py nosetests --verbosity=2
+
+How-To Check Coding Style
+-------------------------
+
+For testing PEP-8 and style guide against the codebase::
 
    python setup.py flake8
+
+How-To Check Test Coverage
+--------------------------
 
 To check test coverage::
 
    python setup.py nosetests --with-coverage --cover-xml
 
-Release Management
-------------------
+How-To Package Dependency
+-------------------------
 
-Running setuptools sdist will produce a file *dist/predix-x.y.z.tar.gz* which
-can be useful.  It is not only the file needed to publish to PyPI, it can be
-used in the **vendor/** folder used by the python_buildpack when deploying an
-app to Cloud Foundry.
+Using seutptools you can generate *dist/predix-x.y.z.tar.gz* which can be used
+to publish to PyPI with ``twine`` or used in a Cloud Foundry ``vendor``
+directory.
 
 To build a distributable package with setuptools::
 
    python setup.py sdist
 
+The version comes from incrementing the value in *setup.py*.
 

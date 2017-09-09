@@ -15,7 +15,7 @@ setup_requires = [
 
 setup(
         name="predix",
-        version="0.0.8",
+        version="0.0.9",
         author="Jayson DeLancey",
         author_email="jayson.delancey@ge.com",
         description="Python Client SDK for Predix Services",
@@ -28,9 +28,9 @@ setup(
             'console_scripts': [
                 ]
         },
-        tests_require=['tox'],
+        tests_require=[],
         keywords=['predix', 'ge', 'time', 'asset', 'analytics'],
-        url="https://github.com/predixpy/predixpy",
+        url="https://github.com/PredixDev/predixpy",
         classifiers=[
             'Intended Audience :: Developers',
             'Natural Language :: English',

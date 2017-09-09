@@ -15,6 +15,23 @@ compatibility with **Python 3.6.x** is on the near-term roadmap.
 
 .. _quick-start:
 
+Installation
+------------
+
+Install it from PyPI::
+
+   pip install predix
+
+If that isn't working for you, we highly recommend `The Hitchiker's Guide to
+Properly Installing Python`_ to learn about installing ``python``, ``pip``, and
+``virtualenv`` for your environment.  For industrial environments, you may also
+need to learn how to set your proxies.
+
+.. _The Hitchiker's Guide to Properly Installing Python: http://docs.python-guide.org/en/latest/starting/installation/
+
+If you run into trouble installing check out the :ref:`installation-cookbook` for
+more help.
+
 First Steps
 -----------
 
@@ -25,9 +42,10 @@ app to work with those services, and (3) communicate with those services.
 
    In order to use the Predix Python SDK to communicate with services it must
    be configured to know how to find the ones provisioned in your space.  This
-   is accomplished with environment variables.  You can use the admin
-   functionality of the SDK to define these variables like
-   PREDIX_SECURITY_UAA_URI.
+   is accomplished with environment variables.  For example,
+   **PREDIX_SECURITY_UAA_URI** is expected to be set for your UAA instance.
+
+   Fortunately, the SDK can help with that.
 
 Before we begin, we need to log into a Predix API endpoint and create a space
 for us to experiment in.

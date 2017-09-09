@@ -1,10 +1,12 @@
 
+.. _acs-service:
+
 Access Control
 --------------
 
 The Access Control Service, known as ACS, is a fine-grained access control
 system common in complex dynamic industrial settings.  You can learn more about
-it from the `ACS`_ catalog page.
+it from the `ACS`_ catalog page and official documentation.
 
 .. _ACS: https://www.predix.io/services/service.html?id=1180
 
@@ -12,13 +14,20 @@ Example
 .......
 
 Here is a simple demo to create an acs instance and a basic use example of
-evaluating access policy.
+creating subjects and resources.
+
+::
+
+    # How-To Create the Service
+    # IMPORTANT: You must have already configured UAA and client
 
     import predix.admin.app
     app = predix.admin.app.Manifest()
-    app.create_uaa('admin-secret')
-    app.create_client('my-client', 'my-client-secret')
     app.create_acs()
+
+::
+
+    # How-To Use the Service
 
     import predix.app
     app = predix.app.Manifest()
@@ -27,14 +36,7 @@ evaluating access policy.
     acs.add_subject('/user/jflannery', {'username': 'jflannery', 'role': 'ceo'})
     acs.add_resource('/asset/12', {'manufacturer': 'GE Digital'})
 
-    resource = {'uriTemplate': '/asset'}
-    subject = {'name': 'devangelist', 'attributes': [{"issuer": "default", "name": "role"}]}
-    condition = "match.single(subject.attributes('default', 'role'), 'devangelist')"
-
-    acs.add_policy('any_devangelist', 'GET', resource, subject, condition)
-
-    print(acs.is_allowed('/user/j12y', 'GET', '/asset/12'))
-    print(acs.is_allowed('/user/jflannery', 'GET', '/asset/12'))
+Find more examples with :ref:`acs-cookbook`.
 
 Authorization
 .............
@@ -65,21 +67,22 @@ ACS maintains its own cache of subject and resource attributes in order to
 evaluate policies.  Policies define a specification for what resources and
 subjects are impacted and what condition must be met.
 
-The condition is a groovy expression.
+The condition is a groovy expression so you can have sophisticated access
+evaluation criteria if your application needs it.
 
 Where UAA provides coarse-grained policies for whether a service is available
 to a client at all, ACS helps provide the fine-grained per-data level of
 flexibility that can be handled in a scalable way for sophistated permission
 schemes needed in complex organizational structures.
 
-API
-...
+ACS API
+.......
 
 .. automodule:: predix.security.acs
     :members:
 
-Administration
-..............
+ACS Administration
+..................
 
 .. automodule:: predix.admin.acs
     :members:

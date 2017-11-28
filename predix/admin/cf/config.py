@@ -44,6 +44,13 @@ class Config(object):
         """
         return self.config['AccessToken']
 
+    def get_uaa_endpoint(self):
+        """
+        Returns the UAA endpoint used for Predix Cloud Foundry
+        authentication.
+        """
+        return self.config['UaaEndpoint']
+
     def get_target(self):
         """
         Returns the API target URI.

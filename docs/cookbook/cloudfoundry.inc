@@ -76,3 +76,28 @@ https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.20
 See a post on the Predix Developer Forums for more details:
 https://forum.predix.io/articles/24718/how-to-specify-a-python-version-for-your-app.html
 
+How-To Create and Delete Spaces
+...............................
+
+To test your Python apps, it may be convenient to be able to create and delete
+the spaces you are working in.  You can automate this with bash scripts and the
+``cf`` cli, or there are some utility methods.
+
+..
+
+    import predix.admin.cf.spaces
+
+    # Create a randomly named space and delete it
+
+    space = predix.admin.cf.spaces.create_temp_space()
+    # Do stuff
+    space.delete_space()
+
+    # If you want to specify your own space name
+
+    space = predix.admin.cf.spaces.Space()
+    space.create_space('my-space-name')
+    # Do stuff
+    space.delete_space('my-space-name')
+
+

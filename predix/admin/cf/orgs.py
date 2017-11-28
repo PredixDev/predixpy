@@ -62,6 +62,9 @@ class Org(object):
         """
         return app_name in self.get_apps()
 
+    def get_users(self):
+        return self.api.get('/v2/organizations/%s/users' % self.guid)
+
     def add_user(self, user_name, role='user'):
         """
         Calls CF's associate user with org. Valid roles include `user`, `auditor`,

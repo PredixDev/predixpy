@@ -16,19 +16,29 @@ class UserAccountAuthentication(object):
     The UAA service manages user account authorization and access control for
     Predix service calls through client credentials captured in a bearer token.
 
+    :param uri: URI for the UAA endpoint to interact with, can be derived from
+    environment PREDIX_SECURITY_UAA_URI variable when not specified.
+
     Useful documentation about interacting with API here:
     https://docs.cloudfoundry.org/api/uaa
     """
-    def __init__(self):
+    def __init__(self, uri=None, *args, **kwargs):
+        super(UserAccountAuthentication, self).__init__(*args, **kwargs)
 
-        key = predix.config.get_env_key(self, 'uri')
-        self.uri = os.environ.get(key)
-        if not self.uri:
-            raise ValueError("%s environment unset" % key)
-
+        self.uri = uri or self._get_uaa_uri()
         self.session = requests.Session()
         self.authenticated = False
         self.client = {}
+
+    def _get_uaa_uri(self):
+        """
+        Returns the URI endpoint for an instance of a UAA
+        service instance from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            logging.warning("predix.admin modules not for use in a cf env")
+
+        return predix.config.get_env_value(self, 'uri')
 
     def _authenticate_client(self, client, secret):
         """

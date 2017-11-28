@@ -11,6 +11,7 @@ Services
    connectivity is available (Time Series, Asset) on the edge or your
    workstation.
 
+.. include:: app.inc
 .. include:: uaa.inc
 .. include:: acs.inc
 .. include:: asset.inc

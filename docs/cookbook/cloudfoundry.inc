@@ -50,7 +50,7 @@ These will be packaged and deployed with your Cloud Foundry Droplet.
 See a post on the Predix Developer Forums for more details:
 https://forum.predix.io/articles/24733/how-to-include-your-own-private-python-libraries-i.html
 
-How-To Specify a different version of Python
+How-To Specify a Different Version of Python
 ............................................
 
 If you add a ``runtime.txt`` file in the same directory as your manifest.yml
@@ -100,4 +100,38 @@ the spaces you are working in.  You can automate this with bash scripts and the
     # Do stuff
     space.delete_space('my-space-name')
 
+How-To Test Apps Without Pushing to Predix Cloud
+................................................
 
+You can test your application with Python SimpleHTTPServer which allows you
+to visit http://localhost:4000/ to test your app before you do a ``cf push``.
+
+..
+
+    python -m SimpleHTTPServer
+
+You wouldn't use this in production, but it is suitable for quick development
+testing.  If used in combination with ``predix.app.Manifest()`` many of the
+service bindings will behave similar to how they will when deployed to Cloud
+Foundry.  There are a few exceptions such as **PostgreSQL** and **Blobstore**
+that are only available when running in a Predix Cloud environment.
+
+How-To Choose Org and Space
+...........................
+
+If you run ``cf target`` you can see the org and space that will be used for
+any SDK admin operations.  You can use the ``cf target -s <other-space>`` to
+use a different space.
+
+If you want to automatically target the same org and space when you are using a
+manifest you can bake this into the manifest.yml itself.  The following
+demonstrates how to do this:
+
+..
+
+    import predix.admin.app
+    app = predix.admin.app.Manifest()
+    app.lock_to_org_space()
+
+From then on, any admin operations will focus on the same org and space from
+this manifest despite what ``cf target`` currently indicates.

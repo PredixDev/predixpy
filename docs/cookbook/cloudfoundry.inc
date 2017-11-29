@@ -58,13 +58,13 @@ you can specify a single line in the file to signify the version.
 
 For example:
 
-..
+::
 
     python-3.6.1
 
 or
 
-..
+::
 
     python-2.7.13
 
@@ -83,7 +83,7 @@ To test your Python apps, it may be convenient to be able to create and delete
 the spaces you are working in.  You can automate this with bash scripts and the
 ``cf`` cli, or there are some utility methods.
 
-..
+::
 
     import predix.admin.cf.spaces
 
@@ -106,7 +106,7 @@ How-To Test Apps Without Pushing to Predix Cloud
 You can test your application with Python SimpleHTTPServer which allows you
 to visit http://localhost:4000/ to test your app before you do a ``cf push``.
 
-..
+::
 
     python -m SimpleHTTPServer
 
@@ -127,7 +127,7 @@ If you want to automatically target the same org and space when you are using a
 manifest you can bake this into the manifest.yml itself.  The following
 demonstrates how to do this:
 
-..
+::
 
     import predix.admin.app
     app = predix.admin.app.Manifest()
@@ -135,3 +135,37 @@ demonstrates how to do this:
 
 From then on, any admin operations will focus on the same org and space from
 this manifest despite what ``cf target`` currently indicates.
+
+How-To Do Common Cloud Foundry CLI Commands
+...........................................
+
+In the following table the ``admin`` object is created with the following
+snippet of code:
+
+::
+
+    import predix.admin.app
+    admin = predix.admin.app.Manifest()
+
+You can then programmatically with Python do a few of the common things you
+might see others do on the command line.  These are mostly for convenience
+as you might want to script tools that can handle data from these commands.
+
++-----------------------+------------------------------------+
+|  CF Command           |  PredixPy                          |
++=======================+====================================+
+| cf spaces             |  admin.space.get_spaces()          |
++-----------------------+------------------------------------+
+| cf services           |  admin.space.get_instances()       |
++-----------------------+------------------------------------+
+| cf apps               |  admin.space.get_apps()            |
++-----------------------+------------------------------------+
+| cf marketplace        |  admin.space.get_services()        |
++-----------------------+------------------------------------+
+| cf create-space       |  admin.space.create_space()        |
++-----------------------+------------------------------------+
+| cf org-users          |  admin.space.org.get_users()       |
++-----------------------+------------------------------------+
+
+
+

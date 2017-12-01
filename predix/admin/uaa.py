@@ -24,7 +24,7 @@ class UserAccountAuthentication(object):
         self.use_class = predix.security.uaa.UserAccountAuthentication
 
         self.service = predix.admin.service.CloudFoundryService(self.service_name,
-                self.plan_name)
+                self.plan_name, name=name)
         self.is_admin = False
 
         # If UAA already created we can authenticate immediately

@@ -49,19 +49,19 @@ modify the SDK itself.  If you send a PR it will be reviewed as soon as
 possible but contribution guidelines for external parties may require
 additional discussion.
 
-[![Analytics](https://ga-beacon.appspot.com/UA-82773213-1/predixpy/readme?pixel)](https://github.com/PredixDev)
-
 ---
 [catalog]: https://www.predix.io/catalog/services
 [hitchiker]: http://docs.python-guide.org/en/latest/starting/installation/
 [forum]: https://forum.predix.io/index.html
 [github]: https://github.com/PredixDev/predixpy/issues
-[uaa]: https://www.predix.io/services/service.html?id=1172
-[timeseries]: https://www.predix.io/services/service.html?id=1177
-[asset]: https://www.predix.io/services/service.html?id=1171
-[acs]: https://www.predix.io/services/service.html?id=1180
-[blobstore]: https://www.predix.io/services/service.html?id=1179
-[logging]: https://www.predix.io/services/service.html?id=1184
+[uaa]: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#user-accounts-and-authentication
+[timeseries]: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#time-series
+[asset]: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#asset
+[acs]: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#access-control
+[blobstore]: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#blob-store
+[logging]: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#logging
 [gettingstarted]: https://predixpy.run.aws-usw02-pr.ice.predix.io/getting-started/index.html
 [devguide]: https://predixpy.run.aws-usw02-pr.ice.predix.io/devguide/index.html
 [volcanoapp]: https://github.com/PredixDev/predix-volcano-app
+
+[![Analytics](https://ga-beacon.appspot.com/UA-82773213-1/predixpy/readme?pixel)](https://github.com/PredixDev)

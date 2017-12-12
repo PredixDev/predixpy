@@ -38,14 +38,12 @@ Python`_ or `Python docs`_ for details.
 
 **Proxies**
 
-If you are in an industrial environment you may need to set proxies in your
-environment.  The Python interpreter will pull these variables in at runtime so
-there shouldn't be too much you need to do.
+If you are in an industrial setting you may need to set proxies in your
+operating system environment.  The Python interpreter will pull these variables
+in at runtime so there shouldn't be too much you need to do beyond setting
+``http_proxy`` and ``https_proxy`` in the session launching your python code.
 
-You can use the ``env`` section of your ``manifest.yml`` if you want to limit
-the scope of those environments to ``predix.app``.
-
-There is a good Predix `Proxies` guide you may want to review.
+There is a good Predix `Proxies`_ guide you may want to review for more details.
 
 .. _Proxies: https://www.predix.io/resources/tutorials/tutorial-details.html?tutorial_id=1565
 

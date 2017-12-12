@@ -24,12 +24,22 @@ class UserAccountAuthentication(object):
         self.use_class = predix.security.uaa.UserAccountAuthentication
 
         self.service = predix.admin.service.CloudFoundryService(self.service_name,
-                self.plan_name)
+                self.plan_name, name=name)
         self.is_admin = False
 
         # If UAA already created we can authenticate immediately
         if self.exists():
             self.authenticate()
+
+    def _get_uaa_uri(self):
+        """
+        Returns the URI endpoint for this instance of the UAA service if it
+        exists.
+        """
+        if predix.config.is_cf_env():
+            logging.warning("admin modules only for use outside predix cloud")
+
+        return predix.config.get_env_value(self.use_class, 'uri')
 
     def exists(self):
         """
@@ -45,8 +55,9 @@ class UserAccountAuthentication(object):
         parameters = {"adminClientSecret": secret}
         self.service.create(parameters=parameters)
 
-        uri = predix.config.get_env_key(self.use_class, 'uri')
-        os.environ[uri] = self.service.settings.data['uri']
+        # Store URI into environment variable
+        uri = self.service.settings.data['uri']
+        predix.config.set_env_value(self.use_class, 'uri', uri)
 
         # Once we create it login
         self.authenticate()
@@ -63,9 +74,10 @@ class UserAccountAuthentication(object):
         # Add this service to list of services
         manifest.add_service(self.service.name)
 
-        # Add environment variables
-        uri = predix.config.get_env_key(self.use_class, 'uri')
-        manifest.add_env_var(uri, self.service.settings.data['uri'])
+        # Add environment variable to manifest
+        uri = self.service.settings.data['uri']
+        varname = predix.config.set_env_value(self.use_class, 'uri', uri)
+        manifest.add_env_var(varname, uri)
 
         manifest.write_manifest()
 
@@ -73,8 +85,9 @@ class UserAccountAuthentication(object):
         """
         Authenticate into the UAA instance as the admin user.
         """
-        uri = predix.config.get_env_key(self.use_class, 'uri')
-        os.environ[uri] = self.service.settings.data['uri']
+        # Make sure we've stored uri for use
+        uri = self.service.settings.data['uri']
+        predix.config.set_env_value(self.use_class, 'uri', uri)
 
         self.uaac = predix.security.uaa.UserAccountAuthentication()
         self.uaac.authenticate('admin', self._get_admin_secret(),

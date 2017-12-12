@@ -50,7 +50,7 @@ These will be packaged and deployed with your Cloud Foundry Droplet.
 See a post on the Predix Developer Forums for more details:
 https://forum.predix.io/articles/24733/how-to-include-your-own-private-python-libraries-i.html
 
-How-To Specify a different version of Python
+How-To Specify a Different Version of Python
 ............................................
 
 If you add a ``runtime.txt`` file in the same directory as your manifest.yml
@@ -58,13 +58,13 @@ you can specify a single line in the file to signify the version.
 
 For example:
 
-..
+::
 
     python-3.6.1
 
 or
 
-..
+::
 
     python-2.7.13
 
@@ -75,4 +75,97 @@ https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.20
 
 See a post on the Predix Developer Forums for more details:
 https://forum.predix.io/articles/24718/how-to-specify-a-python-version-for-your-app.html
+
+How-To Create and Delete Spaces
+...............................
+
+To test your Python apps, it may be convenient to be able to create and delete
+the spaces you are working in.  You can automate this with bash scripts and the
+``cf`` cli, or there are some utility methods.
+
+::
+
+    import predix.admin.cf.spaces
+
+    # Create a randomly named space and delete it
+
+    space = predix.admin.cf.spaces.create_temp_space()
+    # Do stuff
+    space.delete_space()
+
+    # If you want to specify your own space name
+
+    space = predix.admin.cf.spaces.Space()
+    space.create_space('my-space-name')
+    # Do stuff
+    space.delete_space('my-space-name')
+
+How-To Test Apps Without Pushing to Predix Cloud
+................................................
+
+You can test your application with Python SimpleHTTPServer which allows you
+to visit http://localhost:4000/ to test your app before you do a ``cf push``.
+
+::
+
+    python -m SimpleHTTPServer
+
+You wouldn't use this in production, but it is suitable for quick development
+testing.  If used in combination with ``predix.app.Manifest()`` many of the
+service bindings will behave similar to how they will when deployed to Cloud
+Foundry.  There are a few exceptions such as **PostgreSQL** and **Blobstore**
+that are only available when running in a Predix Cloud environment.
+
+How-To Choose Org and Space
+...........................
+
+If you run ``cf target`` you can see the org and space that will be used for
+any SDK admin operations.  You can use the ``cf target -s <other-space>`` to
+use a different space.
+
+If you want to automatically target the same org and space when you are using a
+manifest you can bake this into the manifest.yml itself.  The following
+demonstrates how to do this:
+
+::
+
+    import predix.admin.app
+    app = predix.admin.app.Manifest()
+    app.lock_to_org_space()
+
+From then on, any admin operations will focus on the same org and space from
+this manifest despite what ``cf target`` currently indicates.
+
+How-To Do Common Cloud Foundry CLI Commands
+...........................................
+
+In the following table the ``admin`` object is created with the following
+snippet of code:
+
+::
+
+    import predix.admin.app
+    admin = predix.admin.app.Manifest()
+
+You can then programmatically with Python do a few of the common things you
+might see others do on the command line.  These are mostly for convenience
+as you might want to script tools that can handle data from these commands.
+
++-----------------------+------------------------------------+
+|  CF Command           |  PredixPy                          |
++=======================+====================================+
+| cf spaces             |  admin.space.get_spaces()          |
++-----------------------+------------------------------------+
+| cf services           |  admin.space.get_instances()       |
++-----------------------+------------------------------------+
+| cf apps               |  admin.space.get_apps()            |
++-----------------------+------------------------------------+
+| cf marketplace        |  admin.space.get_services()        |
++-----------------------+------------------------------------+
+| cf create-space       |  admin.space.create_space()        |
++-----------------------+------------------------------------+
+| cf org-users          |  admin.space.org.get_users()       |
++-----------------------+------------------------------------+
+
+
 

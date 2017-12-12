@@ -11,7 +11,7 @@ class CloudFoundryLoginError(Exception):
     """
     def __init__(self, message):
         super(CloudFoundryLoginError, self).__init__(message)
-        logging.warn(message)
+        logging.warn("Try 'cf login' to get a new token from Cloud Foundry (%s)." % (message))
 
 
 class Config(object):
@@ -43,6 +43,13 @@ class Config(object):
         "Bearer" identifier.
         """
         return self.config['AccessToken']
+
+    def get_uaa_endpoint(self):
+        """
+        Returns the UAA endpoint used for Predix Cloud Foundry
+        authentication.
+        """
+        return self.config['UaaEndpoint']
 
     def get_target(self):
         """

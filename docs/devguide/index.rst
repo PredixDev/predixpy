@@ -4,6 +4,10 @@ Contributor Guide
 
 This guide is to help contributors to the PredixPy project itself.
 
+- Install Homebrew - https://brew.sh
+- Install CF CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html
+- Install Python - http://docs.python-guide.org/en/latest/starting/install/osx/#install-osx
+
 How-To Setup Your Dev Environment
 ---------------------------------
 
@@ -24,11 +28,11 @@ effect on your environment.
 How-To Run Tests
 ----------------
 
-To run unit tests and verify everything is still passing you can run u
+To run unit tests and verify everything is still passing you can run
 
 ::
 
-    python setup.py unittest
+    python setup.py test
 
 You can also increase verbosity for more details
 

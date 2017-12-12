@@ -3,6 +3,8 @@ import os
 import yaml
 import logging
 
+import predix
+
 
 class Manifest(object):
     """
@@ -31,6 +33,16 @@ class Manifest(object):
         # Probably always want manifest loaded into environment
         self.set_os_environ()
 
+    def get_manifest_version(self):
+        """
+        Returns the version of PredixPy used to generate the manifest.
+        """
+        if 'env' in self.manifest:
+            if 'PREDIXPY_VERSION' in self.manifest['env']:
+                return self.manifest['env']['PREDIXPY_VERSION']
+
+        return None
+
     def read_manifest(self):
         """
         Read an existing manifest.
@@ -42,6 +54,8 @@ class Manifest(object):
             if 'services' not in self.manifest:
                 self.manifest['services'] = []
 
+            self.app_name = self.manifest['applications'][0]['name']
+
             input_file.close()
 
     def create_manifest(self):
@@ -52,7 +66,9 @@ class Manifest(object):
         self.manifest = {}
         self.manifest['applications'] = [{'name': self.app_name}]
         self.manifest['services'] = []
-        self.manifest['env'] = {}
+        self.manifest['env'] = {
+                'PREDIXPY_VERSION': str(predix.version),
+                }
 
         self.write_manifest()
 
@@ -60,6 +76,7 @@ class Manifest(object):
         """
         Write manifest to disk.
         """
+        self.manifest['env']['PREDIXPY_VERSION'] = str(predix.version)
         with open(self.manifest_path, 'w') as output_file:
             yaml.safe_dump(self.manifest, output_file,
                     default_flow_style=False, explicit_start=True)

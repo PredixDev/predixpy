@@ -173,12 +173,14 @@ class UserAccountAuthentication(object):
         for client in data[self.uri]:
             if new_item['id'] == client['id']:
                 data[self.uri].remove(client)
+                continue
 
             # May have old tokens laying around to be cleaned up
             if 'expires' in client:
                 expires = dateutil.parser.parse(client['expires'])
                 if expires < datetime.datetime.now():
                     data[self.uri].remove(client)
+                    continue
 
         data[self.uri].append(new_item)
 

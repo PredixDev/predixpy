@@ -58,5 +58,7 @@ class TestUAA(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    if os.getenv('DEBUG'):
+        logging.basicConfig(level=logging.DEBUG)
+
     unittest.main()

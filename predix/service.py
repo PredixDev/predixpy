@@ -4,6 +4,7 @@ import json
 import logging
 import requests
 
+import predix.app
 import predix.security.uaa
 
 
@@ -26,8 +27,8 @@ class Service(object):
         """
         If we are in an app context we can authenticate immediately.
         """
-        client_id = os.environ.get('PREDIX_APP_CLIENT_ID')
-        client_secret = os.environ.get('PREDIX_APP_CLIENT_SECRET')
+        client_id = predix.config.get_env_value(predix.app, 'client_id')
+        client_secret = predix.config.get_env_value(predix.app, 'client_secret')
 
         if client_id and client_secret:
             logging.info("Automatically authenticated as %s" % (client_id))

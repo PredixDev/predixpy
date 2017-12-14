@@ -1,7 +1,11 @@
 
 import os
 import yaml
+import copy
 import logging
+from cryptography.fernet import Fernet
+
+import predix.config
 
 
 class Manifest(object):
@@ -10,10 +14,27 @@ class Manifest(object):
     of application configuration.  As we setup services and
     run our applications the manifest is a place to store
     important configuration details.
+
+    :param app_name: the name of your application which will be used by default
+        in the route
+    :param manifest_key: if encrypting your manifest this is the key for
+        cryptography
+    :param encrypted: whether to manifest values should be encrypted
+    :param debug: enable additional debugging
+
     """
-    def __init__(self, manifest_path='manifest.yml', app_name='my-predix-app', debug=False):
+    def __init__(self, manifest_path='manifest.yml',
+            app_name='my-predix-app',
+            manifest_key='~/.predix/manifest_key',
+            encrypted=False,
+            debug=False):
+
         self.manifest_path = os.path.expanduser(manifest_path)
         self.app_name = app_name
+
+        # Parameters for encrypting config files
+        self.manifest_key = manifest_key
+        self.encrypted = encrypted
 
         # App may have a client
         self.client_id = None
@@ -31,7 +52,17 @@ class Manifest(object):
         # Probably always want manifest loaded into environment
         self.set_os_environ()
 
-    def read_manifest(self):
+    def get_manifest_version(self):
+        """
+        Returns the version of PredixPy used to generate the manifest.
+        """
+        if 'env' in self.manifest:
+            if 'PREDIXPY_VERSION' in self.manifest['env']:
+                return self.manifest['env']['PREDIXPY_VERSION']
+
+        return None
+
+    def read_manifest(self, encrypted=None):
         """
         Read an existing manifest.
         """
@@ -41,6 +72,18 @@ class Manifest(object):
                 self.manifest['env'] = {}
             if 'services' not in self.manifest:
                 self.manifest['services'] = []
+
+            # If manifest is encrypted, use manifest key to
+            # decrypt each value before storing in memory.
+            if encrypted or self.encrypted:
+                key = predix.config.get_crypt_key(self.manifest_key)
+                f = Fernet(key)
+
+                for var in self.manifest['env'].keys():
+                    value = f.decrypt(self.manifest['env'][var])
+                    self.manifest['env'][var] = value
+
+            self.app_name = self.manifest['applications'][0]['name']
 
             input_file.close()
 
@@ -52,16 +95,47 @@ class Manifest(object):
         self.manifest = {}
         self.manifest['applications'] = [{'name': self.app_name}]
         self.manifest['services'] = []
-        self.manifest['env'] = {}
+        self.manifest['env'] = {
+                'PREDIXPY_VERSION': str(predix.version),
+                }
 
         self.write_manifest()
 
-    def write_manifest(self):
+    def _get_encrypted_manifest(self):
+        """
+        Returns contents of the manifest where environment variables
+        that are secret will be encrypted without modifying the existing
+        state in memory which will remain unencrypted.
+        """
+        key = predix.config.get_crypt_key(self.manifest_key)
+        f = Fernet(key)
+
+        manifest = copy.deepcopy(self.manifest)
+        for var in self.manifest['env'].keys():
+            value = self.manifest['env'][var]
+            manifest['env'][var] = f.encrypt(bytes(value))
+
+        return manifest
+
+    def write_manifest(self, manifest_path=None, encrypted=None):
         """
         Write manifest to disk.
+
+        :param manifest_path: write to a different location
+        :param encrypted: write with env data encrypted
+
         """
-        with open(self.manifest_path, 'w') as output_file:
-            yaml.safe_dump(self.manifest, output_file,
+        manifest_path = manifest_path or self.manifest_path
+        self.manifest['env']['PREDIXPY_VERSION'] = str(predix.version)
+
+        with open(manifest_path, 'w') as output_file:
+            if encrypted or self.encrypted:
+                content = self._get_encrypted_manifest()
+            else:
+                content = self.manifest   # shallow reference
+                logging.warning("Writing manifest {} unencrypted.".format(manifest_path))
+
+            yaml.safe_dump(content, output_file,
                     default_flow_style=False, explicit_start=True)
             output_file.close()
 
@@ -98,11 +172,7 @@ class Manifest(object):
         needed scopes and authorities for the services
         in this manifest.
         """
-        key = 'PREDIX_APP_CLIENT_ID'
-        if key not in self.manifest['env']:
-            raise ValueError("%s undefined in manifest." % key)
-
-        self.client_id = self.manifest['env'][key]
+        self.client_id = predix.config.get_env_value(self, 'client_id')
         return self.client_id
 
     def get_client_secret(self):
@@ -110,11 +180,7 @@ class Manifest(object):
         Return the client secret that should correspond with
         the client id.
         """
-        key = 'PREDIX_APP_CLIENT_SECRET'
-        if key not in self.manifest['env']:
-            raise ValueError("%s must be added to manifest." % key)
-
-        self.client_secret = self.manifest['env'][key]
+        self.client_secret = predix.config.get_env_value(self, 'client_secret')
         return self.client_secret
 
     def get_timeseries(self, *args, **kwargs):

@@ -7,3 +7,4 @@ PyYAML>=3.12
 websocket>=0.2.1
 websocket-client>=0.40.0
 boto3>=1.4.4
+cryptography==2.0.3

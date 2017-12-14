@@ -45,6 +45,27 @@ class TestManifest(unittest.TestCase):
         self.assertEqual(admin.app_name, 'my-predix-app')
         self.assertEqual(admin.get_manifest_version(), '0.0.9')
 
+    def test_encrypted_manifest(self):
+        # Check that we are encrypting output
+        manifest_path = tempfile.mktemp(suffix='.yml', prefix='manifest_')
+        admin = predix.admin.app.Manifest(manifest_path, encrypted=True)
+        logging.debug(manifest_path)
+
+        # Unencrypted in memory means version should match
+        self.assertEqual(admin.get_manifest_version(), predix.version)
+
+        # Encrypted at rest means version number should not be readable
+        version_line = None
+        with open(manifest_path, 'r') as m:
+            for line in m.readlines():
+                if 'PREDIXPY_VERSION' in line:
+                    version_line = line
+                    break
+
+            m.close()
+
+        self.assertTrue(predix.version not in version_line)
+
 
 if __name__ == '__main__':
     if os.getenv('DEBUG'):

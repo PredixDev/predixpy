@@ -64,8 +64,8 @@ class TestUAA(unittest.TestCase):
 
         # Authenticate as the user manager and verify CRD operations
         uaa.authenticate('userman-id', 'userman-secret')
-        uaa.create_user('j12y', 'password123', 'DeLancey', 'Jayson', 'jayson.delancey@ge.com')
-        uaa.create_user('masaya', 'volcano123', 'Hell', 'Mouth', 'volcano@ge.com')
+        uaa.create_user('j12y', 'PassWord-123', 'DeLancey', 'Jayson', 'jayson.delancey@ge.com')
+        uaa.create_user('masaya', 'VolcanO-123', 'Hell', 'Mouth', 'volcano@ge.com')
 
         users = uaa.get_users()
         self.assertEqual(users['totalResults'], 2)

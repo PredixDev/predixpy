@@ -45,9 +45,9 @@ class Manifest(object):
 
         # Read or Generate a manifest file
         if os.path.exists(self.manifest_path):
-            manifest = self.read_manifest()
+            self.read_manifest()
         else:
-            manifest = self.create_manifest()
+            self.create_manifest()
 
         # Probably always want manifest loaded into environment
         self.set_os_environ()
@@ -75,6 +75,10 @@ class Manifest(object):
 
             # If manifest is encrypted, use manifest key to
             # decrypt each value before storing in memory.
+
+            if 'PREDIXPY_ENCRYPTED' in self.manifest['env']:
+                self.encrypted = True
+
             if encrypted or self.encrypted:
                 key = predix.config.get_crypt_key(self.manifest_key)
                 f = Fernet(key)
@@ -130,9 +134,12 @@ class Manifest(object):
 
         with open(manifest_path, 'w') as output_file:
             if encrypted or self.encrypted:
+                self.manifest['env']['PREDIXPY_ENCRYPTED'] = self.manifest_key
                 content = self._get_encrypted_manifest()
             else:
                 content = self.manifest   # shallow reference
+                if 'PREDIXPY_ENCRYPTED' in content['env']:
+                    del(content['env']['PREDIXPY_ENCRYPTED'])
                 logging.warning("Writing manifest {} unencrypted.".format(manifest_path))
 
             yaml.safe_dump(content, output_file,
@@ -172,7 +179,7 @@ class Manifest(object):
         needed scopes and authorities for the services
         in this manifest.
         """
-        self.client_id = predix.config.get_env_value(self, 'client_id')
+        self.client_id = predix.config.get_env_value(predix.app.Manifest, 'client_id')
         return self.client_id
 
     def get_client_secret(self):
@@ -180,7 +187,7 @@ class Manifest(object):
         Return the client secret that should correspond with
         the client id.
         """
-        self.client_secret = predix.config.get_env_value(self, 'client_secret')
+        self.client_secret = predix.config.get_env_value(predix.app.Manifest, 'client_secret')
         return self.client_secret
 
     def get_timeseries(self, *args, **kwargs):

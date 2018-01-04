@@ -21,6 +21,7 @@ class Manifest(predix.app.Manifest):
         super(Manifest, self).__init__(*args, **kwargs)
 
         self.space = predix.admin.cf.spaces.Space()
+        self.services = predix.admin.cf.services.Service()
 
         self.supported = {
             'predix-uaa': predix.admin.uaa.UserAccountAuthentication,

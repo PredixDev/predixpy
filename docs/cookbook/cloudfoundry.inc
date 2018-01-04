@@ -76,6 +76,30 @@ https://github.com/cloudfoundry/python-buildpack/releases/tag/v1.5.20
 See a post on the Predix Developer Forums for more details:
 https://forum.predix.io/articles/24718/how-to-specify-a-python-version-for-your-app.html
 
+How-To Delete a Service
+.......................
+
+If you used PredixPy to create your service you may be surprised that running
+``cf delete-service`` returns an error: *Cannot delete service instance,
+service keys and bindings must first be deleted.*
+
+You can use PredixPy to delete services
+
+::
+
+    import predix.admin.app
+
+    admin = predix.admin.app.Manifest()
+    service_name = 'my-service'
+
+    if service_name in admin.space.get_instances():
+        admin.services.purge(service_name)
+
+    print(admin.space.get_instances())
+
+This can be done with the ``cf`` cli as well of course.  You just run ``cf
+service-keys`` to see the named key and then ``cf delete-service-key``.
+
 How-To Create and Delete Spaces
 ...............................
 
@@ -165,6 +189,8 @@ as you might want to script tools that can handle data from these commands.
 | cf create-space       |  admin.space.create_space()        |
 +-----------------------+------------------------------------+
 | cf org-users          |  admin.space.org.get_users()       |
++-----------------------+------------------------------------+
+| cf delete-service -f  |  admin.services.purge(service_name)|
 +-----------------------+------------------------------------+
 
 

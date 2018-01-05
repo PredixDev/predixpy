@@ -24,9 +24,9 @@ as the client, and print out the scopes.
     # How-To Create the Service
 
     import predix.admin.app
-    app = predix.admin.app.Manifest()
-    app.create_uaa('admin-secret')
-    app.create_client('my-client', 'my-client-secret')
+    admin = predix.admin.app.Manifest()
+    admin.create_uaa('admin-secret')
+    admin.create_client('my-client', 'my-client-secret')
 
 ::
 

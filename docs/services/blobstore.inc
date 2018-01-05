@@ -20,8 +20,8 @@ listing files.
     # IMPORTANT: You must have already configured UAA and client
 
     import predix.admin.app
-    app = predix.admin.app.Manifest()
-    app.create_blobstore()
+    admin = predix.admin.app.Manifest()
+    admin.create_blobstore()
 
 
 ::

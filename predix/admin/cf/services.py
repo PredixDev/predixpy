@@ -152,7 +152,7 @@ class Service(object):
         return None
 
     def create_service(self, service_type, plan_name, service_name, params,
-            async=True):
+            async=False, **kwargs):
         """
         Create a service instance.
         """

@@ -152,7 +152,7 @@ class Manifest(object):
         variable.
         """
         self.manifest['env'][key] = value
-        os.environ[key] = value
+        os.environ[key] = str(value)
 
     def add_service(self, service_name):
         """
@@ -234,3 +234,8 @@ class Manifest(object):
         import predix.data.blobstore
         blobstore = predix.data.blobstore.BlobStore()
         return blobstore
+
+    def get_cache(self):
+        import predix.data.cache
+        cache = predix.data.cache.Cache()
+        return cache

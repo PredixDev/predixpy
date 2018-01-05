@@ -17,6 +17,7 @@ Services
 .. include:: asset.inc
 .. include:: timeseries.inc
 .. include:: blobstore.inc
+.. include:: cache.inc
 .. include:: logging.inc
 .. include:: weather.inc
 

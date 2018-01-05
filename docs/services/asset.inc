@@ -21,8 +21,8 @@ Here is a simple demo to create and use the Predix Asset service.
     # IMPORTANT: You must have already configured UAA and client
 
     import predix.admin.app
-    app = predix.admin.app.Manifest()
-    app.create_asset()
+    admin = predix.admin.app.Manifest()
+    admin.create_asset()
 
 ::
 

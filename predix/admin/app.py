@@ -10,6 +10,7 @@ import predix.admin.cf.spaces
 import predix.admin.blobstore
 import predix.admin.timeseries
 import predix.admin.logstash
+import predix.admin.cache
 
 
 class Manifest(predix.app.Manifest):
@@ -21,6 +22,7 @@ class Manifest(predix.app.Manifest):
         super(Manifest, self).__init__(*args, **kwargs)
 
         self.space = predix.admin.cf.spaces.Space()
+        self.services = predix.admin.cf.services.Service()
 
         self.supported = {
             'predix-uaa': predix.admin.uaa.UserAccountAuthentication,
@@ -182,6 +184,15 @@ class Manifest(predix.app.Manifest):
         logging.info('git clone https://github.com/cloudfoundry-community/kibana-me-logs.git')
 
         return logstash
+
+    def create_cache(self, **kwargs):
+        """
+        Creates an instance of the Cache Service.
+        """
+        cache = predix.admin.cache.Cache(**kwargs)
+        cache.create(**kwargs)
+        cache.add_to_manifest(self)
+        return cache
 
     def get_service_marketplace(self, available=True, unavailable=False,
             deprecated=False):

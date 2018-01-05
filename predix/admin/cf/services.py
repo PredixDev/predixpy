@@ -15,11 +15,18 @@ class Service(object):
         self.api = predix.admin.cf.api.API()
         self.space = predix.admin.cf.spaces.Space()
 
+    def _get_services(self):
+        """
+        Get the marketplace services.  This is not always the same results
+        as the space marketplace so generally prefer the latter.
+        """
+        return self.api.get('/v2/services')
+
     def get_services(self):
         """
         Get the marketplace services.
         """
-        return self.api.get('/v2/services')
+        return self.space._get_services()
 
     def get_instance_guid(self, service_name):
         """
@@ -144,7 +151,8 @@ class Service(object):
 
         return None
 
-    def create_service(self, service_type, plan_name, service_name, params):
+    def create_service(self, service_type, plan_name, service_name, params,
+            async=False, **kwargs):
         """
         Create a service instance.
         """
@@ -166,13 +174,17 @@ class Service(object):
             'parameters': params
             }
 
-        return self.api.post('/v2/service_instances?accepts_incomplete=false',
-                body)
+        uri = '/v2/service_instances?accepts_incomplete=true'
+
+        if async:
+            uri += '&async=true'
+
+        return self.api.post(uri, body)
 
     def delete_service(self, service_name, params=None):
         """
         Delete the service of the given name.  It may fail if there are
-        any service keys or app bindings.  Use obliterate() if you want
+        any service keys or app bindings.  Use purge() if you want
         to delete it all.
         """
         if not self.space.has_service_with_name(service_name):

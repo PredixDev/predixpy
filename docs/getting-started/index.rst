@@ -69,12 +69,12 @@ library in a file called ``initialize-space.py``.
     #!/bin/env python
 
     import predix.admin.app
-    app = predix.admin.app.Manifest()
+    admin = predix.admin.app.Manifest()
 
-    app.create_uaa('admin-secret')
-    app.create_client('client-id', 'client-secret')
+    admin.create_uaa('admin-secret')
+    admin.create_client('client-id', 'client-secret')
 
-    app.create_timeseries()
+    admin.create_timeseries()
 
 This simple admin script would be run only *once* at the beginning of a project to:
 

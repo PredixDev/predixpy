@@ -27,7 +27,7 @@ class Cache(object):
             *args, **kwargs):
 
         if not predix.config.is_cf_env():
-            raise ValueError("This service can only be used in the Predix Cloud Foundry environment.")
+            raise predix.config.PredixCloudRequiredError()
 
         self.host = host or self._get_host()
         self.port = port or self._get_port()

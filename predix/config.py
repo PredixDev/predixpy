@@ -6,6 +6,7 @@ from cryptography.fernet import Fernet
 
 
 def is_cf_env():
+    # MAINT: consider CF_INSTANCE_ADDR
     return ('VCAP_SERVICES' in os.environ) or ('VCAP_APPLICATION' in os.environ)
 
 def get_crypt_key(key_path):
@@ -63,3 +64,15 @@ def set_env_value(obj, attribute, value):
     varname = get_env_key(obj, attribute)
     os.environ[varname] = value
     return varname
+
+class PredixCloudRequiredError(Exception):
+    """
+    A Predix Cloud Requirement Error will be raised when trying to utilize
+    a service that is blocked for access anywhere outside of the Predix Cloud.
+    """
+    def __init__(self, message=None):
+        if not message:
+            message = "Service only available running in Predix Cloud Foundry environment."
+
+        logging.warn(message)
+        super(PredixCloudRequiredError, self).__init__(message)

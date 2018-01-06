@@ -29,9 +29,8 @@ class BlobStore(object):
             bucket_name=None, *args, **kwargs):
         super(BlobStore, self).__init__(*args, **kwargs)
 
-        instance = os.environ.get('CF_INSTANCE_ADDR')
-        if not instance:
-            raise ValueError("This service can only be used in the Predix Cloud Foundry environment.")
+        if not predix.config.is_cf_env():
+            raise predix.config.PredixCloudRequiredError()
 
         self.host = host or self._get_host()
         self.access_key_id = access_key_id or self._get_access_key_id()

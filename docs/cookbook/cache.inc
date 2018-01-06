@@ -51,3 +51,11 @@ In both cases, you will want to update the manifest.yml to properly secure the
 environment with a username and password before pushing the app to Predix.
 When you visit the app it'll behave like a ``bash`` prompt.
 
+How-To Build a Web App with Cache
+.................................
+
+See the following demo application for an example of a Flask app that uses
+Predix Cache with PredixPy.
+
+https://github.com/j12y/predixpy-flask-cache
+

@@ -11,14 +11,32 @@ class AccessControl(object):
     """
     Access Control provides attribute based access control.
     """
-    def __init__(self, name=None, uaa=None, *args, **kwargs):
+    def __init__(self, name=None, plan_name=None, uaa=None, *args, **kwargs):
         super(AccessControl, self).__init__(*args, **kwargs)
         self.service_name = 'predix-acs'
-        self.plan_name = 'Free'
+        self.plan_name = plan_name or 'Free'
         self.use_class = predix.security.acs.AccessControl
 
         self.service = predix.admin.service.PredixService(self.service_name,
                 self.plan_name, name=name, uaa=uaa)
+
+    def _get_uri(self):
+        """
+        Will return the uri for an existing instance.
+        """
+        if not self.service.exists():
+            logging.warning("Service does not yet exist.")
+
+        return self.service.settings.data['uri']
+
+    def _get_zone_id(self):
+        """
+        Will return the zone id for an existing instance.
+        """
+        if not self.service.exists():
+            logging.warning("Service does not yet exist.")
+
+        return self.service.settings.data['zone']['http-header-value']
 
     def exists(self):
         """
@@ -34,11 +52,9 @@ class AccessControl(object):
         self.service.create()
 
         # Set environment variables for immediate use
-        uri = predix.config.get_env_key(self.use_class, 'uri')
-        os.environ[uri] = self.service.settings.data['uri']
-
-        zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
-        os.environ[zone_id] = self.service.settings.data['zone']['http-header-value']
+        predix.config.set_env_value(self.use_class, 'uri', self._get_uri())
+        predix.config.set_env_value(self.use_class, 'zone_id',
+                self._get_zone_id())
 
     def grant_client(self, client_id):
         """
@@ -74,11 +90,9 @@ class AccessControl(object):
 
         # Add environment variables
         uri = predix.config.get_env_key(self.use_class, 'uri')
-        manifest.add_env_var(uri,
-                self.service.settings.data['uri'])
+        manifest.add_env_var(uri, self._get_uri())
 
         zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
-        manifest.add_env_var(zone_id, 
-                self.service.settings.data['zone']['http-header-value'])
+        manifest.add_env_var(zone_id, self._get_zone_id())
 
         manifest.write_manifest()

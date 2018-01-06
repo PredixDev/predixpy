@@ -81,6 +81,11 @@ class TestUAA(unittest.TestCase):
         with self.assertRaises(ValueError):
             uaa.create_client('aviation', 'aviator123')
 
+    def test_custom_create(self):
+        uaa = predix.admin.uaa.UserAccountAuthentication(plan_name='Free')
+        uaa.service.name = 'issue17-custom-uaa'
+        uaa.create('custom-uaa-secret')
+
 if __name__ == '__main__':
     # logging.basicConfig(level=logging.DEBUG)
     unittest.main()

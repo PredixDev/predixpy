@@ -9,56 +9,93 @@ import predix.config
 
 class BlobStore(object):
     """
+    The BlobStore is the place to store Binary Large Objects, ie. files that
+    could be images, csv files, cad files, pdf files, etc.
+
     .. important::
 
        This service will only work from the Predix Cloud -- Firewall will block
        any traffic not originating from within the Predix environment.
 
-    The BlobStore is the place to store Binary Large Objects, ie. files that
-    could be images, csv files, cad files, pdf files, etc.
-
     Underlying BlobStore is the AWS S3 service so you will need to be familiar
     with the boto3 library from AWS to learn how to work with buckets.  A few
     methods are provided for common patterns you can use for reference.
+
+    :param host: Host address for blob store.
+
+
     """
-    def __init__(self):
+    def __init__(self, host=None, access_key_id=None, secret_access_key=None,
+            bucket_name=None, *args, **kwargs):
+        super(BlobStore, self).__init__(*args, **kwargs)
 
         instance = os.environ.get('CF_INSTANCE_ADDR')
         if not instance:
             raise ValueError("This service can only be used in the Predix Cloud Foundry environment.")
 
-        host = predix.config.get_env_key(self, 'host')
-        self.host = os.environ.get(host)
-        if not self.host:
-            raise ValueError("%s environment unset" % host)
-
-        # Protocol may not be specified in host path
-        if 'https://' not in self.host:
-            self.host = 'https://' + self.host
-
-        access_key_id = predix.config.get_env_key(self, 'access_key_id')
-        self.access_key_id = os.environ.get(access_key_id)
-        if not self.access_key_id:
-            raise ValueError("%s environment unset" % access_key_id)
-
-        secret_access_key = predix.config.get_env_key(self,
-                'secret_access_key')
-        self.secret_access_key = os.environ.get(secret_access_key)
-        if not self.secret_access_key:
-            raise ValueError("%s environment unset" % secret_access_key)
-
-        bucket_name = predix.config.get_env_key(self, 'bucket_name')
-        self.bucket_name = os.environ.get(bucket_name)
-        if not self.bucket_name:
-            raise ValueError("%s environment unset" % bucket_name)
+        self.host = host or self._get_host()
+        self.access_key_id = access_key_id or self._get_access_key_id()
+        self.secret_access_key = secret_access_key or self._get_secret_access_key()
+        self.bucket_name = bucket_name or self._get_bucket_name()
 
         self.session = boto3.session.Session(
                 aws_access_key_id=self.access_key_id,
                 aws_secret_access_key=self.secret_access_key)
+
         config = boto3.session.Config(signature_version='s3', s3={
                 'addressing_style': 'virtual'})
         self.client = self.session.client('s3', endpoint_url=self.host,
                 config=config)
+
+    def _get_host(self):
+        """
+        Returns the host address for an instance of Blob Store service from
+        environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            host = services['predix-blobstore'][0]['credentials']['host']
+        else:
+            host = predix.config.get_env_value(self, 'host')
+
+        # Protocol may not always be included in host setting
+        if 'https://' not in host:
+            host = 'https://' + host
+
+        return host
+
+    def _get_access_key_id(self):
+        """
+        Returns the access key for an instance of Blob Store service from
+        environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            return services['predix-blobstore'][0]['credentials']['access_key_id']
+        else:
+            return predix.config.get_env_value(self, 'access_key_id')
+
+    def _get_secret_access_key(self):
+        """
+        Returns the secret access key for an instance of Blob Store service from
+        environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            return services['predix-blobstore'][0]['credentials']['secret_access_key']
+        else:
+            return predix.config.get_env_value(self, 'secret_access_key')
+
+    def _get_bucket_name(self):
+        """
+        Returns the bucket name for an instance of Blob Store service from
+        environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            return services['predix-blobstore'][0]['credentials']['bucket_name']
+        else:
+            return predix.config.get_env_value(self, 'bucket_name')
 
     def list_buckets(self, *args, **kwargs):
         """

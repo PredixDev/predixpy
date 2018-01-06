@@ -31,15 +31,15 @@ class UserAccountAuthentication(object):
         if self.exists():
             self.authenticate()
 
-    def _get_uaa_uri(self):
+    def _get_uri(self):
         """
         Returns the URI endpoint for this instance of the UAA service if it
         exists.
         """
-        if predix.config.is_cf_env():
-            logging.warning("admin modules only for use outside predix cloud")
+        if not self.service.exists():
+            logging.warning("Service does not yet exist.")
 
-        return predix.config.get_env_value(self.use_class, 'uri')
+        return self.service.settings.data['uri']
 
     def exists(self):
         """
@@ -56,8 +56,7 @@ class UserAccountAuthentication(object):
         self.service.create(parameters=parameters)
 
         # Store URI into environment variable
-        uri = self.service.settings.data['uri']
-        predix.config.set_env_value(self.use_class, 'uri', uri)
+        predix.config.set_env_value(self.use_class, 'uri', self._get_uri())
 
         # Once we create it login
         self.authenticate()
@@ -75,9 +74,9 @@ class UserAccountAuthentication(object):
         manifest.add_service(self.service.name)
 
         # Add environment variable to manifest
-        uri = self.service.settings.data['uri']
-        varname = predix.config.set_env_value(self.use_class, 'uri', uri)
-        manifest.add_env_var(varname, uri)
+        varname = predix.config.set_env_value(self.use_class, 'uri',
+                self._get_uri())
+        manifest.add_env_var(varname, self._get_uri())
 
         manifest.write_manifest()
 
@@ -86,8 +85,7 @@ class UserAccountAuthentication(object):
         Authenticate into the UAA instance as the admin user.
         """
         # Make sure we've stored uri for use
-        uri = self.service.settings.data['uri']
-        predix.config.set_env_value(self.use_class, 'uri', uri)
+        predix.config.set_env_value(self.use_class, 'uri', self._get_uri())
 
         self.uaac = predix.security.uaa.UserAccountAuthentication()
         self.uaac.authenticate('admin', self._get_admin_secret(),

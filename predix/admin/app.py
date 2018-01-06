@@ -29,9 +29,10 @@ class Manifest(predix.app.Manifest):
             'predix-acs': predix.admin.acs.AccessControl,
             'predix-asset': predix.admin.asset.Asset,
             'predix-blobstore': predix.admin.blobstore.BlobStore,
+            'predix-cache': predix.admin.cache.Cache,
             'predix-timeseries': predix.admin.timeseries.TimeSeries,
             'predix-weather': predix.admin.weather.WeatherForecast,
-            'logstash': predix.admin.logstash.Logging,
+            'predix-logging': predix.admin.logstash.Logging,
         }
 
     def create_manifest_from_space(self):

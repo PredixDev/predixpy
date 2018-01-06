@@ -78,16 +78,16 @@ class Manifest(predix.app.Manifest):
         self.add_env_var('PREDIX_SPACE_NAME', self.space.name)
         self.write_manifest()
 
-    def create_uaa(self, admin_secret):
+    def create_uaa(self, admin_secret, **kwargs):
         """
         Creates an instance of UAA Service.
 
         :param admin_secret: The secret password for administering the service
             such as adding clients and users.
         """
-        uaa = predix.admin.uaa.UserAccountAuthentication()
+        uaa = predix.admin.uaa.UserAccountAuthentication(**kwargs)
         if not uaa.exists():
-            uaa.create(admin_secret)
+            uaa.create(admin_secret, **kwargs)
             uaa.add_to_manifest(self)
         return uaa
 
@@ -105,11 +105,11 @@ class Manifest(predix.app.Manifest):
         uaa.create_client(client_id, client_secret)
         uaa.add_client_to_manifest(client_id, client_secret, self)
 
-    def create_timeseries(self):
+    def create_timeseries(self, **kwargs):
         """
         Creates an instance of the Time Series Service.
         """
-        ts = predix.admin.timeseries.TimeSeries()
+        ts = predix.admin.timeseries.TimeSeries(**kwargs)
         ts.create()
 
         client_id = self.get_client_id()
@@ -119,11 +119,11 @@ class Manifest(predix.app.Manifest):
         ts.add_to_manifest(self)
         return ts
 
-    def create_asset(self):
+    def create_asset(self, **kwargs):
         """
         Creates an instance of the Asset Service.
         """
-        asset = predix.admin.asset.Asset()
+        asset = predix.admin.asset.Asset(**kwargs)
         asset.create()
 
         client_id = self.get_client_id()
@@ -133,11 +133,11 @@ class Manifest(predix.app.Manifest):
         asset.add_to_manifest(self)
         return asset
 
-    def create_acs(self):
+    def create_acs(self, **kwargs):
         """
         Creates an instance of the Asset Service.
         """
-        acs = predix.admin.acs.AccessControl()
+        acs = predix.admin.acs.AccessControl(**kwargs)
         acs.create()
 
         client_id = self.get_client_id()
@@ -148,11 +148,11 @@ class Manifest(predix.app.Manifest):
         acs.add_to_manifest(self)
         return acs
 
-    def create_weather(self):
+    def create_weather(self, **kwargs):
         """
         Creates an instance of the Asset Service.
         """
-        weather = predix.admin.weather.WeatherForecast()
+        weather = predix.admin.weather.WeatherForecast(**kwargs)
         weather.create()
 
         client_id = self.get_client_id()
@@ -163,21 +163,21 @@ class Manifest(predix.app.Manifest):
         weather.add_to_manifest(self)
         return weather
 
-    def create_blobstore(self):
+    def create_blobstore(self, **kwargs):
         """
         Creates an instance of the BlobStore Service.
         """
-        blobstore = predix.admin.blobstore.BlobStore()
+        blobstore = predix.admin.blobstore.BlobStore(**kwargs)
         blobstore.create()
 
         blobstore.add_to_manifest(self)
         return blobstore
 
-    def create_logstash(self):
+    def create_logstash(self, **kwargs):
         """
         Creates an instance of the Logging Service.
         """
-        logstash = predix.admin.logstash.Logging()
+        logstash = predix.admin.logstash.Logging(**kwargs)
         logstash.create()
         logstash.add_to_manifest(self)
 

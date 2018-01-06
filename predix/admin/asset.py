@@ -20,6 +20,24 @@ class Asset(object):
         self.service = predix.admin.service.PredixService(self.service_name,
                 self.plan_name, name=name, uaa=uaa)
 
+    def _get_uri(self):
+        """
+        Will return the uri for an existing instance.
+        """
+        if not self.service.exists():
+            logging.warning("Service does not yet exist.")
+
+        return self.service.settings.data['uri']
+
+    def _get_zone_id(self):
+        """
+        Will return the zone id for an existing instance.
+        """
+        if not self.service.exists():
+            logging.warning("Service does not yet exist.")
+
+        return self.service.settings.data['zone']['http-header-value']
+
     def exists(self):
         """
         Returns whether or not this service already exists.
@@ -34,11 +52,9 @@ class Asset(object):
         self.service.create()
 
         # Set env vars for immediate use
-        uri = predix.config.get_env_key(self.use_class, 'uri')
-        os.environ[uri] = self.service.settings.data['uri']
-
-        zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
-        os.environ[zone_id] = self.get_zone_id()
+        predix.config.set_env_value(self.use_class, 'uri', self._get_uri())
+        predix.config.set_env_value(self.use_class, 'zone_id',
+                self._get_zone_id())
 
     def grant_client(self, client_id):
         """
@@ -56,12 +72,6 @@ class Asset(object):
 
         return self.service.uaa.uaac.get_client(client_id)
 
-    def get_zone_id(self):
-        """
-        Returns the Predix-Zone-Id used for this service.
-        """
-        return self.service.settings.data['zone']['http-header-value']
-
     def add_to_manifest(self, manifest):
         """
         Add useful details to the manifest about this service
@@ -76,8 +86,9 @@ class Asset(object):
 
         # Add environment variables
         uri = predix.config.get_env_key(self.use_class, 'uri')
-        manifest.add_env_var(uri, self.service.settings.data['uri'])
+        manifest.add_env_var(uri, self._get_uri())
+
         zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
-        manifest.add_env_var(zone_id, self.get_zone_id())
+        manifest.add_env_var(zone_id, self._get_zone_id())
 
         manifest.write_manifest()

@@ -29,7 +29,7 @@ class TestAccessControl(unittest.TestCase):
         cls.space.delete_space()
         print("Deleted test space %s" % (cls.space.name))
 
-    def test_timeseries_created(self):
+    def test_acs_created(self):
         acs = self.app.get_acs()
         self.assertIsInstance(acs, predix.security.acs.AccessControl)
 

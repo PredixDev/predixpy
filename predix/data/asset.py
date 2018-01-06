@@ -16,20 +16,37 @@ class Asset(object):
     on use of the service please see official docs:
     https://www.predix.io/services/service.html?id=1171
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, uri=None, zone_id=None, *args, **kwargs):
         super(Asset, self).__init__(*args, **kwargs)
 
-        key = predix.config.get_env_key(self, 'zone_id')
-        self.zone_id = os.environ.get(key)
-        if not self.zone_id:
-            raise ValueError("%s environment unset" % key)
-
-        key = predix.config.get_env_key(self, 'uri')
-        self.uri = os.environ.get(key)
-        if not self.uri:
-            raise ValueError("%s environment unset" % key)
+        self.uri = uri or self._get_uri()
+        self.zone_id = zone_id or self._get_zone_id()
 
         self.service = predix.service.Service(self.zone_id)
+
+    def _get_uri(self):
+        """
+        Returns the URI endpoint for an instance of the Asset
+        service from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_asset = services['predix-asset'][0]['credentials']
+            return predix_asset['uri']
+        else:
+            return predix.config.get_env_value(self, 'uri')
+
+    def _get_zone_id(self):
+        """
+        Returns the Predix Zone Id for the service that is a required
+        header in service calls.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_asset = services['predix-asset'][0]['credentials']
+            return predix_asset['zone']['http-header-value']
+        else:
+            return predix.config.get_env_value(self, 'zone_id')
 
     def authenticate_as_client(self, client_id, client_secret):
         """

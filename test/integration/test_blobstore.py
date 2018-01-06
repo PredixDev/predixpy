@@ -23,7 +23,7 @@ class TestPredixBlobstore(unittest.TestCase):
         cls.space.delete_space()
         print("Deleted test space %s" % (cls.space.name))
 
-    def test_create_cache(self):
+    def test_blobstore_created(self):
         self.admin.create_blobstore()
 
         name = self.space.name + '-predix-blobstore-tiered'

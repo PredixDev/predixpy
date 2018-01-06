@@ -17,19 +17,37 @@ class AccessControl(object):
     overhead to a UAA server that may become the entry point for several apps
     over time.
     """
-    def __init__(self):
+    def __init__(self, uri=None, zone_id=None, *args, **kwargs):
+        super(AccessControl, self).__init__(*args, **kwargs)
 
-        key = predix.config.get_env_key(self, 'zone_id')
-        self.zone_id = os.environ.get(key)
-        if not self.zone_id:
-            raise ValueError("%s environment unset" % key)
-
-        key = predix.config.get_env_key(self, 'uri')
-        self.uri = os.environ.get(key)
-        if not self.uri:
-            raise ValueError("%s environment unset" % key)
+        self.zone_id = zone_id or self._get_zone_id()
+        self.uri = uri or self._get_uri()
 
         self.service = predix.service.Service(self.zone_id)
+
+    def _get_zone_id(self):
+        """
+        Returns the Predix Zone Id for the service that is a required
+        header in service calls.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_acs = services['predix-acs'][0]['credentials']
+            return predix_acs['zone']['http-header-value']
+        else:
+            return predix.config.get_env_value(self, 'zone_id')
+
+    def _get_uri(self):
+        """
+        Returns the URI endpoint for an instance of the ACS
+        service from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_acs = services['predix-acs'][0]['credentials']
+            return predix_acs['uri']
+        else:
+            return predix.config.get_env_value(self, 'uri')
 
     def authenticate_as_client(self, client_id, client_secret):
         """

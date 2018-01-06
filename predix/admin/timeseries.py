@@ -34,17 +34,15 @@ class TimeSeries(object):
         """
         self.service.create()
 
-        uri = predix.config.get_env_key(self.use_class, 'ingest_uri')
-        os.environ[uri] = self.get_ingest_uri()
+        predix.config.set_env_value(self.use_class, 'ingest_uri',
+                self.get_ingest_uri())
+        predix.config.set_env_value(self.use_class, 'ingest_zone_id',
+                self.get_ingest_zone_id())
 
-        zone_id = predix.config.get_env_key(self.use_class, 'ingest_zone_id')
-        os.environ[zone_id] = self.get_ingest_zone_id()
-
-        uri = predix.config.get_env_key(self.use_class, 'query_uri')
-        os.environ[uri] = self.get_query_uri()
-
-        zone_id = predix.config.get_env_key(self.use_class, 'query_zone_id')
-        os.environ[zone_id] = self.get_query_zone_id()
+        predix.config.set_env_value(self.use_class, 'query_uri',
+                self.get_query_uri())
+        predix.config.set_env_value(self.use_class, 'query_zone_id',
+                self.get_query_zone_id())
 
     def grant_client(self, client_id, read=True, write=True):
         """

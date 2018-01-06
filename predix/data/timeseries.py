@@ -43,10 +43,8 @@ class TimeSeries(object):
     NA = 2
     GOOD = 3
 
-    def __init__(self, read=True, write=True,
-            query_uri=None, ingest_uri=None,
-            query_zone_id=None, ingest_zone_id=None,
-            *args, **kwargs):
+    def __init__(self, read=True, write=True, query_uri=None, ingest_uri=None,
+            query_zone_id=None, ingest_zone_id=None, *args, **kwargs):
         """
         Time Series by default will grant the client both read
         and write permissions.  Either can be disabled.

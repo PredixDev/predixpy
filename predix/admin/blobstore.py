@@ -32,22 +32,16 @@ class BlobStore(object):
         """
         self.service.create()
 
-        url = predix.config.get_env_key(self.use_class, 'url')
-        os.environ[url] = self.service.settings.data['url']
-
-        access_key_id = predix.config.get_env_key(self.use_class, 'access_key_id')
-        os.environ[access_key_id] = self.service.settings.data['access_key_id']
-
-        bucket_name = predix.config.get_env_key(self.use_class, 'bucket_name')
-        os.environ[bucket_name] = self.service.settings.data['bucket_name']
-
-        host = predix.config.get_env_key(self.use_class, 'host')
-        os.environ[host] = self.service.settings.data['host']
-
-        secret_access_key = predix.config.get_env_key(self.use_class,
-                'secret_access_key')
-        os.environ[secret_access_key] = self.service.settings.data['secret_access_key']
-
+        predix.config.set_env_value(self.use_class, 'url',
+                self.service.settings.data['url'])
+        predix.config.set_env_value(self.use_class, 'access_key_id',
+                self.service.settings.data['access_key_id'])
+        predix.config.set_env_value(self.use_class, 'bucket_name',
+                self.service.settings.data['bucket_name'])
+        predix.config.set_env_value(self.use_class, 'host',
+                self.service.settings.data['host'])
+        predix.config.set_env_value(self.use_class, 'secret_access_key',
+                self.service.settings.data['secret_access_key'])
 
     def add_to_manifest(self, manifest):
         """

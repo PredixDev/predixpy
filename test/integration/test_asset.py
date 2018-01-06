@@ -29,7 +29,7 @@ class TestAsset(unittest.TestCase):
         cls.space.delete_space()
         print("Deleted test space %s" % (cls.space.name))
 
-    def test_timeseries_created(self):
+    def test_asset_created(self):
         asset = self.app.get_asset()
         self.assertIsInstance(asset, predix.data.asset.Asset)
 

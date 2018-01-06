@@ -23,7 +23,7 @@ class TestPredixLogging(unittest.TestCase):
         cls.space.delete_space()
         print("Deleted test space %s" % (cls.space.name))
 
-    def test_create_cache(self):
+    def test_logstash_created(self):
         self.admin.create_logstash()
 
         created = False

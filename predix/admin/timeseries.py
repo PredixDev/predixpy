@@ -1,6 +1,7 @@
 
 import os
-import urlparse
+
+from future.moves.urllib.parse import urlparse
 
 import predix.config
 import predix.security.uaa
@@ -93,7 +94,7 @@ class TimeSeries(object):
         """
         # Query URI has extra path we don't want so strip it off here
         query_uri = self.service.settings.data['query']['uri']
-        query_uri = urlparse.urlparse(query_uri)
+        query_uri = urlparse(query_uri)
         return query_uri.scheme + '://' + query_uri.netloc
 
     def add_to_manifest(self, manifest):

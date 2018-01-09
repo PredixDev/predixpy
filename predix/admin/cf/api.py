@@ -25,6 +25,9 @@ class API(object):
         self.config = predix.admin.cf.config.Config()
         self.session = requests.Session()
 
+    def __del__(self):
+        self.session.close()
+
     def _get_headers(self, content_type='application/json'):
         """
         Returns headers needed for talking to the Cloud Foundry

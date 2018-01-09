@@ -31,6 +31,9 @@ class UserAccountAuthentication(object):
         self.authenticated = False
         self.client = {}
 
+    def __del__(self):
+        self.session.close()
+
     def _get_uaa_uri(self):
         """
         Returns the URI endpoint for an instance of a UAA

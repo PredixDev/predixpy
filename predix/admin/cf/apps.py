@@ -31,7 +31,7 @@ class App(object):
         bindings.  You must delete those first.
         """
         if app_name not in self.space.get_apps():
-            logging.warn("App not found so... succeeded?")
+            logging.warning("App not found so... succeeded?")
             return True
 
         guid = self.get_app_guid(app_name)

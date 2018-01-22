@@ -48,11 +48,11 @@ class UserAccountAuthentication(object):
         Returns response of authenticating with the given client and
         secret.
         """
-        credentials = base64.b64encode(str.join(':', [client, secret]))
+        credentials = base64.b64encode(str.join(':', [client, secret]).encode('utf-8'))
         headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Cache-Control': 'no-cache',
-            'Authorization': 'Basic ' + credentials
+            b'Content-Type': b'application/x-www-form-urlencoded',
+            b'Cache-Control': b'no-cache',
+            b'Authorization': b'Basic ' + credentials
             }
         params = {
             'client_id': client,

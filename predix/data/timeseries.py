@@ -466,7 +466,7 @@ class TimeSeries(object):
             has_invalid_value = re.compile(r'[%s]' % (invalid_value)).search
             has_valid_key = re.compile(r'^[\w\.\/\-]+$').search
 
-            for (key, val) in attributes.items():
+            for (key, val) in list(attributes.items()):
                 # Values cannot be NULL
                 if not val:
                     raise ValueError("Attribute (%s) must have value." % (key))

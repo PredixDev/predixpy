@@ -67,7 +67,7 @@ class Service(object):
         if response.status_code == 200:
             return response.json()
         else:
-            logging.error("ERROR=" + response.content)
+            logging.error(b"ERROR=" + response.content)
             response.raise_for_status()
 
     def _post(self, uri, data):

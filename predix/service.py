@@ -70,7 +70,7 @@ class Service(object):
         if response.status_code == 200:
             return response.json()
         else:
-            logging.error("ERROR=" + response.content)
+            logging.error(b"ERROR=" + response.content)
             response.raise_for_status()
 
     def _post(self, uri, data):
@@ -85,7 +85,10 @@ class Service(object):
         response = self.session.post(uri, headers=headers,
                 data=json.dumps(data))
         if response.status_code in [200, 204]:
-            return response.json()
+            try:
+                return response.json()
+            except ValueError:
+                return "{}"
         else:
             logging.error(response.content)
             response.raise_for_status()

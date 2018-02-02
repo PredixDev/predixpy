@@ -78,7 +78,7 @@ class TimeSeries(object):
         if 'VCAP_SERVICES' in os.environ:
             services = json.loads(os.getenv('VCAP_SERVICES'))
             predix_timeseries = services['predix-timeseries'][0]['credentials']
-            return predix_timeseries['query']['uri']
+            return predix_timeseries['query']['uri'].partition('/v1')[0]
         else:
             return predix.config.get_env_value(self, 'query_uri')
 
@@ -466,7 +466,7 @@ class TimeSeries(object):
             has_invalid_value = re.compile(r'[%s]' % (invalid_value)).search
             has_valid_key = re.compile(r'^[\w\.\/\-]+$').search
 
-            for (key, val) in attributes.items():
+            for (key, val) in list(attributes.items()):
                 # Values cannot be NULL
                 if not val:
                     raise ValueError("Attribute (%s) must have value." % (key))

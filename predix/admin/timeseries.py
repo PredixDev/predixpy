@@ -84,7 +84,7 @@ class TimeSeries(object):
 
     def get_ingest_uri(self):
         """
-        Return the uri used for ingesting data into time series 
+        Return the uri used for ingesting data into time series
         """
         return self.service.settings.data['ingest']['uri']
 

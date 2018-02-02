@@ -53,10 +53,11 @@ class UserAccountAuthentication(object):
         """
         client_s = str.join(':', [client, secret])
         credentials = base64.b64encode(client_s.encode('utf-8')).decode('utf-8')
+
         headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Cache-Control': 'no-cache',
-            'Authorization': 'Basic ' + credentials
+            b'Content-Type': b'application/x-www-form-urlencoded',
+            b'Cache-Control': b'no-cache',
+            b'Authorization': b'Basic ' + credentials
             }
         params = {
             'client_id': client,

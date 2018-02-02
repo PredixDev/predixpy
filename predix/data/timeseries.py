@@ -127,7 +127,7 @@ class TimeSeries(object):
             return
 
         if len(self._queue) > 0:
-            logging.warn("%s buffered datapoints in queue lost." %
+            logging.warning("%s buffered datapoints in queue lost." %
                     (len(self._queue)))
 
         if self.ws:

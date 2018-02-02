@@ -74,5 +74,5 @@ class PredixCloudRequiredError(Exception):
         if not message:
             message = "Service only available running in Predix Cloud Foundry environment."
 
-        logging.warn(message)
+        logging.warning(message)
         super(PredixCloudRequiredError, self).__init__(message)

@@ -31,6 +31,9 @@ class UserAccountAuthentication(object):
         self.authenticated = False
         self.client = {}
 
+    def __del__(self):
+        self.session.close()
+
     def _get_uaa_uri(self):
         """
         Returns the URI endpoint for an instance of a UAA
@@ -48,7 +51,9 @@ class UserAccountAuthentication(object):
         Returns response of authenticating with the given client and
         secret.
         """
-        credentials = base64.b64encode(str.join(':', [client, secret]).encode('utf-8'))
+        client_s = str.join(':', [client, secret])
+        credentials = base64.b64encode(client_s.encode('utf-8')).decode('utf-8')
+
         headers = {
             b'Content-Type': b'application/x-www-form-urlencoded',
             b'Cache-Control': b'no-cache',
@@ -69,7 +74,7 @@ class UserAccountAuthentication(object):
             logging.debug("RESPONSE=" + str(response.json()))
             return response.json()
         else:
-            logging.warn("Failed to authenticate as %s" % (client))
+            logging.warning("Failed to authenticate as %s" % (client))
             response.raise_for_status()
 
     def _authenticate_user(self, user, password):
@@ -94,7 +99,7 @@ class UserAccountAuthentication(object):
             logging.debug("RESPONSE=" + str(response.json()))
             return response.json()
         else:
-            logging.warn("Failed to authenticate %s" % (user))
+            logging.warning("Failed to authenticate %s" % (user))
             response.raise_for_status()
 
     def is_expired_token(self, client):
@@ -343,9 +348,9 @@ class UserAccountAuthentication(object):
             raise ValueError("Must first authenticate()")
 
         if scope_required not in self.get_scopes():
-            logging.warn("Authenticated as %s" % (self.client['id']))
-            logging.warn("Have scopes: %s" % (str.join(',', self.get_scopes())))
-            logging.warn("Insufficient scope %s for operation" % (scope_required))
+            logging.warning("Authenticated as %s" % (self.client['id']))
+            logging.warning("Have scopes: %s" % (str.join(',', self.get_scopes())))
+            logging.warning("Insufficient scope %s for operation" % (scope_required))
 
             raise ValueError("Client does not have permission.")
 
@@ -438,7 +443,7 @@ class UserAccountAuthentication(object):
 
             if grant_types:
                 if 'authorization_code' in grant_types and not redirect_uri:
-                    logging.warn("A redirect_uri is required for authorization_code.")
+                    logging.warning("A redirect_uri is required for authorization_code.")
 
                 changes['authorized_grant_types'] = client['authorized_grant_types']
                 changes['authorized_grant_types'].extend(grant_types)

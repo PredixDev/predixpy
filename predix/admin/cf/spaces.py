@@ -126,7 +126,7 @@ class Space(object):
             else:
                 guid = self.guid
 
-        logging.warn("Deleting space (%s) and all services." % (guid))
+        logging.warning("Deleting space (%s) and all services." % (guid))
 
         return self.api.delete("/v2/spaces/%s" % (guid), params={'recursive':
         'true'})
@@ -230,7 +230,7 @@ class Space(object):
 
         Similar to `cf delete-space -f <space-name>`.
         """
-        logging.warn("Purging all services from space %s" %
+        logging.warning("Purging all services from space %s" %
                 (self.name))
 
         service = predix.admin.cf.services.Service()

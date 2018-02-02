@@ -23,6 +23,9 @@ class Service(object):
 
         self._auto_authenticate()
 
+    def __del__(self):
+        self.session.close()
+
     def _auto_authenticate(self):
         """
         If we are in an app context we can authenticate immediately.

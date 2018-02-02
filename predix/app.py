@@ -36,6 +36,9 @@ class Manifest(object):
         self.manifest_key = manifest_key
         self.encrypted = encrypted
 
+        if not self.encrypted:
+            logging.warning("Writing manifest {} unencrypted.".format(manifest_path))
+
         # App may have a client
         self.client_id = None
         self.client_secret = None
@@ -84,8 +87,8 @@ class Manifest(object):
                 f = Fernet(key)
 
                 for var in self.manifest['env'].keys():
-                    value = f.decrypt(self.manifest['env'][var])
-                    self.manifest['env'][var] = value
+                    value = f.decrypt(bytes(self.manifest['env'][var], 'utf-8'))
+                    self.manifest['env'][var] = value.decode('utf-8')
 
             self.app_name = self.manifest['applications'][0]['name']
 
@@ -117,7 +120,7 @@ class Manifest(object):
         manifest = copy.deepcopy(self.manifest)
         for var in self.manifest['env'].keys():
             value = self.manifest['env'][var]
-            manifest['env'][var] = f.encrypt(bytes(value))
+            manifest['env'][var] = f.encrypt(bytes(str(value), 'utf-8')).decode('utf-8')
 
         return manifest
 
@@ -140,7 +143,6 @@ class Manifest(object):
                 content = self.manifest   # shallow reference
                 if 'PREDIXPY_ENCRYPTED' in content['env']:
                     del(content['env']['PREDIXPY_ENCRYPTED'])
-                logging.warning("Writing manifest {} unencrypted.".format(manifest_path))
 
             yaml.safe_dump(content, output_file,
                     default_flow_style=False, explicit_start=True)

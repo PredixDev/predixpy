@@ -99,7 +99,7 @@ class Service(object):
         Create a service key for the given service.
         """
         if self.has_key(service_name, key_name):
-            logging.warn("Reusing existing service key %s" % (key_name))
+            logging.warning("Reusing existing service key %s" % (key_name))
             return self.get_service_key(service_name, key_name)
 
         body = {
@@ -157,11 +157,11 @@ class Service(object):
         Create a service instance.
         """
         if self.space.has_service_with_name(service_name):
-            logging.warn("Service already exists with that name.")
+            logging.warning("Service already exists with that name.")
             return self.get_instance(service_name)
 
         if self.space.has_service_of_type(service_type):
-            logging.warn("Service type already exists.")
+            logging.warning("Service type already exists.")
 
         guid = self.get_service_plan_guid(service_type, plan_name)
         if not guid:
@@ -188,7 +188,7 @@ class Service(object):
         to delete it all.
         """
         if not self.space.has_service_with_name(service_name):
-            logging.warn("Service not found so... succeeded?")
+            logging.warning("Service not found so... succeeded?")
             return True
 
         guid = self.get_instance_guid(service_name)

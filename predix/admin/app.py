@@ -65,7 +65,7 @@ class Manifest(predix.app.Manifest):
                 weather = predix.admin.weather.WeatherForecast(name=name)
                 weather.add_to_manifest(self)
             else:
-                logging.warn("Unsupported service type: %s" % service_type)
+                logging.warning("Unsupported service type: %s" % service_type)
 
     def lock_to_org_space(self):
         """

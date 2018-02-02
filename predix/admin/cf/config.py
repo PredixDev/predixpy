@@ -11,7 +11,7 @@ class CloudFoundryLoginError(Exception):
     """
     def __init__(self, message):
         super(CloudFoundryLoginError, self).__init__(message)
-        logging.warn("Try 'cf login' to get a new token from Cloud Foundry (%s)." % (message))
+        logging.warning("Try 'cf login' to get a new token from Cloud Foundry (%s)." % (message))
 
 
 class Config(object):

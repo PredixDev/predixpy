@@ -24,10 +24,8 @@ used in a Python Flask App.
 Getting Started
 ---------------
 
-Please see the `Getting Started Guide`_ for a walkthrough and
-introduction to basic usage of the Python SDK.  The following services are
-already supported for **Python 2.7.x**.  Verification of compatibility with
-**Python 3.6.x** is on the near-term roadmap.
+Please see the `Getting Started Guide`_ for a walkthrough and introduction to
+basic usage of the Python SDK.
 
 .. _Getting Started Guide: https://predixpy.run.aws-usw02-pr.ice.predix.io/getting-started/index.html
 

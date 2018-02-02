@@ -2,8 +2,7 @@
 Getting Started
 ===============
 
-The following services are supported for **Python 2.7.x**.  Verification of
-compatibility with **Python 3.6.x** is on the near-term roadmap.
+The following services are supported.
 
 - User Account and Authentication (UAA)
 - Predix Access Control (ACS)

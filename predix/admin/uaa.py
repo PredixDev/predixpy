@@ -1,5 +1,8 @@
 
 import os
+import uuid
+import string
+import random
 
 import predix.config
 import predix.admin.service
@@ -91,6 +94,25 @@ class UserAccountAuthentication(object):
         self.uaac.authenticate('admin', self._get_admin_secret(),
                 use_cache=False)
         self.is_admin = True
+
+    def _create_id(self):
+        """
+        Return a GUID which can serve as a suitable client-id.
+        """
+        return str(uuid.uuid4())
+
+    def _create_secret(self, length=12):
+        """
+        Use a cryptograhically-secure Pseudorandom number generator for picking
+        a combination of letters, digits, and punctuation to be our secret.
+
+        :param length: how long to make the secret (12 seems ok most of the time)
+
+        """
+        # Charset will have 64 +- characters
+        charset = string.digits + string.ascii_letters + '+-'
+        return "".join(random.SystemRandom().choice(charset) for _ in
+                range(length))
 
     def create_client(self, client_id, client_secret):
         """

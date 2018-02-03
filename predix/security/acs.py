@@ -16,6 +16,12 @@ class AccessControl(object):
     Access Control service provides app-specific policies without adding
     overhead to a UAA server that may become the entry point for several apps
     over time.
+
+    :param uri: The URI endpoint for accessing the ACS service instance.
+
+    :param zone_id: The Predix-Zone-Id assigned to the tenant for the ACS
+    service instance.
+
     """
     def __init__(self, uri=None, zone_id=None, *args, **kwargs):
         super(AccessControl, self).__init__(*args, **kwargs)

@@ -91,7 +91,7 @@ class Manifest(predix.app.Manifest):
             uaa.add_to_manifest(self)
         return uaa
 
-    def create_client(self, client_id, client_secret):
+    def create_client(self, client_id=None, client_secret=None):
         """
         Create a client and add it to the manifest.
 
@@ -102,6 +102,15 @@ class Manifest(predix.app.Manifest):
             authenticate and generate a UAA token.
         """
         uaa = predix.admin.uaa.UserAccountAuthentication()
+
+        # Client id and secret can be generated if not provided as arguments
+
+        if not client_id:
+            client_id = uaa._create_id()
+
+        if not client_secret:
+            client_secret = uaa._create_secret()
+
         uaa.create_client(client_id, client_secret)
         uaa.add_client_to_manifest(client_id, client_secret, self)
 

@@ -40,8 +40,8 @@ class Manifest(object):
             logging.warning("Writing manifest {} unencrypted.".format(manifest_path))
 
         # App may have a client
-        self.client_id = None
-        self.client_secret = None
+        self._client_id = None
+        self._client_secret = None
 
         if debug:
             logging.basicConfig(level=logging.DEBUG)
@@ -181,16 +181,16 @@ class Manifest(object):
         needed scopes and authorities for the services
         in this manifest.
         """
-        self.client_id = predix.config.get_env_value(predix.app.Manifest, 'client_id')
-        return self.client_id
+        self._client_id = predix.config.get_env_value(predix.app.Manifest, 'client_id')
+        return self._client_id
 
     def get_client_secret(self):
         """
         Return the client secret that should correspond with
         the client id.
         """
-        self.client_secret = predix.config.get_env_value(predix.app.Manifest, 'client_secret')
-        return self.client_secret
+        self._client_secret = predix.config.get_env_value(predix.app.Manifest, 'client_secret')
+        return self._client_secret
 
     def get_timeseries(self, *args, **kwargs):
         """

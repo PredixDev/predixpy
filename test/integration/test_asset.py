@@ -17,7 +17,7 @@ class TestAsset(unittest.TestCase):
         print("Created manifest {}".format(cls.manifest_path))
 
         cls.admin = predix.admin.app.Manifest(cls.manifest_path,
-                encrypted=True)
+                encrypted=False)
         cls.admin.create_uaa(cls.space.name)
         cls.admin.create_client('client-id', cls.space.name)
         cls.admin.create_asset()
@@ -28,6 +28,23 @@ class TestAsset(unittest.TestCase):
     def tearDownClass(cls):
         cls.space.delete_space()
         print("Deleted test space %s" % (cls.space.name))
+
+    def test_post_asset(self):
+        asset = self.app.get_asset()
+
+        # Issue #19: post_collection() raised ValueError with empty response
+        volcano = {
+                'uri': '/volcano/masaya',
+                'name': 'Masaya',
+                'location': {
+                    'lat': 11.98531829999,
+                    'long': -86.1783429000,
+                    },
+                'description': 'Masaya, Nicaragua',
+                }
+
+        asset.post_collection('/volcano', [volcano])
+        self.assertTrue('volcano' in asset.get_collections())
 
     def test_asset_created(self):
         asset = self.app.get_asset()

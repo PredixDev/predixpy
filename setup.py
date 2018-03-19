@@ -2,10 +2,10 @@
 from setuptools import setup, find_packages
 
 install_requires = [
+        "boto3",
         "python-dateutil",
         "PyYAML",
         "requests",
-        "boto3",
         "cryptography",
         "redis",
         "sqlalchemy",

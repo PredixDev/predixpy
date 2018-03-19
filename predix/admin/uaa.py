@@ -50,7 +50,7 @@ class UserAccountAuthentication(object):
         """
         return self.service.exists()
 
-    def create(self, secret):
+    def create(self, secret, **kwargs):
         """
         Create a new instance of the UAA service.  Requires a
         secret password for the 'admin' user account.

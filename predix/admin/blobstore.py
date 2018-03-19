@@ -25,12 +25,12 @@ class BlobStore(object):
         """
         return self.service.exists()
 
-    def create(self):
+    def create(self, **kwargs):
         """
         Create an instance of the Blob Store Service with the typical
         starting settings.
         """
-        self.service.create()
+        self.service.create(**kwargs)
 
         predix.config.set_env_value(self.use_class, 'url',
                 self.service.settings.data['url'])

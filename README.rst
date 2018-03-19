@@ -33,18 +33,21 @@ basic usage of the Python SDK.
 - [x] `Predix Asset`_
 - [x] `Predix Time Series`_
 - [x] `Predix Access Control`_ (ACS)
-- [x] `Blob Store`_
+- [x] `Predix Blob Store`_
 - [x] `Predix Cache`_ (Redis)
+- [x] `Predix Database as a Service`_ (PostgreSQL)
+- [x] `Predix Event Hub`_
 - [x] `Logging`_
-- [x] Weather (Deprecated)
 - more...
 
 .. _User Account and Authentication: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#user-accounts-and-authentication
 .. _Predix Asset: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#asset
 .. _Predix Time Series: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#time-series
 .. _Predix Access Control: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#access-control
-.. _Blob Store: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#blob-store
+.. _Predix Blob Store: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#blob-store
 .. _Predix Cache: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#predix-cache
+.. _Predix Database as a Service: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#predix-dbaas
+.. _Predix Event Hub: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#event-hub
 .. _Logging: https://predixpy.run.aws-usw02-pr.ice.predix.io/services/index.html#logging
 
 Getting Help

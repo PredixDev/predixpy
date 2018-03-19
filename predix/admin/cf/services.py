@@ -121,7 +121,7 @@ class Service(object):
         """
         Retrieves a service instance with the given name.
         """
-        for resource in self.space._get_instances()['resources']:
+        for resource in self.space._get_instances():
             if resource['entity']['name'] == service_name:
                 return resource['entity']
 

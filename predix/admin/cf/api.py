@@ -96,7 +96,7 @@ class API(object):
 
         logging.debug("URI=PUT " + str(uri))
         logging.debug("HEADERS=" + str(headers))
-        logging.debut("BODY=" + str(data))
+        logging.debug("BODY=" + str(data))
 
         response = self.session.put(uri, headers=headers,
                 data=json.dumps(data))
@@ -108,7 +108,7 @@ class API(object):
         else:
             logging.debug("STATUS=" + str(response.status_code))
             logging.debug("CONTENT=" + str(response.content))
-            response.raise_for_status()    
+            response.raise_for_status()
 
     def delete(self, path, data=None, params=None):
         """

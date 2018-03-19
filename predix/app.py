@@ -173,7 +173,7 @@ class Manifest(object):
         automatically.
         """
         for key in self.manifest['env'].keys():
-            os.environ[key] = self.manifest['env'][key]
+            os.environ[key] = str(self.manifest['env'][key])
 
     def get_client_id(self):
         """
@@ -241,3 +241,8 @@ class Manifest(object):
         import predix.data.cache
         cache = predix.data.cache.Cache()
         return cache
+
+    def get_dbaas(self, **kwargs):
+        import predix.data.dbaas
+        pg = predix.data.dbaas.PostgreSQL(**kwargs)
+        return pg

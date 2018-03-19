@@ -107,7 +107,7 @@ class BlobStore(object):
 
     def list_objects(self, bucket_name=None, **kwargs):
         """
-        This method is primarily for illustration and just calls the
+        This method is primarily for illustration and just calls the 
         boto3 client implementation of list_objects but is a common task
         for first time Predix BlobStore users.
         """
@@ -117,7 +117,7 @@ class BlobStore(object):
     def upload_file(self, src_filepath, dest_filename=None, bucket_name=None,
             **kwargs):
         """
-        This method is primarily for illustration and just calls the
+        This method is primarily for illustration and just calls the 
         boto3 client implementation of upload_file but is a common task
         for first time Predix BlobStore users.
         """

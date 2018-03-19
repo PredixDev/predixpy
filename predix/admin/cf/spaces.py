@@ -42,6 +42,7 @@ class Space(object):
 
         self.org = predix.admin.cf.orgs.Org()
 
+
     def _get_spaces(self):
         """
         Get the marketplace services.
@@ -184,12 +185,19 @@ class Space(object):
 
         return services
 
-    def _get_instances(self):
+    def _get_instances(self, page_number=None):
         """
         Returns the service instances activated in this space.
         """
-        uri = '/v2/spaces/%s/service_instances' % (self.guid)
-        return self.api.get(uri)
+        instances = []
+        uri = '/v2/spaces/%s/service_instances' % self.guid
+        json_response = self.api.get(uri)
+        instances += json_response['resources']
+        while json_response['next_url'] is not None:
+            json_response = self.api.get(json_response['next_url'])
+            instances += json_response['resources']
+
+        return instances
 
     def get_instances(self):
         """
@@ -197,7 +205,7 @@ class Space(object):
         in this space.
         """
         services = []
-        for resource in self._get_instances()['resources']:
+        for resource in self._get_instances():
             services.append(resource['entity']['name'])
 
         return services
@@ -216,8 +224,9 @@ class Space(object):
         """
         summary = self.get_space_summary()
         for instance in summary['services']:
-            if service_type == instance['service_plan']['service']['label']:
-                return True
+            if 'service_plan' in instance:
+                if service_type == instance['service_plan']['service']['label']:
+                    return True
 
         return False
 

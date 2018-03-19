@@ -8,7 +8,10 @@ The following services are supported.
 - Predix Access Control (ACS)
 - Predix Asset
 - Predix Time Series
-- Blob Store
+- Predix Blob Store
+- Predix Cache
+- Predix Database as a Service
+- Predix Event Hub
 - Logging
 - ... for more see :ref:`service-index` section
 

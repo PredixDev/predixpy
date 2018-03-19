@@ -37,17 +37,7 @@ If you have Python libraries in a private source code repository or cannot
 publish to public indexes like PyPI you may not know how to include them in
 your Cloud Foundry App.
 
-If you add a folder called ``vendor`` to your project, the Python Buildpack
-will presume you do not have Internet access to any dependencies and will look
-for any dependencies in that folder.
-
-By running ``pip download -r requirements.txt -d vendor`` you can pull down all
-the dependencies for your app and then run ``python setup.py sdist`` to
-generate a tar.gz for your own library to include.
-
-These will be packaged and deployed with your Cloud Foundry Droplet.
-
-See a post on the Predix Developer Forums for more details:
+See a how-to post on the Predix Developer Forums for more details:
 https://forum.predix.io/articles/24733/how-to-include-your-own-private-python-libraries-i.html
 
 How-To Specify a Different Version of Python
@@ -193,5 +183,26 @@ as you might want to script tools that can handle data from these commands.
 | cf delete-service -f  |  admin.services.purge(service_name)|
 +-----------------------+------------------------------------+
 
+.. _gotty-setup:
 
+How-To Setup GoTTY
+..................
+
+GoTTY is an open-source, pre-built application you can run in the Predix Cloud
+that provides a bash shell accessible via a web browser.  By using
+`predix-gotty-util`_ you can quickly push an app that has ``psql``,
+``redis-cli`` and some other utilities available.
+
+Here's what you need to do::
+
+    git clone https://github.com/j12y/predix-gotty-util
+    cd predix-gotty-util
+    cp manifest.template.yml manifest.yml
+
+Then modify the username and password in the manifest.yml to be something only
+you know.  At that point, you can simply ``cf push`` your app and then go to
+the resulting URL.  You will need need to ``cf enable-diego gotty`` if you are
+still running DEA.
+
+_`predix-gotty-util`: https://github.com/j12y/predix-gotty-util
 

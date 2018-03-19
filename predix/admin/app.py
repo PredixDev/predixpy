@@ -11,6 +11,7 @@ import predix.admin.blobstore
 import predix.admin.timeseries
 import predix.admin.logstash
 import predix.admin.cache
+import predix.admin.dbaas
 
 
 class Manifest(predix.app.Manifest):
@@ -30,6 +31,7 @@ class Manifest(predix.app.Manifest):
             'predix-asset': predix.admin.asset.Asset,
             'predix-blobstore': predix.admin.blobstore.BlobStore,
             'predix-cache': predix.admin.cache.Cache,
+            'predix-dbaas': predix.admin.dbaas.PostgreSQL,
             'predix-timeseries': predix.admin.timeseries.TimeSeries,
             'predix-weather': predix.admin.weather.WeatherForecast,
             'predix-logging': predix.admin.logstash.Logging,
@@ -46,21 +48,9 @@ class Manifest(predix.app.Manifest):
         for instance in summary['services']:
             service_type = instance['service_plan']['service']['label']
             name = instance['name']
-            if service_type == 'predix-uaa':
-                uaa = predix.admin.uaa.UserAccountAuthentication(name=name)
-                uaa.add_to_manifest(self)
-            elif service_type == 'predix-acs':
-                acs = predix.admin.acs.AccessControl(name=name)
-                acs.add_to_manifest(self)
-            elif service_type == 'predix-asset':
-                asset = predix.admin.asset.Asset(name=name)
-                asset.add_to_manifest(self)
-            elif service_type == 'predix-timeseries':
-                timeseries = predix.admin.timeseries.TimeSeries(name=name)
-                timeseries.add_to_manifest(self)
-            elif service_type == 'predix-blobstore':
-                blobstore = predix.admin.blobstore.BlobStore(name=name)
-                blobstore.add_to_manifest(self)
+            if service_type in self.supported:
+                service = self.supported[service_type](name=name)
+                service.add_to_manifest(self)
             elif service_type == 'us-weather-forecast':
                 weather = predix.admin.weather.WeatherForecast(name=name)
                 weather.add_to_manifest(self)
@@ -91,7 +81,7 @@ class Manifest(predix.app.Manifest):
             uaa.add_to_manifest(self)
         return uaa
 
-    def create_client(self, client_id=None, client_secret=None):
+    def create_client(self, client_id=None, client_secret=None, uaa=None):
         """
         Create a client and add it to the manifest.
 
@@ -100,8 +90,11 @@ class Manifest(predix.app.Manifest):
 
         :param client_secret: The secret password used by a client to
             authenticate and generate a UAA token.
+
+        :param uaa: The UAA to create client with
         """
-        uaa = predix.admin.uaa.UserAccountAuthentication()
+        if not uaa:
+            uaa = predix.admin.uaa.UserAccountAuthentication()
 
         # Client id and secret can be generated if not provided as arguments
 
@@ -203,6 +196,14 @@ class Manifest(predix.app.Manifest):
         cache.create(**kwargs)
         cache.add_to_manifest(self)
         return cache
+
+    def create_dbaas(self, **kwargs):
+        """
+        """
+        pg = predix.admin.dbaas.PostgreSQL(**kwargs)
+        pg.create()
+        pg.add_to_manifest(self)
+        return pg
 
     def get_service_marketplace(self, available=True, unavailable=False,
             deprecated=False):

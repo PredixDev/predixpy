@@ -23,33 +23,13 @@ commands.
 
 ::
 
-    wget https://download.redis.io/releases/redis-4.0.2.tar.gz
-    tar xzf redis-4.0.2.tar.gz
-    cd redis-4.0.2
-    make
-    cd src
-    ./redis-cli -h $HOST -p $PORT -a $PASSWORD
+    ./redis-cli
 
-You'll need to get the ``$HOST``, ``$PORT``, and ``$PASSWORD`` from your VCAP
-environment variables.
+This is an alias to a script that will lookup the host, port, and password from
+your VCAP environment variables to launch ``redis-cli``.
 
-.. _gotty-setup:
-
-How-To Setup GoTTY
-..................
-
-GoTTY is an open-source, pre-built application you can run in the Predix Cloud
-that provides a bash shell accessible via a web browser.
-
-There are a few forks for the project, but follow the directions provided with
-each for installing.
-
-1. https://github.com/dmikusa-pivotal/cf-ex-gotty.git
-2. https://github.com/gurjeet/gotty-cf-bash
-
-In both cases, you will want to update the manifest.yml to properly secure the
-environment with a username and password before pushing the app to Predix.
-When you visit the app it'll behave like a ``bash`` prompt.
+See the official redis-cli docs for more details on how to use it once you
+are connected.
 
 How-To Build a Web App with Cache
 .................................

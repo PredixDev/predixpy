@@ -13,6 +13,8 @@ development challenges with the Predix Python SDK.
 .. include:: timeseries.inc
 .. include:: blobstore.inc
 .. include:: cache.inc
+.. include:: dbaas.inc
+.. include:: eventhub.inc
 .. include:: errors.inc
 .. include:: references.inc
 

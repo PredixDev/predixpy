@@ -18,6 +18,8 @@ Services
 .. include:: timeseries.inc
 .. include:: blobstore.inc
 .. include:: cache.inc
+.. include:: dbaas.inc
+.. include:: eventhub.inc
 .. include:: logging.inc
 .. include:: weather.inc
 

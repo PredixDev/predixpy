@@ -8,6 +8,8 @@ install_requires = [
         "boto3",
         "cryptography",
         "redis",
+        "sqlalchemy",
+        "psycopg2",
         "websocket",
         "websocket-client"
     ]

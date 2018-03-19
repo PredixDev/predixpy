@@ -11,6 +11,7 @@ import dateutil.parser
 import predix.app
 import predix.config
 
+
 class UserAccountAuthentication(object):
     """
     The UAA service manages user account authorization and access control for
@@ -30,9 +31,6 @@ class UserAccountAuthentication(object):
         self.session = requests.Session()
         self.authenticated = False
         self.client = {}
-
-    def __del__(self):
-        self.session.close()
 
     def _get_uaa_uri(self):
         """

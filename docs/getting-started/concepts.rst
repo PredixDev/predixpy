@@ -92,9 +92,9 @@ you could view the source-code and call the underlying library directly::
     ts.create()
 
     # Use App Framework to persist environment and setup client grants
-    app = predix.admin.app.Manifest()
-    ts.add_to_manifest(app)
-    ts.grant_client(app.get_client_id())
+    admin = predix.admin.app.Manifest()
+    ts.add_to_manifest(admin)
+    ts.grant_client(admin.get_client_id())
 
 Now that you have the basics under your belt, you can start using Predix
 Python SDK to work with :ref:`service-index`.

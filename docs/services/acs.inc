@@ -22,8 +22,8 @@ creating subjects and resources.
     # IMPORTANT: You must have already configured UAA and client
 
     import predix.admin.app
-    app = predix.admin.app.Manifest()
-    app.create_acs()
+    admin = predix.admin.app.Manifest()
+    admin.create_acs()
 
 ::
 

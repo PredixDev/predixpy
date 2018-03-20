@@ -19,8 +19,8 @@ Here is a simple demo of creating the service.
     # How-To Create the service
 
     import predix.admin.app
-    app = predix.admin.app.Manifest()
-    app.create_logging()
+    admin = predix.admin.app.Manifest()
+    admin.create_logging()
 
 This should not be confused with Python's ``logging`` library but rather the
 STDOUT and STDERR emitted by your application captured for later review like

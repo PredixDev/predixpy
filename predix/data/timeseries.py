@@ -15,6 +15,24 @@ class TimeSeries(object):
     """
     Client library for working with the Time Series service.
 
+    :param query_uri: URI for Time Series endpoint to execute queries, can be
+        derived from environment PREDIX_TIMESERIES_QUERY_URI variable if not
+        passed.
+
+    :param ingest_uri: URI for Time Series endpoint to ingest data, can be
+        derived from environment PREDIX_TIMESERIES_INGEST_URI variable if not
+        passed.
+
+    :param query_zone_id: Predix-Zone-Id for Query Authorization, can be
+        derived from environment PREDIX_TIMESERIES_QUERY_ZONE_ID.
+
+    :param ingest_zone_id: Predix-Zone-Id for Ingest Authorization, can be
+        derived from environment PREDIX_TIMESERIES_INGEST_ZONE_ID.
+
+    :param read: Whether we expect to be able to query / read data.
+
+    :param write: Whether we expect to be able to ingest / write data.
+
     Learn more about Predix Time Series:
     https://www.predix.io/services/service.html?id=1177
 
@@ -25,47 +43,80 @@ class TimeSeries(object):
     NA = 2
     GOOD = 3
 
-    def __init__(self, read=True, write=True, *args, **kwargs):
+    def __init__(self, read=True, write=True, query_uri=None, ingest_uri=None,
+            query_zone_id=None, ingest_zone_id=None, *args, **kwargs):
         """
         Time Series by default will grant the client both read
         and write permissions.  Either can be disabled.
         """
         super(TimeSeries, self).__init__(*args, **kwargs)
 
-        self.zone_id = None
+        # Not all clients can read and write, so look to arguments on whether
+        # to validate permissions during initialization.
         if read:
-            key = predix.config.get_env_key(self, 'query_zone_id')
-            self.query_zone_id = os.environ.get(key)
-            if not self.query_zone_id:
-                raise ValueError("%s env unset" % key)
-
-            key = predix.config.get_env_key(self, 'query_uri')
-            self.query_uri = os.environ.get(key)
-            if not self.query_uri:
-                raise ValueError("%s environment unset" % key)
-
-            self.zone_id = self.query_zone_id
+            self.query_uri = query_uri or self._get_query_uri()
+            self.query_zone_id = query_zone_id or self._get_query_zone_id()
 
         if write:
-            key = predix.config.get_env_key(self, 'ingest_zone_id')
-            self.ingest_zone_id = os.environ.get(key)
-            if not self.ingest_zone_id:
-                raise ValueError("%s env unset" % key)
+            self.ingest_uri = ingest_uri or self._get_ingest_uri()
+            self.ingest_zone_id = ingest_zone_id or self._get_ingest_zone_id()
 
-            key = predix.config.get_env_key(self, 'ingest_uri')
-            self.ingest_uri = os.environ.get(key)
-            if not self.ingest_uri:
-                raise ValueError("%s environment unset" % key)
-
-            self.zone_id = self.ingest_zone_id
-
+        self.zone_id = self.query_zone_id or self.ingest_zone_id
         self.service = predix.service.Service(self.zone_id)
 
         # Store a websocket connection once opened
         self.ws = None
 
-        # Store and forward any datapoints as a single transaction
+        # Store in-memory and forward any datapoints as a single transaction
         self._queue = []
+
+    def _get_query_uri(self):
+        """
+        Returns the URI endpoint for performing queries of a
+        Predix Time Series instance from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_timeseries = services['predix-timeseries'][0]['credentials']
+            return predix_timeseries['query']['uri'].partition('/v1')[0]
+        else:
+            return predix.config.get_env_value(self, 'query_uri')
+
+    def _get_query_zone_id(self):
+        """
+        Returns the ZoneId for performing queries of a Predix
+        Time Series instance from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_timeseries = services['predix-timeseries'][0]['credentials']
+            return predix_timeseries['query']['zone-http-header-value']
+        else:
+            return predix.config.get_env_value(self, 'query_zone_id')
+
+    def _get_ingest_uri(self):
+        """
+        Returns the URI endpoint for performing ingestion of data to
+        Predix Time Series instance from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_timeseries = services['predix-timeseries'][0]['credentials']
+            return predix_timeseries['ingest']['uri']
+        else:
+            return predix.config.get_env_value(self, 'ingest_uri')
+
+    def _get_ingest_zone_id(self):
+        """
+        Returns the ZoneId for ingesting data to a Predix
+        Time Series instance from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_timeseries = services['predix-timeseries'][0]['credentials']
+            return predix_timeseries['ingest']['zone-http-header-value']
+        else:
+            return predix.config.get_env_value(self, 'ingest_zone_id')
 
     def __del__(self):
         """
@@ -76,7 +127,7 @@ class TimeSeries(object):
             return
 
         if len(self._queue) > 0:
-            logging.warn("%s buffered datapoints in queue lost." %
+            logging.warning("%s buffered datapoints in queue lost." %
                     (len(self._queue)))
 
         if self.ws:
@@ -200,6 +251,7 @@ class TimeSeries(object):
         # Docs say when making POST with a start that end must also be
         # specified, but this does not seem to be the case.
         if end:
+            # MAINT: error when end < start which is handled by service
             params['end'] = end
 
         params['tags'] = []
@@ -367,11 +419,29 @@ class TimeSeries(object):
         """
         To reduce network traffic, you can buffer datapoints and
         then flush() anything in the queue.
+
+        :param name: the name / label / tag for sensor data
+
+        :param value: the sensor reading or value to record
+
+        :param quality: the quality value, use the constants BAD, GOOD, etc.
+            (optional and defaults to UNCERTAIN)
+
+        :param timestamp: the time the reading was recorded in epoch
+            milliseconds (optional and defaults to now)
+
+        :param attributes: dictionary for any key-value pairs to store with the
+            reading (optional)
+
         """
         # Get timestamp first in case delay opening websocket connection
         # and it must have millisecond accuracy
         if not timestamp:
             timestamp = int(round(time.time() * 1000))
+        else:
+            # Coerce datetime objects to epoch
+            if isinstance(timestamp, datetime.datetime):
+                timestamp = int(round(int(timestamp.strftime('%s')) * 1000))
 
         # Only specific quality values supported
         if quality not in [self.BAD, self.GOOD, self.NA, self.UNCERTAIN]:
@@ -396,7 +466,7 @@ class TimeSeries(object):
             has_invalid_value = re.compile(r'[%s]' % (invalid_value)).search
             has_valid_key = re.compile(r'^[\w\.\/\-]+$').search
 
-            for (key, val) in attributes.items():
+            for (key, val) in list(attributes.items()):
                 # Values cannot be NULL
                 if not val:
                     raise ValueError("Attribute (%s) must have value." % (key))
@@ -421,6 +491,8 @@ class TimeSeries(object):
         the queue to the time series service.  Optional parameters include
         setting quality, timestamp, or attributes.
 
+        See spec for queue() for complete list of options.
+
         Example of sending a batch of values:
 
             queue('temp', 70.1)
@@ -431,6 +503,7 @@ class TimeSeries(object):
 
             send('temp', 70.3)
             send('temp', 70.4, quality=ts.GOOD, attributes={'unit': 'F'})
+
 
         """
         if name and value:

@@ -15,11 +15,18 @@ class Service(object):
         self.api = predix.admin.cf.api.API()
         self.space = predix.admin.cf.spaces.Space()
 
+    def _get_services(self):
+        """
+        Get the marketplace services.  This is not always the same results
+        as the space marketplace so generally prefer the latter.
+        """
+        return self.api.get('/v2/services')
+
     def get_services(self):
         """
         Get the marketplace services.
         """
-        return self.api.get('/v2/services')
+        return self.space._get_services()
 
     def get_instance_guid(self, service_name):
         """
@@ -92,7 +99,7 @@ class Service(object):
         Create a service key for the given service.
         """
         if self.has_key(service_name, key_name):
-            logging.warn("Reusing existing service key %s" % (key_name))
+            logging.warning("Reusing existing service key %s" % (key_name))
             return self.get_service_key(service_name, key_name)
 
         body = {
@@ -114,7 +121,7 @@ class Service(object):
         """
         Retrieves a service instance with the given name.
         """
-        for resource in self.space._get_instances()['resources']:
+        for resource in self.space._get_instances():
             if resource['entity']['name'] == service_name:
                 return resource['entity']
 
@@ -144,16 +151,17 @@ class Service(object):
 
         return None
 
-    def create_service(self, service_type, plan_name, service_name, params):
+    def create_service(self, service_type, plan_name, service_name, params,
+            async=False, **kwargs):
         """
         Create a service instance.
         """
         if self.space.has_service_with_name(service_name):
-            logging.warn("Service already exists with that name.")
+            logging.warning("Service already exists with that name.")
             return self.get_instance(service_name)
 
         if self.space.has_service_of_type(service_type):
-            logging.warn("Service type already exists.")
+            logging.warning("Service type already exists.")
 
         guid = self.get_service_plan_guid(service_type, plan_name)
         if not guid:
@@ -166,17 +174,21 @@ class Service(object):
             'parameters': params
             }
 
-        return self.api.post('/v2/service_instances?accepts_incomplete=false',
-                body)
+        uri = '/v2/service_instances?accepts_incomplete=true'
+
+        if async:
+            uri += '&async=true'
+
+        return self.api.post(uri, body)
 
     def delete_service(self, service_name, params=None):
         """
         Delete the service of the given name.  It may fail if there are
-        any service keys or app bindings.  Use obliterate() if you want
+        any service keys or app bindings.  Use purge() if you want
         to delete it all.
         """
         if not self.space.has_service_with_name(service_name):
-            logging.warn("Service not found so... succeeded?")
+            logging.warning("Service not found so... succeeded?")
             return True
 
         guid = self.get_instance_guid(service_name)

@@ -1,0 +1,6 @@
+---
+applications:
+- name: my-predix-app
+env:
+  PREDIXPY_VERSION: 0.0.9
+services: []

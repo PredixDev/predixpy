@@ -4,6 +4,7 @@ import uuid
 import urllib
 import logging
 
+import predix.config
 import predix.service
 
 
@@ -15,19 +16,44 @@ class AccessControl(object):
     Access Control service provides app-specific policies without adding
     overhead to a UAA server that may become the entry point for several apps
     over time.
+
+    :param uri: The URI endpoint for accessing the ACS service instance.
+
+    :param zone_id: The Predix-Zone-Id assigned to the tenant for the ACS
+    service instance.
+
     """
-    def __init__(self):
+    def __init__(self, uri=None, zone_id=None, *args, **kwargs):
+        super(AccessControl, self).__init__(*args, **kwargs)
 
-        ns = 'predix.admin.acs'
-        self.zone_id = os.environ.get(ns + '.zone_id')
-        if not self.zone_id:
-            raise ValueError("%s.zone_id environment unset" % ns)
-
-        self.uri = os.environ.get(ns + '.uri')
-        if not self.uri:
-            raise ValueError("%s.uri environment unset" % ns)
+        self.zone_id = zone_id or self._get_zone_id()
+        self.uri = uri or self._get_uri()
 
         self.service = predix.service.Service(self.zone_id)
+
+    def _get_zone_id(self):
+        """
+        Returns the Predix Zone Id for the service that is a required
+        header in service calls.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_acs = services['predix-acs'][0]['credentials']
+            return predix_acs['zone']['http-header-value']
+        else:
+            return predix.config.get_env_value(self, 'zone_id')
+
+    def _get_uri(self):
+        """
+        Returns the URI endpoint for an instance of the ACS
+        service from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_acs = services['predix-acs'][0]['credentials']
+            return predix_acs['uri']
+        else:
+            return predix.config.get_env_value(self, 'uri')
 
     def authenticate_as_client(self, client_id, client_secret):
         """
@@ -310,7 +336,7 @@ class AccessControl(object):
         Policies are evaluated against resources and subjects.  They are
         identified by matching a uriTemplate or attributes.
 
-        Examples:
+        Examples::
 
             resource = {
                 "uriTemplate": "/asset/{id}"
@@ -326,7 +352,7 @@ class AccessControl(object):
         The condition is expected to be a string that defines a groovy
         operation that can be evaluated.
 
-        Examples:
+        Examples::
 
             condition = "match.single(subject.attributes('default', 'role'),
                 'admin')

@@ -1,10 +1,12 @@
 
 import os
-import urlparse
 
-import predix.app
+from future.moves.urllib.parse import urlparse
+
+import predix.config
 import predix.security.uaa
 import predix.admin.service
+import predix.data.timeseries
 
 
 class TimeSeries(object):
@@ -15,6 +17,8 @@ class TimeSeries(object):
         super(TimeSeries, self).__init__(*args, **kwargs)
         self.service_name = 'predix-timeseries'
         self.plan_name = plan_name or 'Free'
+        self.use_class = predix.data.timeseries.TimeSeries
+
         self.service = predix.admin.service.PredixService(self.service_name,
                 self.plan_name, name=name, uaa=uaa)
 
@@ -31,18 +35,15 @@ class TimeSeries(object):
         """
         self.service.create()
 
-        uri = self.service.settings.data['ingest']['uri']
-        os.environ[self.__module__ + '.ingest.uri'] = uri
+        predix.config.set_env_value(self.use_class, 'ingest_uri',
+                self.get_ingest_uri())
+        predix.config.set_env_value(self.use_class, 'ingest_zone_id',
+                self.get_ingest_zone_id())
 
-        zone = self.get_ingest_zone_id()
-        os.environ[self.__module__ + '.ingest.zone_id'] = zone
-
-        uri = self.service.settings.data['query']['uri']
-        uri = urlparse.urlparse(uri)
-        os.environ[self.__module__ + '.query.uri'] = uri.scheme + '://' + uri.netloc
-
-        zone = self.get_query_zone_id()
-        os.environ[self.__module__ + '.query.zone_id'] = zone
+        predix.config.set_env_value(self.use_class, 'query_uri',
+                self.get_query_uri())
+        predix.config.set_env_value(self.use_class, 'query_zone_id',
+                self.get_query_zone_id())
 
     def grant_client(self, client_id, read=True, write=True):
         """
@@ -81,28 +82,44 @@ class TimeSeries(object):
         """
         return self.service.settings.data['query']['zone-http-header-value']
 
-    def add_to_manifest(self, manifest_path):
+    def get_ingest_uri(self):
         """
-        Add details to the manifest that applications using
-        this service may need to consume.
+        Return the uri used for ingesting data into time series
         """
-        manifest = predix.app.Manifest(manifest_path)
+        return self.service.settings.data['ingest']['uri']
 
+    def get_query_uri(self):
+        """
+        Return the uri used for queries on time series data.
+        """
+        # Query URI has extra path we don't want so strip it off here
+        query_uri = self.service.settings.data['query']['uri']
+        query_uri = urlparse(query_uri)
+        return query_uri.scheme + '://' + query_uri.netloc
+
+    def add_to_manifest(self, manifest):
+        """
+        Add useful details to the manifest about this service
+        so that it can be used in an application.
+
+        :param manifest: An predix.admin.app.Manifest object
+            instance that manages reading/writing manifest config
+            for a cloud foundry app.
+        """
         # Add this service to list of services
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var(self.__module__ + '.ingest.uri',
-                self.service.settings.data['ingest']['uri'])
-        manifest.add_env_var(self.__module__ + '.ingest.zone_id',
-                self.get_ingest_zone_id())
+        uri = predix.config.get_env_key(self.use_class, 'ingest_uri')
+        manifest.add_env_var(uri, self.get_ingest_uri())
 
-        # Query URI has extra path we don't want
-        uri = self.service.settings.data['query']['uri']
-        uri = urlparse.urlparse(uri)
-        manifest.add_env_var(self.__module__ + '.query.uri',
-                uri.scheme + '://' + uri.netloc)
-        manifest.add_env_var(self.__module__ + '.query.zone_id',
-                self.get_query_zone_id())
+        zone_id = predix.config.get_env_key(self.use_class, 'ingest_zone_id')
+        manifest.add_env_var(zone_id, self.get_ingest_zone_id())
+
+        uri = predix.config.get_env_key(self.use_class, 'query_uri')
+        manifest.add_env_var(uri, self.get_query_uri())
+
+        zone_id = predix.config.get_env_key(self.use_class, 'query_zone_id')
+        manifest.add_env_var(zone_id, self.get_query_zone_id())
 
         manifest.write_manifest()

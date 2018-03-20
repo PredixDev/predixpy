@@ -23,6 +23,10 @@ class CloudFoundryService(object):
         self.config_path = self._get_config_path()
         self.settings = predix.admin.config.ServiceConfig(self.config_path)
 
+        # Handle case of missing service keys and config
+        if self.exists() and not self.settings.data:
+            self.settings.save(self._get_service_config())
+
     def _generate_name(self, space, service_name, plan_name):
         """
         Can generate a name based on the space, service name and plan.
@@ -40,15 +44,16 @@ class CloudFoundryService(object):
 
         return "~/.predix/%s/%s/%s.json" % (org, space, name)
 
-    def _create_service(self, parameters={}):
+    def _create_service(self, parameters={}, **kwargs):
         """
         Create a Cloud Foundry service that has custom parameters.
         """
         logging.debug("_create_service()")
         logging.debug(str.join(',', [self.service_name, self.plan_name,
             self.name, str(parameters)]))
+
         return self.service.create_service(self.service_name, self.plan_name,
-                self.name, parameters)
+                self.name, parameters, **kwargs)
 
     def _delete_service(self, service_only=False):
         """
@@ -88,18 +93,19 @@ class CloudFoundryService(object):
         """
         return self.service.space.has_service_with_name(self.name)
 
-    def create(self, parameters={}):
+    def create(self, parameters={}, create_keys=True, **kwargs):
         """
         Create the service.
         """
         # Create the service
-        cs = self._create_service(parameters=parameters)
+        cs = self._create_service(parameters=parameters, **kwargs)
 
         # Create the service key to get config details and
         # store in local cache file.
-        cfg = parameters
-        cfg.update(self._get_service_config())
-        self.settings.save(cfg)
+        if create_keys:
+            cfg = parameters
+            cfg.update(self._get_service_config())
+            self.settings.save(cfg)
 
 
 class PredixService(CloudFoundryService):
@@ -107,11 +113,13 @@ class PredixService(CloudFoundryService):
     Predix Services extend Cloud Foundry Services by providing
     UAA protections in some standard ways.
     """
-    def __init__(self, service_name, plan_name, uaa=None, *args, **kwargs):
-        super(PredixService, self).__init__(service_name, plan_name, *args, **kwargs)
+    def __init__(self, service_name, plan_name, name=None, uaa=None, *args, **kwargs):
+        super(PredixService, self).__init__(service_name, plan_name, name=name, *args, **kwargs)
 
         # We will create a UAA instance if not given one and authenticate
         self.uaa = self._get_or_create_uaa(uaa)
+        if not self.uaa.exists():
+            raise ValueError("Instance of predix-uaa is required, create one first.")
 
     def _get_or_create_uaa(self, uaa):
         """
@@ -124,7 +132,7 @@ class PredixService(CloudFoundryService):
         logging.debug("Initializing a new UAA")
         return predix.admin.uaa.UserAccountAuthentication()
 
-    def create(self, parameters={}):
+    def create(self, parameters={}, **kwargs):
         """
         Create an instance of the US Weather Forecast Service with
         typical starting settings.
@@ -132,4 +140,4 @@ class PredixService(CloudFoundryService):
         # Add parameter during create for UAA issuer
         uri = self.uaa.service.settings.data['uri'] + '/oauth/token'
         parameters["trustedIssuerIds"] = [uri]
-        super(PredixService, self).create(parameters=parameters)
+        super(PredixService, self).create(parameters=parameters, **kwargs)

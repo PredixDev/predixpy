@@ -18,6 +18,7 @@ class ServiceConfig(object):
         Save the given configuration data.
         """
         self.data = data
+        self._write_service_config()
 
     def _get_service_config(self):
         """

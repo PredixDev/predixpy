@@ -5,27 +5,48 @@ import uuid
 import logging
 import requests
 
+import predix.config
 import predix.service
 import predix.security.uaa
 
 
 class Asset(object):
     """
-    Client library for working with the Asset service.
+    Client library for working with the Predix Asset Service.  For more details
+    on use of the service please see official docs:
+    https://www.predix.io/services/service.html?id=1171
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, uri=None, zone_id=None, *args, **kwargs):
         super(Asset, self).__init__(*args, **kwargs)
 
-        ns = 'predix.admin.asset'
-        self.zone_id = os.environ.get(ns + '.zone_id')
-        if not self.zone_id:
-            raise ValueError("%s.zone_id environment unset" % ns)
-
-        self.uri = os.environ.get(ns + '.uri')
-        if not self.uri:
-            raise ValueError("%s.uri environment unset" % ns)
+        self.uri = uri or self._get_uri()
+        self.zone_id = zone_id or self._get_zone_id()
 
         self.service = predix.service.Service(self.zone_id)
+
+    def _get_uri(self):
+        """
+        Returns the URI endpoint for an instance of the Asset
+        service from environment inspection.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_asset = services['predix-asset'][0]['credentials']
+            return predix_asset['uri']
+        else:
+            return predix.config.get_env_value(self, 'uri')
+
+    def _get_zone_id(self):
+        """
+        Returns the Predix Zone Id for the service that is a required
+        header in service calls.
+        """
+        if 'VCAP_SERVICES' in os.environ:
+            services = json.loads(os.getenv('VCAP_SERVICES'))
+            predix_asset = services['predix-asset'][0]['credentials']
+            return predix_asset['zone']['http-header-value']
+        else:
+            return predix.config.get_env_value(self, 'zone_id')
 
     def authenticate_as_client(self, client_id, client_secret):
         """
@@ -38,7 +59,9 @@ class Asset(object):
         Returns the names of all user-defined domain object collections with
         counts for number of domain objects contained in that collection.
 
-        [ { "collection": "volcano", "count": 1 }, ... ]
+        ..
+
+            [ { "collection": "volcano", "count": 1 }, ... ]
 
         """
         uri = self.uri
@@ -48,6 +71,11 @@ class Asset(object):
         """
         Returns a flat list of the names of collections in the asset
         service.
+
+        ..
+
+            ['wind-turbines', 'jet-engines']
+
         """
         collections = []
         for result in self._get_collections():
@@ -62,8 +90,8 @@ class Asset(object):
         the given collection endpoint.
 
         Supports passing through parameters such as...
-        - filters such as "name=Vesuvius"
-        - fields such as "uri,description"
+        - filters such as "name=Vesuvius" following GEL spec
+        - fields such as "uri,description" comma delimited
         - page_size such as "100" (the default)
 
         """
@@ -77,6 +105,16 @@ class Asset(object):
 
         uri = self.uri + '/v1' + collection
         return self.service._get(uri, params=params)
+
+    def create_guid(self, collection=None):
+        """
+        Returns a new guid for use in posting a new asset to a collection.
+        """
+        guid = str(uuid.uuid4())
+        if collection:
+            return str.join('/', [collection, guid])
+        else:
+            return guid
 
     def post_collection(self, collection, body):
         """
@@ -117,7 +155,7 @@ class Asset(object):
 
             https://tools.ietf.org/html/rfc6902
 
-        the format of changes is something like:
+        the format of changes is something like::
 
             [{
                 'op': 'add',

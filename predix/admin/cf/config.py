@@ -11,7 +11,7 @@ class CloudFoundryLoginError(Exception):
     """
     def __init__(self, message):
         super(CloudFoundryLoginError, self).__init__(message)
-        logging.warn(message)
+        logging.warning("Try 'cf login' to get a new token from Cloud Foundry (%s)." % (message))
 
 
 class Config(object):
@@ -44,6 +44,13 @@ class Config(object):
         """
         return self.config['AccessToken']
 
+    def get_uaa_endpoint(self):
+        """
+        Returns the UAA endpoint used for Predix Cloud Foundry
+        authentication.
+        """
+        return self.config['UaaEndpoint']
+
     def get_target(self):
         """
         Returns the API target URI.
@@ -60,15 +67,25 @@ class Config(object):
         """
         Returns the name of the organization currently targeted.
         """
-        return self._get_organization_info()['Name']
+        if 'PREDIX_ORGANIZATION_NAME' in os.environ:
+            return os.environ['PREDIX_ORGANIZATION_NAME']
+        else:
+            return self._get_organization_info()['Name']
 
     def get_organization_guid(self):
         """
         Returns the GUID for the organization currently targeted.
         """
-        return self._get_organization_info()['Guid']
+        if 'PREDIX_ORGANIZATION_GUID' in os.environ:
+            return os.environ['PREDIX_ORGANIZATION_GUID']
+        else:
+            info = self._get_organization_info()
+            for key in ('Guid', 'GUID'):
+                if key in info.keys():
+                    return info[key]
+            raise ValueError('Unable to determine cf organization guid')
 
-    def get_space_info(self):
+    def _get_space_info(self):
         """
         Returns all cached information about the space.
         """
@@ -78,10 +95,23 @@ class Config(object):
         """
         Returns the name of the space currently targeted.
         """
-        return self.get_space_info()['Name']
+        if 'PREDIX_SPACE_NAME' in os.environ:
+            return os.environ['PREDIX_SPACE_NAME']
+        else:
+            return self._get_space_info()['Name']
 
     def get_space_guid(self):
         """
         Returns the GUID for the space currently targeted.
+
+        Can be set by environment variable with PREDIX_SPACE_GUID.
+        Can be determined by ~/.cf/config.json.
         """
-        return self.get_space_info()['Guid']
+        if 'PREDIX_SPACE_GUID' in os.environ:
+            return os.environ['PREDIX_SPACE_GUID']
+        else:
+            info = self._get_space_info()
+            for key in ('Guid', 'GUID'):
+                if key in info.keys():
+                    return info[key]
+            raise ValueError('Unable to determine cf space guid')

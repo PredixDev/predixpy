@@ -1,7 +1,8 @@
 
 import os
 
-import predix.app
+import predix.config
+import predix.data.asset
 import predix.security.uaa
 import predix.admin.service
 
@@ -14,8 +15,28 @@ class Asset(object):
         super(Asset, self).__init__(*args, **kwargs)
         self.service_name = 'predix-asset'
         self.plan_name = plan_name or 'Free'
+        self.use_class = predix.data.asset.Asset
+
         self.service = predix.admin.service.PredixService(self.service_name,
                 self.plan_name, name=name, uaa=uaa)
+
+    def _get_uri(self):
+        """
+        Will return the uri for an existing instance.
+        """
+        if not self.service.exists():
+            logging.warning("Service does not yet exist.")
+
+        return self.service.settings.data['uri']
+
+    def _get_zone_id(self):
+        """
+        Will return the zone id for an existing instance.
+        """
+        if not self.service.exists():
+            logging.warning("Service does not yet exist.")
+
+        return self.service.settings.data['zone']['http-header-value']
 
     def exists(self):
         """
@@ -29,8 +50,11 @@ class Asset(object):
         starting settings.
         """
         self.service.create()
-        os.environ[self.__module__ + '.uri'] = self.service.settings.data['uri']
-        os.environ[self.__module__ + '.zone_id'] = self.get_zone_id()
+
+        # Set env vars for immediate use
+        predix.config.set_env_value(self.use_class, 'uri', self._get_uri())
+        predix.config.set_env_value(self.use_class, 'zone_id',
+                self._get_zone_id())
 
     def grant_client(self, client_id):
         """
@@ -48,25 +72,23 @@ class Asset(object):
 
         return self.service.uaa.uaac.get_client(client_id)
 
-    def get_zone_id(self):
+    def add_to_manifest(self, manifest):
         """
-        Returns the Predix-Zone-Id used for this service.
-        """
-        return self.service.settings.data['zone']['http-header-value']
+        Add useful details to the manifest about this service
+        so that it can be used in an application.
 
-    def add_to_manifest(self, manifest_path):
+        :param manifest: An predix.admin.app.Manifest object
+            instance that manages reading/writing manifest config
+            for a cloud foundry app.
         """
-        Add details to the manifest that applications using
-        this service may need to consume.
-        """
-        manifest = predix.app.Manifest(manifest_path)
-
         # Add this service to list of services
         manifest.add_service(self.service.name)
 
         # Add environment variables
-        manifest.add_env_var(self.__module__ + '.uri',
-                self.service.settings.data['uri'])
-        manifest.add_env_var(self.__module__ + '.zone_id', self.get_zone_id())
+        uri = predix.config.get_env_key(self.use_class, 'uri')
+        manifest.add_env_var(uri, self._get_uri())
+
+        zone_id = predix.config.get_env_key(self.use_class, 'zone_id')
+        manifest.add_env_var(zone_id, self._get_zone_id())
 
         manifest.write_manifest()

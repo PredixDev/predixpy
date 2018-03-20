@@ -246,3 +246,9 @@ class Manifest(object):
         import predix.data.dbaas
         pg = predix.data.dbaas.PostgreSQL(**kwargs)
         return pg
+
+    def get_eventhub(self, publish_config=None, subscribe_config=None):
+        import predix.data.eventhub.client
+        eventhub = predix.data.eventhub.client.Eventhub(subscribe_config=subscribe_config,
+                                                        publish_config=publish_config)
+        return eventhub

@@ -4,6 +4,7 @@ import yaml
 import copy
 import logging
 from cryptography.fernet import Fernet
+from builtins import bytes
 
 import predix.config
 
@@ -119,8 +120,8 @@ class Manifest(object):
 
         manifest = copy.deepcopy(self.manifest)
         for var in self.manifest['env'].keys():
-            value = self.manifest['env'][var]
-            manifest['env'][var] = f.encrypt(bytes(str(value), 'utf-8')).decode('utf-8')
+            value = str(self.manifest['env'][var])
+            manifest['env'][var] = f.encrypt(bytes(value, 'utf-8')).decode('utf-8')
 
         return manifest
 

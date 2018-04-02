@@ -19,7 +19,7 @@ In your environment you can run:
 
 ::
 
-    pip install -e
+    pip install -e .
 
 This will install the library to site packages with a symlink back to the
 GitHub repository.  This will allow any changes you make to have an immediate
@@ -66,4 +66,16 @@ To build a distributable package with setuptools::
    python setup.py sdist
 
 The version comes from incrementing the value in *setup.py*.
+
+How-To Build Documentation
+--------------------------
+
+See setup.py for library depenencies on sphinx.
+
+Start in the docs directory::
+
+    make html
+    cd _build/html
+    python2 -m SimpleHTTPServer
+    python3 -m http.server
 

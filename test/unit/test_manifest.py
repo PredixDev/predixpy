@@ -24,7 +24,7 @@ class TestManifest(unittest.TestCase):
 
     def test_version_written(self):
         # Verify environment variable set for version tracking
-        self.assertEqual(os.getenv('PREDIXPY_VERSION'), predix.version)
+        self.assertTrue(os.getenv('PREDIXPY_VERSION') in self.manifest_content)
 
         # Verify creating a new manifest will write version
         self.assertTrue('PREDIXPY_VERSION' in self.manifest_content)
@@ -43,7 +43,7 @@ class TestManifest(unittest.TestCase):
         admin = predix.admin.app.Manifest(manifest_path)
 
         self.assertEqual(admin.app_name, 'my-predix-app')
-        self.assertEqual(admin.get_manifest_version(), '0.0.9')
+        self.assertEqual(admin.get_manifest_version(), '1.0.0')
 
     def test_encrypted_manifest(self):
         # Check that we are encrypting output

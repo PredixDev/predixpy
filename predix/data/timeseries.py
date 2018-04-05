@@ -219,7 +219,7 @@ class TimeSeries(object):
             - order: ascending (asc) or descending (desc)
             - limit: only return a few values (ie. 25)
             - qualities: data quality value (ie. [ts.GOOD, ts.UNCERTAIN])
-            - attributes: data attributes (ie. {'unit': 'mph'})
+            - attributes: dictionary of key-values (ie. {'unit': 'mph'})
             - measurement: tuple of operation and value (ie. ('gt', 30))
             - aggregations: summary statistics on data results (ie. 'avg')
             - post: POST query instead of GET (caching implication)
@@ -459,17 +459,24 @@ class TimeSeries(object):
             "datapoints": [[timestamp, value, quality]]
         }
 
-        # Attributes are specified for datapoint
-        if attributes:
+        # Attributes are extra details for a datapoint
+
+        if attributes is not None:
+            if not isinstance(attributes, dict):
+                raise ValueError("Attributes are expected to be a dictionary.")
+
             # Validate rules for attribute keys to provide guidance.
             invalid_value = ':;= '
             has_invalid_value = re.compile(r'[%s]' % (invalid_value)).search
             has_valid_key = re.compile(r'^[\w\.\/\-]+$').search
 
             for (key, val) in list(attributes.items()):
-                # Values cannot be NULL
-                if not val:
-                    raise ValueError("Attribute (%s) must have value." % (key))
+                # Values cannot be empty
+                if (val == '') or (val is None):
+                    raise ValueError("Attribute (%s) must have a non-empty value." % (key))
+
+                # Values should be treated as a string for regex validation
+                val = str(val)
 
                 # Values cannot contain certain arbitrary characters
                 if bool(has_invalid_value(val)):

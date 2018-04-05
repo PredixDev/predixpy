@@ -86,6 +86,16 @@ class TestTimeSeries(unittest.TestCase):
         self.assertEqual(values[0][2], 1)
         self.assertEqual(attrs, {'units':['F']})
 
+        # Test multiple attributes, including a number
+        ts.send('TAG4b', 61, attributes={'units': 'F', 'Number': 1}
+        time.sleep(2) # Allow time for ingestion to complete
+        res = ts.get_datapoints('TAG4b')
+        self.assertEqual('TAG4b', res['tags'][0]['name'])
+
+        # Test we get error if attributes is not a dictionary
+        with self.assertRaises(ValueError):
+            ts.send('TAG4b', 62, attributes="{'units': 'F'}")
+
     def test_ingest_timestamp(self):
         ts = self.app.get_timeseries()
 

@@ -241,7 +241,7 @@ class TimeSeries(object):
         # seems to be required all the time, so using sensible default.
         if not start:
             start = '1w-ago'
-            logging.info("Defaulting to timeseries data since %s" % (start))
+            logging.warn("Defaulting query for data with start date %s" % (start))
 
         # Start date can be absolute or relative, only certain legal values
         # but service will throw error if used improperly.  (ms, s, mi, h, d,

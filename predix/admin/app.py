@@ -78,7 +78,8 @@ class Manifest(predix.app.Manifest):
         uaa = predix.admin.uaa.UserAccountAuthentication(**kwargs)
         if not uaa.exists():
             uaa.create(admin_secret, **kwargs)
-            uaa.add_to_manifest(self)
+
+        uaa.add_to_manifest(self)
         return uaa
 
     def create_client(self, client_id=None, client_secret=None, uaa=None):

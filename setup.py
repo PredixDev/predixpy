@@ -37,7 +37,7 @@ with open('README.rst') as file:
 
 setup(
         name="predix",
-        version="1.0.0rc1",
+        version="1.0.0",
         author="Jayson DeLancey",
         author_email="jayson.delancey@ge.com",
         description="Python Client SDK for Predix Services",

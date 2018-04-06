@@ -29,8 +29,8 @@ Contents
    services/index.rst
    cookbook/index.rst
    devguide/index.rst
-   release-notes.rst
 
+   Release Notes <https://github.com/PredixDev/predixpy/releases>
    Source Code <https://github.com/PredixDev/predixpy>
 
 .. include:: help.inc

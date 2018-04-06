@@ -16,7 +16,7 @@ The Predix Asset Service requires a ``uri`` as part of the body whenever you
 post a collection.  The ``predix.data.asset.AssetCollection`` class will help
 generate this for you but sometimes you want to do that for yourself.
 
-..
+::
 
     import predix.app
     app = predix.app.Manifest()

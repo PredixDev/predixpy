@@ -104,7 +104,7 @@ class ParkingPlanning(object):
 
             for device in device_type:
                 if device not in self.DEVICE_TYPES:
-                    logging.warn("Invalid device type: %s" % device)
+                    logging.warning("Invalid device type: %s" % device)
 
                 params['q'].append("device-type:%s" % device)
 
@@ -114,7 +114,7 @@ class ParkingPlanning(object):
 
             for asset in asset_type:
                 if asset not in self.ASSET_TYPES:
-                    logging.warn("Invalid asset type: %s" % asset)
+                    logging.warning("Invalid asset type: %s" % asset)
                 params['q'].append("assetType:%s" % asset)
 
         if media_type:
@@ -123,7 +123,7 @@ class ParkingPlanning(object):
 
             for media in media_type:
                 if media not in self.MEDIA_TYPES:
-                    logging.warn("Invalid media type: %s" % media)
+                    logging.warning("Invalid media type: %s" % media)
                 params['q'].append("mediaType:%s" % media)
 
         if event_type:
@@ -132,7 +132,7 @@ class ParkingPlanning(object):
 
             for event in event_type:
                 if event not in self.EVENT_TYPES:
-                    logging.warn("Invalid event type: %s" % event)
+                    logging.warning("Invalid event type: %s" % event)
                 params['q'].append("eventTypes:%s" % event)
 
         # Pagination parameters

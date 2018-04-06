@@ -4,6 +4,7 @@ import json
 import logging
 import requests
 
+import predix.app
 import predix.security.uaa
 
 
@@ -22,12 +23,15 @@ class Service(object):
 
         self._auto_authenticate()
 
+    def __del__(self):
+        self.session.close()
+
     def _auto_authenticate(self):
         """
         If we are in an app context we can authenticate immediately.
         """
-        client_id = os.environ.get('PREDIX_APP_CLIENT_ID')
-        client_secret = os.environ.get('PREDIX_APP_CLIENT_SECRET')
+        client_id = predix.config.get_env_value(predix.app.Manifest, 'client_id')
+        client_secret = predix.config.get_env_value(predix.app.Manifest, 'client_secret')
 
         if client_id and client_secret:
             logging.info("Automatically authenticated as %s" % (client_id))
@@ -66,7 +70,7 @@ class Service(object):
         if response.status_code == 200:
             return response.json()
         else:
-            logging.error("ERROR=" + response.content)
+            logging.error(b"ERROR=" + response.content)
             response.raise_for_status()
 
     def _post(self, uri, data):
@@ -81,7 +85,10 @@ class Service(object):
         response = self.session.post(uri, headers=headers,
                 data=json.dumps(data))
         if response.status_code in [200, 204]:
-            return response.json()
+            try:
+                return response.json()
+            except ValueError:
+                return "{}"
         else:
             logging.error(response.content)
             response.raise_for_status()

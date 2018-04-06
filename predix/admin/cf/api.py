@@ -25,6 +25,9 @@ class API(object):
         self.config = predix.admin.cf.config.Config()
         self.session = requests.Session()
 
+    def __del__(self):
+        self.session.close()
+
     def _get_headers(self, content_type='application/json'):
         """
         Returns headers needed for talking to the Cloud Foundry
@@ -51,7 +54,7 @@ class API(object):
         uri = self.config.get_target() + path
         headers = self._get_headers()
 
-        logging.debug("URI=" + str(uri))
+        logging.debug("URI=GET " + str(uri))
         logging.debug("HEADERS=" + str(headers))
 
         response = self.session.get(uri, headers=headers)
@@ -69,12 +72,13 @@ class API(object):
         uri = self.config.get_target() + path
         headers = self._post_headers()
 
-        logging.debug("URI=" + str(uri))
+        logging.debug("URI=POST " + str(uri))
         logging.debug("HEADERS=" + str(headers))
+        logging.debug("BODY=" + str(data))
 
         response = self.session.post(uri, headers=headers,
                 data=json.dumps(data))
-        if response.status_code in (200, 201):
+        if response.status_code in (200, 201, 202):
             return response.json()
         elif response.status_code == 401:
             raise predix.admin.cf.config.CloudFoundryLoginError('token invalid')
@@ -90,20 +94,21 @@ class API(object):
         uri = self.config.get_target() + path
         headers = self._get_headers()
 
-        logging.debug("URI=" + str(uri))
+        logging.debug("URI=PUT " + str(uri))
         logging.debug("HEADERS=" + str(headers))
+        logging.debug("BODY=" + str(data))
 
         response = self.session.put(uri, headers=headers,
                 data=json.dumps(data))
 
-        if response.status_code in (200, 201):
+        if response.status_code in (200, 201, 202):
             return response
         elif response.status_code == 401:
             raise predix.admin.cf.config.CloudFoundryLoginError('token invalid')
         else:
             logging.debug("STATUS=" + str(response.status_code))
             logging.debug("CONTENT=" + str(response.content))
-            response.raise_for_status()    
+            response.raise_for_status()
 
     def delete(self, path, data=None, params=None):
         """
@@ -114,7 +119,7 @@ class API(object):
             'Authorization': self.config.get_access_token()
             }
 
-        logging.debug("URI=" + str(uri))
+        logging.debug("URI=DELETE " + str(uri))
         logging.debug("HEADERS=" + str(headers))
 
         response = self.session.delete(

@@ -44,15 +44,16 @@ class CloudFoundryService(object):
 
         return "~/.predix/%s/%s/%s.json" % (org, space, name)
 
-    def _create_service(self, parameters={}):
+    def _create_service(self, parameters={}, **kwargs):
         """
         Create a Cloud Foundry service that has custom parameters.
         """
         logging.debug("_create_service()")
         logging.debug(str.join(',', [self.service_name, self.plan_name,
             self.name, str(parameters)]))
+
         return self.service.create_service(self.service_name, self.plan_name,
-                self.name, parameters)
+                self.name, parameters, **kwargs)
 
     def _delete_service(self, service_only=False):
         """
@@ -92,12 +93,12 @@ class CloudFoundryService(object):
         """
         return self.service.space.has_service_with_name(self.name)
 
-    def create(self, parameters={}, create_keys=True):
+    def create(self, parameters={}, create_keys=True, **kwargs):
         """
         Create the service.
         """
         # Create the service
-        cs = self._create_service(parameters=parameters)
+        cs = self._create_service(parameters=parameters, **kwargs)
 
         # Create the service key to get config details and
         # store in local cache file.

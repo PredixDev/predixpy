@@ -4,7 +4,11 @@ import sys
 import logging
 import unittest
 
-from mock import Mock, patch
+import six
+if six.PY3:
+    from unittest.mock import Mock, patch
+else:
+    from mock import Mock, patch
 
 import predix.security.uaa
 
@@ -58,5 +62,7 @@ class TestUAA(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    if os.getenv('DEBUG'):
+        logging.basicConfig(level=logging.DEBUG)
+
     unittest.main()

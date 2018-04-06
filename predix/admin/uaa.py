@@ -1,5 +1,8 @@
 
 import os
+import uuid
+import string
+import random
 
 import predix.config
 import predix.admin.service
@@ -31,13 +34,23 @@ class UserAccountAuthentication(object):
         if self.exists():
             self.authenticate()
 
+    def _get_uri(self):
+        """
+        Returns the URI endpoint for this instance of the UAA service if it
+        exists.
+        """
+        if not self.service.exists():
+            logging.warning("Service does not yet exist.")
+
+        return self.service.settings.data['uri']
+
     def exists(self):
         """
         Tests whether this given service already exists.
         """
         return self.service.exists()
 
-    def create(self, secret):
+    def create(self, secret, **kwargs):
         """
         Create a new instance of the UAA service.  Requires a
         secret password for the 'admin' user account.
@@ -45,8 +58,8 @@ class UserAccountAuthentication(object):
         parameters = {"adminClientSecret": secret}
         self.service.create(parameters=parameters)
 
-        uri = predix.config.get_env_key(self.use_class, 'uri')
-        os.environ[uri] = self.service.settings.data['uri']
+        # Store URI into environment variable
+        predix.config.set_env_value(self.use_class, 'uri', self._get_uri())
 
         # Once we create it login
         self.authenticate()
@@ -63,9 +76,10 @@ class UserAccountAuthentication(object):
         # Add this service to list of services
         manifest.add_service(self.service.name)
 
-        # Add environment variables
-        uri = predix.config.get_env_key(self.use_class, 'uri')
-        manifest.add_env_var(uri, self.service.settings.data['uri'])
+        # Add environment variable to manifest
+        varname = predix.config.set_env_value(self.use_class, 'uri',
+                self._get_uri())
+        manifest.add_env_var(varname, self._get_uri())
 
         manifest.write_manifest()
 
@@ -73,13 +87,32 @@ class UserAccountAuthentication(object):
         """
         Authenticate into the UAA instance as the admin user.
         """
-        uri = predix.config.get_env_key(self.use_class, 'uri')
-        os.environ[uri] = self.service.settings.data['uri']
+        # Make sure we've stored uri for use
+        predix.config.set_env_value(self.use_class, 'uri', self._get_uri())
 
         self.uaac = predix.security.uaa.UserAccountAuthentication()
         self.uaac.authenticate('admin', self._get_admin_secret(),
                 use_cache=False)
         self.is_admin = True
+
+    def _create_id(self):
+        """
+        Return a GUID which can serve as a suitable client-id.
+        """
+        return str(uuid.uuid4())
+
+    def _create_secret(self, length=12):
+        """
+        Use a cryptograhically-secure Pseudorandom number generator for picking
+        a combination of letters, digits, and punctuation to be our secret.
+
+        :param length: how long to make the secret (12 seems ok most of the time)
+
+        """
+        # Charset will have 64 +- characters
+        charset = string.digits + string.ascii_letters + '+-'
+        return "".join(random.SystemRandom().choice(charset) for _ in
+                range(length))
 
     def create_client(self, client_id, client_secret):
         """

@@ -2,14 +2,16 @@
 Getting Started
 ===============
 
-The following services are supported for **Python 2.7.x**.  Verification of
-compatibility with **Python 3.6.x** is on the near-term roadmap.
+The following services are supported.
 
 - User Account and Authentication (UAA)
 - Predix Access Control (ACS)
 - Predix Asset
 - Predix Time Series
-- Blob Store
+- Predix Blob Store
+- Predix Cache
+- Predix Database as a Service
+- Predix Event Hub
 - Logging
 - ... for more see :ref:`service-index` section
 
@@ -69,12 +71,12 @@ library in a file called ``initialize-space.py``.
     #!/bin/env python
 
     import predix.admin.app
-    app = predix.admin.app.Manifest()
+    admin = predix.admin.app.Manifest()
 
-    app.create_uaa('admin-secret')
-    app.create_client('client-id', 'client-secret')
+    admin.create_uaa('admin-secret')
+    admin.create_client('client-id', 'client-secret')
 
-    app.create_timeseries()
+    admin.create_timeseries()
 
 This simple admin script would be run only *once* at the beginning of a project to:
 

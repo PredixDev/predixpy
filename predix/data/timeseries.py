@@ -11,7 +11,6 @@ import predix.config
 import predix.service
 
 
-
 class TimeSeries(object):
     """
     Client library for working with the Time Series service.
@@ -409,7 +408,7 @@ class TimeSeries(object):
             ws = self._get_websocket()
             ws.send(json.dumps(message))
             result = ws.recv() 
-        except (WebSocketConnectionClosedException, Exception) as e:
+        except (websocket.WebSocketConnectionClosedException, Exception) as e:
             logging.debug("Connection failed, will try again.")
             logging.debug(e)
 

@@ -407,7 +407,7 @@ class TimeSeries(object):
         try:
             ws = self._get_websocket()
             ws.send(json.dumps(message))
-            result = ws.recv() 
+            result = ws.recv()
         except (websocket.WebSocketConnectionClosedException, Exception) as e:
             logging.debug("Connection failed, will try again.")
             logging.debug(e)

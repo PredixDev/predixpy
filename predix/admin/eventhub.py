@@ -3,7 +3,7 @@ import os
 import predix.config
 import predix.security.uaa
 import predix.admin.service
-import predix.data.eventhub
+import predix.data.eventhub.client
 
 
 class EventHub(object):
@@ -14,7 +14,7 @@ class EventHub(object):
     def __init__(self, plan_name=None, name=None, uaa=None, *args, **kwargs):
         self.service_name = 'predix-event-hub'
         self.plan_name = plan_name or 'Tiered'
-        self.use_class = predix.data.eventhub.Eventhub
+        self.use_class = predix.data.eventhub.client.Eventhub
 
         self.service = predix.admin.service.PredixService(self.service_name,
                                                           self.plan_name, name=name, uaa=uaa)

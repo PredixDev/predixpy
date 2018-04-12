@@ -12,6 +12,7 @@ import predix.admin.timeseries
 import predix.admin.logstash
 import predix.admin.cache
 import predix.admin.dbaas
+import predix.admin.eventhub
 
 
 class Manifest(predix.app.Manifest):

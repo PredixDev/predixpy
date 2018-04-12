@@ -1,5 +1,4 @@
-from predix.data.eventhub import EventHub_pb2, EventHub_pb2_grpc
-from predix.data.eventhub.client import Eventhub
+from predix.data.eventhub import EventHub_pb2, EventHub_pb2_grpc, grpc_manager
 
 
 class SubscribeConfig:
@@ -68,7 +67,7 @@ class Subscriber:
         self._rx_messages = []
         self.active = True
         self.run_subscribe_generator = True
-        self.grpc_manager = Eventhub.GrpcManager(stub_call=stub_call,
+        self.grpc_manager = grpc_manager.GrpcManager(stub_call=stub_call,
                                                  on_msg_callback=self._subscriber_callback,
                                                  metadata=self._generate_subscribe_headers(),
                                                  tx_stream=tx_stream,

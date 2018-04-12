@@ -5,8 +5,7 @@ import websocket
 
 import time
 
-from predix.data.eventhub import EventHub_pb2, EventHub_pb2_grpc
-from predix.data.eventhub.client import Eventhub
+from predix.data.eventhub import EventHub_pb2, EventHub_pb2_grpc, grpc_manager
 
 
 class PublisherConfig:
@@ -292,7 +291,7 @@ class Publisher:
         :return: None
         """
         self._stub = EventHub_pb2_grpc.PublisherStub(channel=self._channel)
-        self.grpc_manager = Eventhub.GrpcManager(stub_call=self._stub.send,
+        self.grpc_manager = grpc_manager.GrpcManager(stub_call=self._stub.send,
                                                  on_msg_callback=self._publisher_callback,
                                                  metadata=self._generate_publish_headers().items())
 

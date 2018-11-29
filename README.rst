@@ -73,6 +73,6 @@ guidelines and agreements for external parties have not been finalized.
 
 .. _Developing PredixPy Guide: https://predixpy.run.aws-usw02-pr.ice.predix.io/devguide/index.html
 
-.. image:: https://ga-beacon.appspot.com/UA-82773213-1/predixpy/readme?pixel
+.. image:: https://predix-beacon.appspot.com/UA-82773213-1/predixpy/readme?pixel
    :target: https://github.com/PredixDev/predixpy
 

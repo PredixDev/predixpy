@@ -99,5 +99,5 @@ WebOb==1.7.3
 websocket==0.2.1
 websocket-client==0.44.0
 WebTest==2.0.28
-Werkzeug==0.12.2
+Werkzeug==0.15.3
 wrapt==1.10.11

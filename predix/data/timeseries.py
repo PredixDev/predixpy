@@ -312,11 +312,7 @@ class TimeSeries(object):
                 if not isinstance(aggregations, list):
                     aggregations = [aggregations]
 
-                query['aggregations'] = []
-                for aggregation in aggregations:
-                    query['aggregations'].append({
-                        'sampling': {'datapoints': 1},
-                        'type': aggregation })
+                query['aggregations'] = aggregations
 
             params['tags'].append(query)
 

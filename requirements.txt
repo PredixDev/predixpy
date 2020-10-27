@@ -17,7 +17,7 @@ chardet==3.0.3
 click==6.7
 CommonMark==0.5.4
 configparser==3.5.0
-cryptography==2.0.3
+cryptography==3.2
 decorator==4.0.11
 docutils==0.13.1
 enum34==1.1.6

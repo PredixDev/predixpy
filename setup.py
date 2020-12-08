@@ -12,7 +12,6 @@ install_requires = [
         "six",
         "future",
         "psycopg2",
-        "websocket",
         "websocket-client"
     ]
 

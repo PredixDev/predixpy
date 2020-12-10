@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 install_requires = [
-        "python-dateutil==2.6.0",
+        "python-dateutil>=2.6.0",
         "boto3",
         "PyYAML",
         "requests",
@@ -12,7 +12,6 @@ install_requires = [
         "six",
         "future",
         "psycopg2",
-        "websocket",
         "websocket-client"
     ]
 

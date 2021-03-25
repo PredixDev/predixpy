@@ -68,7 +68,7 @@ pylint==1.7.2
 pypi-download-stats==0.2.1
 python-dateutil==2.6.0
 pytz==2017.2
-PyYAML==3.12
+PyYAML==5.4
 recommonmark==0.4.0
 redis==2.10.6
 requests==2.17.3

@@ -92,7 +92,7 @@ twine==1.9.1
 typing==3.6.2
 tzlocal==1.4
 uritemplate==3.0.0
-urllib3==1.21.1
+urllib3==1.26.5
 waitress==1.0.2
 wcwidth==0.1.7
 WebOb==1.7.3

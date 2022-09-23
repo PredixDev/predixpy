@@ -57,7 +57,7 @@ pickleshare==0.7.4
 pkginfo==1.4.1
 -e git+git@github.build.ge.com:volcano/predixpy.git@fc9afd4563a770d94767161cc2934a74d6cf5352#egg=predix
 prompt-toolkit==1.0.14
-protobuf==3.5.1
+protobuf==3.18.3
 psycopg2==2.7.3.2
 ptyprocess==0.5.1
 pyasn1==0.3.6
